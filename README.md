@@ -1,10 +1,10 @@
 Project SER316
 
 # Team Memembers
-- name
-- name
+- Nick Okerberg
 - name
 - Jordan Wine
+- Sean Rogers
 - Ovadia Shalom
 
 # spring18project
