@@ -2,7 +2,7 @@ Project SER316
 
 # Team Members
 - Nick Okerberg
-- name
+- Nergal Givarkes
 - Jordan Wine
 - Sean Rogers
 - Ovadia Shalom
