@@ -4,7 +4,7 @@ Project SER316
 - name
 - name
 - name
-- name
+- Sean Rogers
 - Ovadia Shalom
 
 # spring18project
