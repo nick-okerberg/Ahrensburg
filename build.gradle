@@ -14,3 +14,8 @@ dependencies {
   compile 'net.sourceforge.nekohtml:nekohtml:1.9.+'
 }
 
+jar {
+    // For now, lets just use the same one ant has in build.xml
+    version = "1.0-rc3.1"
+}
+

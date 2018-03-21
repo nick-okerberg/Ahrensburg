@@ -60,30 +60,32 @@
 	<target name="compile" depends="init">
 		<!-- Compile the java code from ${src} into ${build} -->
 		<buildnumber/>
-		<move file="${source.dir}/net/sf/memoranda/ui/App.java" tofile="${source.dir}/net/sf/memoranda/ui/~~App.java"/>
-		<copy file="${source.dir}/net/sf/memoranda/ui/~~App.java" tofile="${source.dir}/net/sf/memoranda/ui/App.java"/>
-		<replace file="${source.dir}/net/sf/memoranda/ui/App.java" token="@VERSION@" value="${version}"/>
-		<replace file="${source.dir}/net/sf/memoranda/ui/App.java" token="@BUILD@" value="${DSTAMP}.${build.number}"/>
+		<move file="${source.dir}/main/java/memoranda/ui/App.java" tofile="${source.dir}/main/java/memoranda/ui/~~App.java"/>
+		<copy file="${source.dir}/main/java/memoranda/ui/~~App.java" tofile="${source.dir}/main/java/memoranda/ui/App.java"/>
+		<replace file="${source.dir}/main/java/memoranda/ui/App.java" token="@VERSION@" value="${version}"/>
+		<replace file="${source.dir}/main/java/memoranda/ui/App.java" token="@BUILD@" value="${DSTAMP}.${build.number}"/>
 		<javac srcdir="${source.dir}" destdir="${build.classes.dir}" excludes="**/Cvs/**,**/*.ini,**/~*" debug="${debug}" debuglevel="${debuglevel}" optimize="${optimize}" deprecation="${deprecation}" failonerror="false" source="1.8" target="1.8" encoding="utf-8">
 			<!-- <compilerarg value="-Xlint:unchecked"/> -->
 			<classpath>
 				<path refid="classpath"/>
 			</classpath>
 		</javac>
-		<move file="${source.dir}/net/sf/memoranda/ui/~~App.java" tofile="${source.dir}/net/sf/memoranda/ui/App.java"/>
-		<delete file="${source.dir}/net/sf/memoranda/ui/~~App.java"/>
-		<copy todir="${build.classes.dir}/net/sf/memoranda/ui/resources">
-			<fileset dir="${source.dir}/net/sf/memoranda/ui/resources"/>
+		<move file="${source.dir}/main/java/memoranda/ui/~~App.java" tofile="${source.dir}/main/java/memoranda/ui/App.java"/>
+		<delete file="${source.dir}/main/java/memoranda/ui/~~App.java"/>
+		<copy todir="${build.classes.dir}/main/resources/ui">
+			<fileset dir="${source.dir}/main/resources/ui"/>
 		</copy>
-		<copy todir="${build.classes.dir}/net/sf/memoranda/ui/htmleditor/resources">
-			<fileset dir="${source.dir}/net/sf/memoranda/ui/htmleditor/resources"/>
+		<copy todir="${build.classes.dir}/main/resources/htmleditor">
+			<fileset dir="${source.dir}/main/resources/htmleditor"/>
 		</copy>
-		<copy todir="${build.classes.dir}/net/sf/memoranda/util/resources">
-			<fileset dir="${source.dir}/net/sf/memoranda/util/resources"/>
+		<copy todir="${build.classes.dir}/main/resources/util">
+			<fileset dir="${source.dir}/main/resources/util"/>
 		</copy>
-		<copy todir="${build.classes.dir}/net/sf/memoranda/util/localmessages">
-			<fileset dir="${source.dir}/net/sf/memoranda/util/localmessages"/>
-		</copy>
+		<!-- These don't seem to be present in our build
+		<copy todir="${build.classes.dir}/main/java/memoranda/util/localmessages">
+			<fileset dir="${source.dir}/main/java/memoranda/util/localmessages"/>
+		</copy
+		-->
 		<copy todir="${basedir}/build">
 			<fileset dir="." includes="tasklist.dtd"/>
 		</copy>
