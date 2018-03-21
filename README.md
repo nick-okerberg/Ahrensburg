@@ -1,6 +1,6 @@
 Project SER316
 
-# Team Memembers
+# Team Members
 - Nick Okerberg
 - name
 - Jordan Wine
