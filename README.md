@@ -4,7 +4,7 @@ Project SER316
 - name
 - name
 - name
-- name
+- Jordan Wine
 - Ovadia Shalom
 
 # spring18project
@@ -30,5 +30,3 @@ Good luck and have fun!
 
 Dr. Mehlhase
 
-# Test
-Jordan Wine: Looks like it worked.
