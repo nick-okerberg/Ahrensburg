@@ -3,7 +3,7 @@ Project SER316
 # Team Memembers
 - Nick Okerberg
 - name
-- name
+- Jordan Wine
 - Sean Rogers
 - Ovadia Shalom
 
@@ -29,3 +29,4 @@ After that go back to the initial version and start your SCRUM process and docum
 Good luck and have fun!
 
 Dr. Mehlhase
+
