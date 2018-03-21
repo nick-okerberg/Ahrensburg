@@ -1,5 +1,4 @@
 <!--- THIS IS AN OLD FILE AND ONLY INCLUDED AS A REFERENCE IN CASE YOU WANT TO TAKE A LOOK -->
-<?xml version="1.0" encoding="UTF-8"?>
 <!--- some exml comment -->
 <project name="Memoranda" default="package" basedir=".">
 	<!-- Build.xml file initially created by Kenneth J. Pouncey              -->
