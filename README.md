@@ -1,7 +1,7 @@
 Project SER316
 
 # Team Memembers
-- name
+- Nick Okerberg
 - name
 - name
 - name
