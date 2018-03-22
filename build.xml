@@ -15,8 +15,8 @@
 	<property name="lib.dir" value="${basedir}/lib"/>
 	<property name="build.dir" value="${basedir}/build"/>
 	<property name="build.classes.dir" value="${build.dir}"/>
-	<property name="main.class" value="net.sf.memoranda.Start"/>
-	<property name="jarname" value="${name}.jar"/>
+	<property name="main.class" value="main.java.memoranda.Start"/>
+	<property name="jarname" value="${name}-${version}.jar"/>
 	<property name="dist.dir" value="${basedir}/dist"/>
 	<!-- compile options -->
 	<property name="debug" value="off"/>
@@ -52,7 +52,7 @@
 				<!--<attribute name="Class-Path" value="${runtime.classpath}"/>-->
 				<attribute name="Implementation-Title" value="${name}"/>
 				<attribute name="Implementation-Version" value="${version}"/>
-				<attribute name="Implementation-Vendor" value="http://memoranda.sf.net"/>
+				<attribute name="Implementation-Vendor" value="ASU SER316 Spring 2018-B Ahrensburg"/>
 				<attribute name="Build-Id" value="${DSTAMP}.${build.number} (${ts} ${user.name} [${os.name} ${os.version} ${os.arch}])"/>
 			</manifest>
 		</jar>

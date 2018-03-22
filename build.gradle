@@ -1,4 +1,10 @@
 apply plugin: 'application'
+apply plugin: "java"
+
+// Variables
+// For now, lets just use the same one ant has in build.xml
+def versionNumber = "1.0-rc3.1"
+def buildNumberFile = file("version.properties")
 
 mainClassName = 'main/java/memoranda/Start'
 
@@ -15,7 +21,33 @@ dependencies {
 }
 
 jar {
-    // For now, lets just use the same one ant has in build.xml
-    version = "1.0-rc3.1"
+	// Lets handle the build number bit
+	def buildNumber
+	def newBuildNumber
+	if (buildNumberFile.canRead()) {
+		def Properties buildProps = new Properties()
+		buildProps.load(new FileInputStream(buildNumberFile))
+		buildNumber = buildProps['BUILD_NUMBER'].toInteger()
+		
+		// Now auto-increment
+		newBuildNumber = buildNumber + 1
+		buildProps['BUILD_NUMBER'] = newBuildNumber.toString()
+		buildProps.store(new FileWriter("version.properties"), null)
+		
+	} else {
+		throw new FileNotFoundException("Could not read version.properties")
+	}
+			
+
+    version = versionNumber + "-" + buildNumber
+	manifest {
+		attributes(
+      		"Main-Class": "main.java.memoranda.Start",
+      		"Implementation-Title": "memoranda",
+      		"Implementation-Version": version,
+      		"Implementation-Vendor": "ASU SER316 Spring2018-B Ahrensburg",
+      		"Build-Id": buildNumber
+		)
+	}
 }
 
