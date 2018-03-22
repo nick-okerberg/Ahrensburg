@@ -4,7 +4,7 @@ build/
 .gradle
 # Log file
 *.log
-
+*.properties
 ### Eclipse ###
 
 ### Eclipse Patch ###
