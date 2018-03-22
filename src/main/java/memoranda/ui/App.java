@@ -150,16 +150,16 @@ public class App {
 	private void showSplash() {
 		splash = new JFrame();
 		ImageIcon spl =
-			new ImageIcon(App.class.getResource("/ui/splash.png"));
+			new ImageIcon(App.class.getResource("/ui/splash2.png"));
 		JLabel l = new JLabel();
-		l.setSize(400, 300);
+		l.setSize(1200, 600);
 		l.setIcon(spl);
 		splash.getContentPane().add(l);
-		splash.setSize(400, 300);
+		splash.setSize(1200, 600);
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		splash.setLocation(
-			(screenSize.width - 400) / 2,
-			(screenSize.height - 300) / 2);
+			(screenSize.width - 1200) / 2,
+			(screenSize.height - 600) / 2);
 		splash.setUndecorated(true);
 		splash.setVisible(true);
 	}
