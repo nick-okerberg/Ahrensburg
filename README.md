@@ -6,7 +6,6 @@ Project SER316
 - Jordan Wine
 - Sean Rogers
 - Ovadia Shalom
-
 # spring18project
 This is the initial dump for the ser316 spring 2018 project. It is a slightly modified version of the Memoranda project from memoranda.sf.net
 
