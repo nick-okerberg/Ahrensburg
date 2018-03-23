@@ -7,6 +7,7 @@
  * Copyright (c) 2003 Memoranda Team. http://memoranda.sf.net
  */
 package main.java.memoranda.util;
+
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
@@ -119,20 +120,22 @@ public class MimeType {
     }
 
     public ImageIcon getIcon() {
+    	
+    	
        String ip = getIconPath();
        ImageIcon icon = null;
        if (ip.equals("")) {
-        ip = "/util/icons/mimetypes/"+getMimeTypeId()+".png";
+        ip = "resources/icons/mimetypes/"+getMimeTypeId()+".png";
         try {
           icon = new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource(ip));
         }
         catch (Exception ex) {
-          ip = "/util/icons/mimetypes/"+getMimeTypeId().split("/")[0]+"/default.png";
+          ip = "resources/icons/mimetypes/"+getMimeTypeId().split("/")[0]+"/default.png";
           try {
             icon = new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource(ip));
           }
           catch (Exception ex2) {
-            icon = new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/util/icons/mimetypes/default.png"));
+            icon = new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("resources/icons/mimetypes/default.png"));
           }
         }
       }
@@ -141,12 +144,12 @@ public class MimeType {
             icon = new ImageIcon(ip);
           }
           catch (Exception ex) {
-          ip = "/util/icons/mimetypes/"+getMimeTypeId().split("/")[0]+"/default.png";
+          ip = "resources/icons/mimetypes/"+getMimeTypeId().split("/")[0]+"/default.png";
           try {
             icon = new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource(ip));
           }
           catch (Exception ex2) {
-            icon = new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/util/icons/mimetypes/default.png"));
+            icon = new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("resources/icons/mimetypes/default.png"));
           }
         }
       return icon;
