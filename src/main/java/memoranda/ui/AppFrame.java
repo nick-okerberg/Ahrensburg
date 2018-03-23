@@ -262,7 +262,7 @@ public class AppFrame extends JFrame {
         contentPane = (JPanel) this.getContentPane();
         contentPane.setLayout(borderLayout1);
         //this.setSize(new Dimension(800, 500));
-        this.setTitle("Memoranda - " + CurrentProject.get().getTitle());
+        this.setTitle("SchedStack - " + CurrentProject.get().getTitle());
         //Added a space to App.VERSION_INFO to make it look some nicer
         statusBar.setText(" Version:" + App.VERSION_INFO + " (Build "
                 + App.BUILD_INFO + " )");
@@ -626,7 +626,7 @@ public class AppFrame extends JFrame {
             }
 
             public void projectWasChanged() {
-                setTitle("Memoranda - " + CurrentProject.get().getTitle());
+                setTitle("SchedStack - " + CurrentProject.get().getTitle());
             }
         });
 
@@ -663,10 +663,10 @@ public class AppFrame extends JFrame {
         exitNotify();
         System.exit(0);
     }
-
+   
+   //Nergal has made a change  
     public void doMinimize() {
-        exitNotify();
-        App.closeWindow();
+       exitNotify();
     }
 
     //Help | About action performed
@@ -679,7 +679,7 @@ public class AppFrame extends JFrame {
          dlg.setModal(true);
          dlg.setVisible(true);
     }
-
+    //Nergal has made a few changes 
     protected void processWindowEvent(WindowEvent e) {
         if (e.getID() == WindowEvent.WINDOW_CLOSING) {
             if (Configuration.get("ON_CLOSE").equals("exit"))
@@ -688,10 +688,16 @@ public class AppFrame extends JFrame {
                 doMinimize();
         }
         else if ((e.getID() == WindowEvent.WINDOW_ICONIFIED)) {
-            super.processWindowEvent(new WindowEvent(this,
-                    WindowEvent.WINDOW_CLOSING));
-            doMinimize();
+       
+        	doMinimize();
         }
+         if ((e.getID() == WindowEvent.WINDOW_CLOSING)) {
+         
+        	      super.processWindowEvent(new WindowEvent(this,
+                       WindowEvent.WINDOW_CLOSING));
+        	App.closeWindow();
+             } 
+        
         else
             super.processWindowEvent(e);
     }
