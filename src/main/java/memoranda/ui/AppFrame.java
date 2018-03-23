@@ -55,7 +55,7 @@ import nu.xom.Builder;
 import nu.xom.Document;
 import nu.xom.Element;
 import nu.xom.Elements;
-
+/*****/
 
 /**
  * 
@@ -837,10 +837,12 @@ public class AppFrame extends JFrame {
     }
 
     public void showPreferences() {
+    	
         PreferencesDialog dlg = new PreferencesDialog(this);
         dlg.pack();
         dlg.setLocationRelativeTo(this);
         dlg.setVisible(true);
+              
     }
     
             protected void ppExport_actionPerformed(ActionEvent e) {
