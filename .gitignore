@@ -4,7 +4,7 @@ build/
 .gradle
 # Log file
 *.log
-
+*.properties
 ### Eclipse ###
 
 ### Eclipse Patch ###
@@ -13,3 +13,5 @@ build/
 
 # JDT-specific (Eclipse Java Development Tools)		
 .classpath
+/classes/
+/bin/
