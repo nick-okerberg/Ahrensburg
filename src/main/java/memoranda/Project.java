@@ -38,6 +38,12 @@ public interface Project {
     String getTitle();
     void setTitle(String title);
     
+    String getNames();
+    String getGitNames();
+    
+    void setNames();
+    void setGitNames();
+        
     void setDescription(String description);
     String getDescription();
     

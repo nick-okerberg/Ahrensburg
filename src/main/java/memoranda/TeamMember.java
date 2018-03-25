@@ -31,12 +31,12 @@ public class TeamMember {
 	 */
 	public TeamMember() {
 		// Set default values
-		this.name = "DEFAULT_NAME";
-		this.githubUsername = "DEFAULT_GITHUB_USERNAME";
-		this.project = "Default project";
-		
-		// Add the team member to the list
-		teamMemberList.add(this);
+//		this.name = "DEFAULT_NAME";
+//		this.githubUsername = "DEFAULT_GITHUB_USERNAME";
+//		this.project = "Default project";
+//		
+//		// Add the team member to the list
+//		teamMemberList.add(this);
 	}
 	
 	

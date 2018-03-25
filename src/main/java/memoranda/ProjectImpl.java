@@ -8,6 +8,8 @@
  */
 package main.java.memoranda;
 
+import java.util.List;
+
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.date.CurrentDate;
 import nu.xom.Attribute;
@@ -28,7 +30,21 @@ public class ProjectImpl implements Project {
         _root = root;
     }
 
-    /**
+	public String getNames() {
+        Attribute ta = _root.getAttribute("names");
+        if (ta != null)
+            return ta.getValue();
+        return "";
+	}
+
+	public String getGitNames() {
+        Attribute ta = _root.getAttribute("gitnames");
+        if (ta != null)
+            return ta.getValue();
+        return "";
+	}
+
+	/**
      * @see main.java.memoranda.Project#getID()
      */
     public String getID() {
@@ -146,7 +162,27 @@ public class ProjectImpl implements Project {
         setAttr("title", title);
     }
     
-    private void setAttr(String name, String value) {
+
+	public void setNames() {
+		List<TeamMember> result = TeamMember.teamMemberList(CurrentProject.get().getTitle());
+		String listOfNames = "";
+		String listOfGitNames = "";
+		for(int i = 0; i < result.size() - 1; i++) {
+			listOfNames += result.get(i).getName();
+			listOfGitNames += result.get(i).getGithubUsername();
+		}
+		setAttr("names", listOfNames);
+		setAttr("gitnames", listOfGitNames);
+		
+	}
+
+
+	public void setGitNames() {
+		
+		
+	}
+
+	private void setAttr(String name, String value) {
         Attribute a = _root.getAttribute(name);
         if (a == null) {
             if (value != null)

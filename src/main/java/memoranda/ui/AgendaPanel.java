@@ -41,6 +41,8 @@ import main.java.memoranda.util.Util;
 import javax.swing.JOptionPane;
 
 import nu.xom.Element;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 /*$Id: AgendaPanel.java,v 1.11 2005/02/15 16:58:02 rawsushi Exp $*/
 public class AgendaPanel extends JPanel {
@@ -62,6 +64,8 @@ public class AgendaPanel extends JPanel {
 	String gotoTask = null;
 
 	boolean isActive = true;
+	private final JButton btnNewButton = new JButton("+Add Member");
+	private final JButton btnNewButton_1 = new JButton("- Delete Member");
 
 	public AgendaPanel(DailyItemsPanel _parentPanel) {
 		try {
@@ -233,14 +237,29 @@ public class AgendaPanel extends JPanel {
 
 		this.setLayout(borderLayout1);
 		scrollPane.getViewport().setBackground(Color.white);
-
-		scrollPane.getViewport().add(viewer, null);
+		scrollPane.setViewportView(viewer);
 		this.add(scrollPane, BorderLayout.CENTER);
 		toolBar.add(historyBackB, null);
 		toolBar.add(historyForwardB, null);
 		toolBar.addSeparator(new Dimension(8, 24));
 
 		this.add(toolBar, BorderLayout.NORTH);
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				MemberAdd.main(null);
+				System.out.println(CurrentProject.get().getTitle());
+			}
+		});
+		
+		toolBar.add(btnNewButton);
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				MemberDelete.main(null);
+				System.out.println(CurrentProject.get().getTitle());
+			}
+		});
+		
+		toolBar.add(btnNewButton_1);
 
 		CurrentDate.addDateListener(new DateListener() {
 			public void dateChange(CalendarDate d) {

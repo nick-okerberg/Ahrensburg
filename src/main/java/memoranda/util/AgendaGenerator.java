@@ -274,6 +274,8 @@ public class AgendaGenerator {
 				+ p.getID()
 				+ "\">"
 				+ p.getTitle()
+				+ "<br>Names:" + p.getNames() + "<br>"
+				+ "GitNames:" + p.getGitNames() + "<br>"
 				+ "</a></h2>\n"
 				+ "<table border=\"0\" width=\"100%\" cellpadding=\"2\" bgcolor=\"#EFEFEF\"><tr><td>" 
 				+ Local.getString("Start date")+": <i>"+p.getStartDate().getMediumDateString()+"</i>\n";
