@@ -92,6 +92,7 @@ public class App {
 
 		EventsScheduler.init();
 		frame = new AppFrame();
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		if (fullmode) {
 			init();
 		}
