@@ -54,6 +54,26 @@ public class TeamMember {
 		teamMemberList.add(this);
 	}
 	
+	
+	
+	/**
+	 * Delete a team member from the team member list, given the github username as input.
+	 * 
+	 * @param username
+	 */
+	public void deleteTeamMember(String username) {
+		// Iterate through the entire list of team members. 
+		for (int i = 0; i < teamMemberList.size(); i++){
+			
+			// If the team member's username is the same as the one provided. 
+			if (teamMemberList.get(i).getGithubUsername().equals(username)) {
+				
+				// Then remove the team member object to the team member list. 
+				teamMemberList.remove(i);
+			} // End if
+		} // End for loop. 
+	}
+	
 
 
 	/**
