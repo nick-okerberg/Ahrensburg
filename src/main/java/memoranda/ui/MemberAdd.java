@@ -89,7 +89,7 @@ public class MemberAdd extends JDialog {
 						}
 						else {
 							TeamMember newMem = new TeamMember(name.getText(), gitusername.getText(), CurrentProject.get().getTitle());
-							TeamMember.teamMemberList().add(newMem);
+							//TeamMember.teamMemberList().add(newMem);
 							System.out.println(name.getText());
 							System.out.println(gitusername.getText());
 							System.out.println(CurrentProject.get().getTitle());
@@ -105,6 +105,11 @@ public class MemberAdd extends JDialog {
 			}
 			{
 				JButton cancelButton = new JButton("Cancel");
+				cancelButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						dispose();
+					}
+				});
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}

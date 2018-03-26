@@ -61,7 +61,7 @@ public class TeamMember {
 	 * 
 	 * @param username
 	 */
-	public void deleteTeamMember(String username) {
+	public static void deleteTeamMember(String username) {
 		// Iterate through the entire list of team members. 
 		for (int i = 0; i < teamMemberList.size(); i++){
 			
@@ -73,7 +73,6 @@ public class TeamMember {
 			} // End if
 		} // End for loop. 
 	}
-	
 
 
 	/**
