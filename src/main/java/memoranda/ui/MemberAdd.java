@@ -93,7 +93,7 @@ public class MemberAdd extends JDialog {
 							System.out.println(name.getText());
 							System.out.println(gitusername.getText());
 							System.out.println(CurrentProject.get().getTitle());
-							CurrentProject.get().setNames();
+							CurrentProject.get().setNames(CurrentProject.get().getTitle());
 							dispose();
 							
 						}
