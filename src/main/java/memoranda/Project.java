@@ -42,7 +42,8 @@ public interface Project {
     String getGitNames();
     
     void setNames();
-    void setGitNames();
+    void setGitName(String newName);
+    void setName(String newName);
         
     void setDescription(String description);
     String getDescription();

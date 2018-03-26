@@ -164,15 +164,15 @@ public class ProjectImpl implements Project {
     
 
 	public void setNames() {
-		List<TeamMember> result = TeamMember.teamMemberList(CurrentProject.get().getTitle());
-		System.out.println(result.toString() + "LOOOOOKK HEEEEERRREEEEE");
+		//List<TeamMember> result = TeamMember.teamMemberList(CurrentProject.get().getTitle());
+//		/System.out.println(result.toString() + "LOOOOOKK HEEEEERRREEEEE");
 		String listOfNames = "";
 		String listOfGitNames = "";
-		for(int i = 0; i < result.size() - 1; i++) {
-			if(i % 2 == 0) {
-				listOfNames += result.get(i).getName();
-				listOfGitNames += result.get(i).getGithubUsername();
-			}
+		for(int i = 0; i < TeamMember.teamMemberList().size(); i++) {
+//			if(i % 2 == 0) {
+//			}
+			listOfNames += TeamMember.teamMemberList().get(i).getName() + " ";
+			listOfGitNames += TeamMember.teamMemberList().get(i).getGithubUsername() + " ";
 			
 		}
 		setAttr("names", listOfNames);
@@ -181,9 +181,11 @@ public class ProjectImpl implements Project {
 	}
 
 
-	public void setGitNames() {
-		
-		
+	public void setGitName(String newName) {
+		setAttr("gitnames", newName);
+	}
+	public void setName(String newName) {
+		setAttr("names", newName);
 	}
 
 	private void setAttr(String name, String value) {
@@ -220,6 +222,7 @@ public class ProjectImpl implements Project {
             desc.appendChild(s);    	
     	}
     }
+
         
     /**
      * @see net.sf.memoranda.Project#getTaskList()
