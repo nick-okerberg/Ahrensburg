@@ -8,6 +8,8 @@
  */
 package main.java.memoranda;
 
+import java.util.List;
+
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.date.CurrentDate;
 import nu.xom.Attribute;
@@ -28,7 +30,21 @@ public class ProjectImpl implements Project {
         _root = root;
     }
 
-    /**
+	public String getNames() {
+        Attribute ta = _root.getAttribute("names");
+        if (ta != null)
+            return ta.getValue();
+        return "";
+	}
+
+	public String getGitNames() {
+        Attribute ta = _root.getAttribute("gitnames");
+        if (ta != null)
+            return ta.getValue();
+        return "";
+	}
+
+	/**
      * @see main.java.memoranda.Project#getID()
      */
     public String getID() {
@@ -146,7 +162,33 @@ public class ProjectImpl implements Project {
         setAttr("title", title);
     }
     
-    private void setAttr(String name, String value) {
+
+	public void setNames() {
+		//List<TeamMember> result = TeamMember.teamMemberList(CurrentProject.get().getTitle());
+//		/System.out.println(result.toString() + "LOOOOOKK HEEEEERRREEEEE");
+		String listOfNames = "";
+		String listOfGitNames = "";
+		for(int i = 0; i < TeamMember.teamMemberList().size(); i++) {
+//			if(i % 2 == 0) {
+//			}
+			listOfNames += TeamMember.teamMemberList().get(i).getName() + " ";
+			listOfGitNames += TeamMember.teamMemberList().get(i).getGithubUsername() + " ";
+			
+		}
+		setAttr("names", listOfNames);
+		setAttr("gitnames", listOfGitNames);
+		
+	}
+
+
+	public void setGitName(String newName) {
+		setAttr("gitnames", newName);
+	}
+	public void setName(String newName) {
+		setAttr("names", newName);
+	}
+
+	private void setAttr(String name, String value) {
         Attribute a = _root.getAttribute(name);
         if (a == null) {
             if (value != null)
@@ -180,6 +222,7 @@ public class ProjectImpl implements Project {
             desc.appendChild(s);    	
     	}
     }
+
         
     /**
      * @see net.sf.memoranda.Project#getTaskList()
