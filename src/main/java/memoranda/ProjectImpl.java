@@ -163,7 +163,7 @@ public class ProjectImpl implements Project {
     }
     
 
-	public void setNames() {
+	public void setNames(String projectTitle) {
 		//List<TeamMember> result = TeamMember.teamMemberList(CurrentProject.get().getTitle());
 //		/System.out.println(result.toString() + "LOOOOOKK HEEEEERRREEEEE");
 		String listOfNames = "";
@@ -171,8 +171,10 @@ public class ProjectImpl implements Project {
 		for(int i = 0; i < TeamMember.teamMemberList().size(); i++) {
 //			if(i % 2 == 0) {
 //			}
-			listOfNames += TeamMember.teamMemberList().get(i).getName() + " ";
-			listOfGitNames += TeamMember.teamMemberList().get(i).getGithubUsername() + " ";
+			if(projectTitle.equals(TeamMember.teamMemberList().get(i).getProject())) {
+				listOfNames += TeamMember.teamMemberList().get(i).getName() + ",";
+				listOfGitNames += TeamMember.teamMemberList().get(i).getGithubUsername() + ",";
+			}
 			
 		}
 		setAttr("names", listOfNames);

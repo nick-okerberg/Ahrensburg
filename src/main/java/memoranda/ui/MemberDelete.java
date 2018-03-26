@@ -81,8 +81,8 @@ public class MemberDelete extends JDialog {
 							String usernameToDelete = username.getText(),
 									xmlGitNames = CurrentProject.get().getGitNames(),
 									xmlNames = CurrentProject.get().getNames(),
-									xmlArrayGitNames[] = xmlGitNames.split(" "),
-									xmlArrayNames[] = xmlNames.split(" "),
+									xmlArrayGitNames[] = xmlGitNames.split(","),
+									xmlArrayNames[] = xmlNames.split(","),
 									resultGitNames = "",
 									resultNames = "";
 							if(CurrentProject.get().getGitNames().contains(usernameToDelete)) {
@@ -91,8 +91,8 @@ public class MemberDelete extends JDialog {
 										//ignore
 									}
 									else {
-										resultGitNames += xmlArrayGitNames[i] + " ";
-										resultNames += xmlArrayNames[i] + " ";
+										resultGitNames += xmlArrayGitNames[i] + ",";
+										resultNames += xmlArrayNames[i] + ",";
 									}
 								}
 								CurrentProject.get().setGitName(resultGitNames);
