@@ -101,6 +101,8 @@ public class ProjectManager {
     public static Project createProject(String id, String title, CalendarDate startDate, CalendarDate endDate) {
         Element el = new Element("project");
         el.addAttribute(new Attribute("id", id));
+        el.addAttribute(new Attribute("names", ""));
+        el.addAttribute(new Attribute("gitnames", ""));
         _root.appendChild(el);
         Project prj = new ProjectImpl(el);
         prj.setTitle(title);

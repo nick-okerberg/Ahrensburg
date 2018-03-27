@@ -4,7 +4,9 @@ build/
 .gradle
 # Log file
 *.log
-*.properties
+.idea/
+Ahrensburg.iml
+out/
 ### Eclipse ###
 
 ### Eclipse Patch ###
