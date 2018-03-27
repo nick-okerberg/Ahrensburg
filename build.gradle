@@ -20,6 +20,11 @@ dependencies {
   compile 'net.sourceforge.nekohtml:nekohtml:1.9.+'
 }
 
+copy{
+from "src/main/java/memoranda/ui/resources"
+into "build/classes/java/main/main/java/memoranda/ui/resources"
+
+}
 jar {
 	// Lets handle the build number bit
 	def buildNumber
