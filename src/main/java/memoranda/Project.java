@@ -38,6 +38,17 @@ public interface Project {
     String getTitle();
     void setTitle(String title);
     
+    String getNames();
+    String getGitNames();
+
+    void addMember(String name, String username);
+    boolean deleteMember(String username);
+    int checkChar(String s);
+
+    void setNames(String projectTitle);
+    void setGitName(String newName);
+    void setName(String newName);
+        
     void setDescription(String description);
     String getDescription();
     

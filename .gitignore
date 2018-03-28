@@ -4,7 +4,9 @@ build/
 .gradle
 # Log file
 *.log
-
+.idea/
+Ahrensburg.iml
+out/
 ### Eclipse ###
 
 ### Eclipse Patch ###
@@ -13,3 +15,5 @@ build/
 
 # JDT-specific (Eclipse Java Development Tools)		
 .classpath
+/classes/
+/bin/

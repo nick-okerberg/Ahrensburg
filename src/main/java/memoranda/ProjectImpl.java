@@ -8,6 +8,8 @@
  */
 package main.java.memoranda;
 
+import java.util.List;
+
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.date.CurrentDate;
 import nu.xom.Attribute;
@@ -28,7 +30,21 @@ public class ProjectImpl implements Project {
         _root = root;
     }
 
-    /**
+	public String getNames() {
+        Attribute ta = _root.getAttribute("names");
+        if (ta != null)
+            return ta.getValue();
+        return "";
+	}
+
+	public String getGitNames() {
+        Attribute ta = _root.getAttribute("gitnames");
+        if (ta != null)
+            return ta.getValue();
+        return "";
+	}
+
+	/**
      * @see main.java.memoranda.Project#getID()
      */
     public String getID() {
@@ -146,7 +162,98 @@ public class ProjectImpl implements Project {
         setAttr("title", title);
     }
     
-    private void setAttr(String name, String value) {
+
+	public void setNames(String projectTitle) {
+		//List<TeamMember> result = TeamMember.teamMemberList(CurrentProject.get().getTitle());
+//		/System.out.println(result.toString() + "LOOOOOKK HEEEEERRREEEEE");
+		String listOfNames = "";
+		String listOfGitNames = "";
+		for(int i = 0; i < TeamMember.teamMemberList().size(); i++) {
+//			if(i % 2 == 0) {
+//			}
+			if(projectTitle.equals(TeamMember.teamMemberList().get(i).getProject())) {
+				listOfNames += TeamMember.teamMemberList().get(i).getName() + ",";
+				listOfGitNames += TeamMember.teamMemberList().get(i).getGithubUsername() + ",";
+			}
+			
+		}
+		setAttr("names", listOfNames);
+		setAttr("gitnames", listOfGitNames);
+		
+	}
+
+	public void addMember(String name, String username) {
+        Attribute names = _root.getAttribute("names");
+        Attribute gitNames = _root.getAttribute("gitnames");
+
+        if(names.getValue().equals("") && gitNames.getValue().equals("")) { //0 elements
+            names.setValue(name);
+            gitNames.setValue(username);
+        }
+        else { //if((!names.getValue().equals("") && !gitnames.getValue().equals("")) && checkChar(names.getValue()) == 1 && checkChar(gitnames.getValue()) == 1 ) { //1 element
+            String temp1 = names.getValue();
+            String temp2 = gitNames.getValue();
+            names.setValue(temp1 + "," + name);
+            gitNames.setValue(temp2 + "," + username);
+        }
+    }
+    public boolean deleteMember(String username) {
+        //""
+        //"Ovadia Shalom"
+        //"Ovadia Shalom,Sean Rogers"
+
+        Attribute names = _root.getAttribute("names");
+        Attribute gitNames = _root.getAttribute("gitnames");
+        if(!gitNames.getValue().equals("") && gitNames.getValue().contains(username)) {
+            String nameArray[] = names.getValue().split(",");
+            String[] userNameArray = gitNames.getValue().split(",");
+            if(nameArray.length == 1) {
+                names.setValue("");
+                gitNames.setValue("");
+            }
+            else if(nameArray.length >=1) {
+                int counter = 0;
+                String[] newNameArray = new String[nameArray.length-1];
+                String[] newUsernameArray = new String[userNameArray.length-1];
+                for (int i = 0; i < nameArray.length; i++) {
+                    if(!userNameArray[i].equals(username)) {
+                        newNameArray[counter] = nameArray[i];
+                        newUsernameArray[counter] = userNameArray[i];
+                        counter++;
+                    }
+                }
+                String joined1 = String.join(",", newNameArray);
+                String joined2 = String.join(",", newUsernameArray);
+                names.setValue(joined1);
+                gitNames.setValue(joined2);
+
+            }
+
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public int checkChar(String s) {
+        int count = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if(s.charAt(i) == ',') {
+                count++;
+            }
+        }
+        return count;
+    }
+
+	public void setGitName(String newName) {
+		setAttr("gitnames", newName);
+	}
+	public void setName(String newName) {
+		setAttr("names", newName);
+	}
+
+	private void setAttr(String name, String value) {
         Attribute a = _root.getAttribute(name);
         if (a == null) {
             if (value != null)
@@ -180,6 +287,7 @@ public class ProjectImpl implements Project {
             desc.appendChild(s);    	
     	}
     }
+
         
     /**
      * @see net.sf.memoranda.Project#getTaskList()
