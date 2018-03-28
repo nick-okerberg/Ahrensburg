@@ -78,31 +78,37 @@ public class MemberDelete extends JDialog {
 							JOptionPane.showMessageDialog(null, "Fill out form values pretty peas");
 						}
 						else {
-							String usernameToDelete = username.getText(),
-									xmlGitNames = CurrentProject.get().getGitNames(),
-									xmlNames = CurrentProject.get().getNames(),
-									xmlArrayGitNames[] = xmlGitNames.split(","),
-									xmlArrayNames[] = xmlNames.split(","),
-									resultGitNames = "",
-									resultNames = "";
-							if(CurrentProject.get().getGitNames().contains(usernameToDelete)) {
-								for(int i = 0; i < xmlArrayGitNames.length; i++) {
-									if(xmlArrayGitNames[i].equals(usernameToDelete)) {
-										//ignore
-									}
-									else {
-										resultGitNames += xmlArrayGitNames[i] + ",";
-										resultNames += xmlArrayNames[i] + ",";
-									}
-								}
-								CurrentProject.get().setGitName(resultGitNames);
-								CurrentProject.get().setName(resultNames);
-								TeamMember.deleteTeamMember(usernameToDelete);
+							if(CurrentProject.get().deleteMember(username.getText())) {
 								dispose();
 							}
 							else {
 								JOptionPane.showMessageDialog(null, "Username not found");
 							}
+//							String usernameToDelete = username.getText(),
+//									xmlGitNames = CurrentProject.get().getGitNames(),
+//									xmlNames = CurrentProject.get().getNames(),
+//									xmlArrayGitNames[] = xmlGitNames.split(","),
+//									xmlArrayNames[] = xmlNames.split(","),
+//									resultGitNames = "",
+//									resultNames = "";
+//							if(CurrentProject.get().getGitNames().contains(usernameToDelete)) {
+//								for(int i = 0; i < xmlArrayGitNames.length; i++) {
+//									if(xmlArrayGitNames[i].equals(usernameToDelete)) {
+//										//ignore
+//									}
+//									else {
+//										resultGitNames += xmlArrayGitNames[i] + ",";
+//										resultNames += xmlArrayNames[i] + ",";
+//									}
+//								}
+//								CurrentProject.get().setGitName(resultGitNames);
+//								CurrentProject.get().setName(resultNames);
+//								TeamMember.deleteTeamMember(usernameToDelete);
+//								dispose();
+//							}
+//							else {
+//								JOptionPane.showMessageDialog(null, "Username not found");
+//							}
 						}
 					}
 				});
