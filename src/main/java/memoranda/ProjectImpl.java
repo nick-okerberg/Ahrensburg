@@ -182,6 +182,69 @@ public class ProjectImpl implements Project {
 		
 	}
 
+	public void addMember(String name, String username) {
+        Attribute names = _root.getAttribute("names");
+        Attribute gitNames = _root.getAttribute("gitnames");
+
+        if(names.getValue().equals("") && gitNames.getValue().equals("")) { //0 elements
+            names.setValue(name);
+            gitNames.setValue(username);
+        }
+        else { //if((!names.getValue().equals("") && !gitnames.getValue().equals("")) && checkChar(names.getValue()) == 1 && checkChar(gitnames.getValue()) == 1 ) { //1 element
+            String temp1 = names.getValue();
+            String temp2 = gitNames.getValue();
+            names.setValue(temp1 + "," + name);
+            gitNames.setValue(temp2 + "," + username);
+        }
+    }
+    public boolean deleteMember(String username) {
+        //""
+        //"Ovadia Shalom"
+        //"Ovadia Shalom,Sean Rogers"
+
+        Attribute names = _root.getAttribute("names");
+        Attribute gitNames = _root.getAttribute("gitnames");
+        if(!gitNames.getValue().equals("") && gitNames.getValue().contains(username)) {
+            String nameArray[] = names.getValue().split(",");
+            String[] userNameArray = gitNames.getValue().split(",");
+            if(nameArray.length == 1) {
+                names.setValue("");
+                gitNames.setValue("");
+            }
+            else if(nameArray.length >=1) {
+                int counter = 0;
+                String[] newNameArray = new String[nameArray.length-1];
+                String[] newUsernameArray = new String[userNameArray.length-1];
+                for (int i = 0; i < nameArray.length; i++) {
+                    if(!userNameArray[i].equals(username)) {
+                        newNameArray[counter] = nameArray[i];
+                        newUsernameArray[counter] = userNameArray[i];
+                        counter++;
+                    }
+                }
+                String joined1 = String.join(",", newNameArray);
+                String joined2 = String.join(",", newUsernameArray);
+                names.setValue(joined1);
+                gitNames.setValue(joined2);
+
+            }
+
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public int checkChar(String s) {
+        int count = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if(s.charAt(i) == ',') {
+                count++;
+            }
+        }
+        return count;
+    }
 
 	public void setGitName(String newName) {
 		setAttr("gitnames", newName);
