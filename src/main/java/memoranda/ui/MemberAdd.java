@@ -88,12 +88,13 @@ public class MemberAdd extends JDialog {
 							JOptionPane.showMessageDialog(null, "Fill out form values pretty peas");
 						}
 						else {
-							TeamMember newMem = new TeamMember(name.getText(), gitusername.getText(), CurrentProject.get().getTitle());
+							//TeamMember newMem = new TeamMember(name.getText(), gitusername.getText(), CurrentProject.get().getTitle());
 							//TeamMember.teamMemberList().add(newMem);
 							System.out.println(name.getText());
 							System.out.println(gitusername.getText());
 							System.out.println(CurrentProject.get().getTitle());
-							CurrentProject.get().setNames(CurrentProject.get().getTitle());
+							//CurrentProject.get().setNames(CurrentProject.get().getTitle());
+							CurrentProject.get().addMember(name.getText(), gitusername.getText());
 							dispose();
 							
 						}
