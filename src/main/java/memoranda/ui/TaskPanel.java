@@ -47,7 +47,7 @@ public class TaskPanel extends JPanel {
     JToolBar tasksToolBar = new JToolBar();
     JButton historyForwardB = new JButton();
     JButton newTaskB = new JButton();
-    JButton subTaskB = new JButton();
+//    JButton subTaskB = new JButton(); Ovadia Shalom US32
     JButton editTaskB = new JButton();
     JButton removeTaskB = new JButton();
     JButton completeTaskB = new JButton();
@@ -63,7 +63,7 @@ public class TaskPanel extends JPanel {
 	JMenuItem ppCompleteTask = new JMenuItem();
 	//JMenuItem ppSubTasks = new JMenuItem();
 	//JMenuItem ppParentTask = new JMenuItem();
-	JMenuItem ppAddSubTask = new JMenuItem();
+	//JMenuItem ppAddSubTask = new JMenuItem();
 	JMenuItem ppCalcTask = new JMenuItem();
 	DailyItemsPanel parentPanel = null;
 
@@ -100,7 +100,7 @@ public class TaskPanel extends JPanel {
         historyForwardB.setText("");
 
         newTaskB.setIcon(
-            new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/todo_new.png")));
+            new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/plus.png")));
         newTaskB.setEnabled(true);
         newTaskB.setMaximumSize(new Dimension(24, 24));
         newTaskB.setMinimumSize(new Dimension(24, 24));
@@ -115,21 +115,21 @@ public class TaskPanel extends JPanel {
         });
         newTaskB.setBorderPainted(false);
         
-        subTaskB.setIcon(
-            new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/todo_new_sub.png")));
-        subTaskB.setEnabled(false);
-        subTaskB.setMaximumSize(new Dimension(24, 24));
-        subTaskB.setMinimumSize(new Dimension(24, 24));
-        subTaskB.setToolTipText(Local.getString("Add commit"));
-        subTaskB.setRequestFocusEnabled(false);
-        subTaskB.setPreferredSize(new Dimension(24, 24));
-        subTaskB.setFocusable(false);
-        subTaskB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                addSubTask_actionPerformed(e);
-            }
-        });
-        subTaskB.setBorderPainted(false);
+//        subTaskB.setIcon( Ovadia Shalom US32
+//            new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/todo_new_sub.png")));
+//        subTaskB.setEnabled(false);
+//        subTaskB.setMaximumSize(new Dimension(24, 24));
+//        subTaskB.setMinimumSize(new Dimension(24, 24));
+//        subTaskB.setToolTipText(Local.getString("Add commit"));
+//        subTaskB.setRequestFocusEnabled(false);
+//        subTaskB.setPreferredSize(new Dimension(24, 24));
+//        subTaskB.setFocusable(false);
+//        subTaskB.addActionListener(new java.awt.event.ActionListener() {
+//            public void actionPerformed(ActionEvent e) {
+//                addSubTask_actionPerformed(e);
+//            }
+//        });
+//        subTaskB.setBorderPainted(false);
 
         editTaskB.setBorderPainted(false);
         editTaskB.setFocusable(false);
@@ -145,7 +145,7 @@ public class TaskPanel extends JPanel {
         editTaskB.setMaximumSize(new Dimension(24, 24));
 //        editTaskB.setEnabled(true);
         editTaskB.setIcon(
-            new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/todo_edit.png")));
+            new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/edit.png")));
 
         removeTaskB.setBorderPainted(false);
         removeTaskB.setFocusable(false);
@@ -160,7 +160,7 @@ public class TaskPanel extends JPanel {
         removeTaskB.setMinimumSize(new Dimension(24, 24));
         removeTaskB.setMaximumSize(new Dimension(24, 24));
         removeTaskB.setIcon(
-            new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/todo_remove.png")));
+            new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/minus.png")));
         
         completeTaskB.setBorderPainted(false);
         completeTaskB.setFocusable(false);
@@ -171,11 +171,11 @@ public class TaskPanel extends JPanel {
         });
         completeTaskB.setPreferredSize(new Dimension(24, 24));
         completeTaskB.setRequestFocusEnabled(false);
-        completeTaskB.setToolTipText(Local.getString("Complete task"));
+        completeTaskB.setToolTipText(Local.getString("Complete sprint"));
         completeTaskB.setMinimumSize(new Dimension(24, 24));
         completeTaskB.setMaximumSize(new Dimension(24, 24));
         completeTaskB.setIcon(
-            new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/todo_complete.png")));
+            new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/check.png")));
 
 		// added by rawsushi
 //		showActiveOnly.setBorderPainted(false);
@@ -241,7 +241,7 @@ public class TaskPanel extends JPanel {
             }
         });
     ppEditTask.setEnabled(false);
-    ppEditTask.setIcon(new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/todo_edit.png")));
+    ppEditTask.setIcon(new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/edit.png")));
     taskPPMenu.setFont(new java.awt.Font("Dialog", 1, 10));
     ppRemoveTask.setFont(new java.awt.Font("Dialog", 1, 11));
     ppRemoveTask.setText(Local.getString("Remove sprint"));
@@ -250,7 +250,7 @@ public class TaskPanel extends JPanel {
                 ppRemoveTask_actionPerformed(e);
             }
         });
-    ppRemoveTask.setIcon(new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/todo_remove.png")));
+    ppRemoveTask.setIcon(new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/minus.png")));
     ppRemoveTask.setEnabled(false);
     ppNewTask.setFont(new java.awt.Font("Dialog", 1, 11));
     ppNewTask.setText(Local.getString("New task")+"...");
@@ -259,16 +259,16 @@ public class TaskPanel extends JPanel {
                 ppNewTask_actionPerformed(e);
             }
         });
-    ppNewTask.setIcon(new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/todo_new.png")));
+    ppNewTask.setIcon(new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/plus.png")));
 
-    ppAddSubTask.setFont(new java.awt.Font("Dialog", 1, 11));
-    ppAddSubTask.setText(Local.getString("Add subtask"));
-    ppAddSubTask.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                ppAddSubTask_actionPerformed(e);
-            }
-        });
-    ppAddSubTask.setIcon(new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/todo_new_sub.png")));
+//    ppAddSubTask.setFont(new java.awt.Font("Dialog", 1, 11)); Ovadia Shalom US32
+//    ppAddSubTask.setText(Local.getString("Add subtask"));
+//    ppAddSubTask.addActionListener(new java.awt.event.ActionListener() {
+//            public void actionPerformed(ActionEvent e) {
+//                ppAddSubTask_actionPerformed(e);
+//            }
+//        });
+//    ppAddSubTask.setIcon(new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/todo_new_sub.png")));
 
     /*
     ppSubTasks.setFont(new java.awt.Font("Dialog", 1, 11));
@@ -291,13 +291,13 @@ public class TaskPanel extends JPanel {
     */
 
 	ppCompleteTask.setFont(new java.awt.Font("Dialog", 1, 11));
-	ppCompleteTask.setText(Local.getString("Complete task"));
+	ppCompleteTask.setText(Local.getString("Complete sprint"));
 	ppCompleteTask.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ppCompleteTask_actionPerformed(e);
 			}
 		});
-	ppCompleteTask.setIcon(new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/todo_complete.png")));
+	ppCompleteTask.setIcon(new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/check.png")));
 	ppCompleteTask.setEnabled(false);
 
 	ppCalcTask.setFont(new java.awt.Font("Dialog", 1, 11));
@@ -307,7 +307,7 @@ public class TaskPanel extends JPanel {
 				ppCalcTask_actionPerformed(e);
 			}
 		});
-	ppCalcTask.setIcon(new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/todo_complete.png")));
+	ppCalcTask.setIcon(new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/check.png")));
 	ppCalcTask.setEnabled(false);
 
     scrollPane.getViewport().add(taskTable, null);
@@ -317,7 +317,7 @@ public class TaskPanel extends JPanel {
         tasksToolBar.addSeparator(new Dimension(8, 24));
 
         tasksToolBar.add(newTaskB, null);
-        tasksToolBar.add(subTaskB, null);
+//        tasksToolBar.add(subTaskB, null); Ovadia Shalom US32
         tasksToolBar.add(removeTaskB, null);
         tasksToolBar.addSeparator(new Dimension(8, 24));
         tasksToolBar.add(editTaskB, null);
@@ -328,9 +328,9 @@ public class TaskPanel extends JPanel {
 
         this.add(tasksToolBar, BorderLayout.NORTH);
 
-        PopupListener ppListener = new PopupListener();
-        scrollPane.addMouseListener(ppListener);
-        taskTable.addMouseListener(ppListener);
+//        PopupListener ppListener = new PopupListener(); Ovadia Shalom US32 
+//        scrollPane.addMouseListener(ppListener);
+//        taskTable.addMouseListener(ppListener);
 
 
 
@@ -356,7 +356,7 @@ public class TaskPanel extends JPanel {
 				
 				ppCompleteTask.setEnabled(enbl);
 				completeTaskB.setEnabled(enbl);
-				ppAddSubTask.setEnabled(enbl);
+				//ppAddSubTask.setEnabled(enbl); Ovadia Shalom US32
 				//ppSubTasks.setEnabled(enbl); // default value to be over-written later depending on whether it has sub tasks
 				ppCalcTask.setEnabled(enbl); // default value to be over-written later depending on whether it has sub tasks
 				
@@ -386,14 +386,14 @@ public class TaskPanel extends JPanel {
         editTaskB.setEnabled(false);
         removeTaskB.setEnabled(false);
 		completeTaskB.setEnabled(false);
-		ppAddSubTask.setEnabled(false);
+//		ppAddSubTask.setEnabled(false); Ovadia Shalom US32
 		//ppSubTasks.setEnabled(false);
 		//ppParentTask.setEnabled(false);
     taskPPMenu.add(ppEditTask);
     
     taskPPMenu.addSeparator();
     taskPPMenu.add(ppNewTask);
-    taskPPMenu.add(ppAddSubTask);
+//    taskPPMenu.add(ppAddSubTask); Ovadia Shalom US32
     taskPPMenu.add(ppRemoveTask);
     
     taskPPMenu.addSeparator();
