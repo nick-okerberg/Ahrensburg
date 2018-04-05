@@ -835,6 +835,13 @@ public class AppFrame extends JFrame {
         ProjectPackager.unpack(f);
         projectsPanel.prjTablePanel.updateUI();
     }
+    
+    /**
+     * Allows child panels to refresh the agenda panel if needed.
+     */
+    public void refreshAgenda() {
+      workPanel.dailyItemsPanel.agendaPanel.refresh(CurrentDate.get());
+    }
 
     public void showPreferences() {
     	
