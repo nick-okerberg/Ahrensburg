@@ -60,9 +60,6 @@ public class TaskDialog extends JDialog {
 //    Border border6;
     JPanel jPanel2 = new JPanel(new GridLayout(3, 2));
     JTextField todoField = new JTextField();
-    
-    // added by rawsushi
-    JTextField effortField = new JTextField();
     JTextArea descriptionField = new JTextArea();
     JScrollPane descriptionScrollPane = new JScrollPane(descriptionField);
     
@@ -75,7 +72,6 @@ public class TaskDialog extends JDialog {
         Local.getString("Highest")};
     boolean ignoreStartChanged = false;
     boolean ignoreEndChanged = false;
-    JPanel jPanel4 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
     JPanel jPanel6 = new JPanel(new FlowLayout(FlowLayout.LEFT));
     JLabel jLabel6 = new JLabel();
     JButton setStartDateB = new JButton();
@@ -85,22 +81,8 @@ public class TaskDialog extends JDialog {
     JSpinner endDate;
 //    JSpinner endDate = new JSpinner(new SpinnerDateModel());
     JButton setEndDateB = new JButton();
-    //JPanel jPanel3 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-    JPanel jPanel3 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-    JPanel jPanelEffort = new JPanel(new FlowLayout(FlowLayout.LEFT));
-//    JPanel jPanelNotes = new JPanel(new FlowLayout(FlowLayout.LEFT));
-    
-    JButton setNotifB = new JButton();
-    JComboBox priorityCB = new JComboBox(priority);
-    JLabel jLabel7 = new JLabel();
-    // added by rawsushi
-    JLabel jLabelEffort = new JLabel();
     JLabel jLabelDescription = new JLabel();
 	JCheckBox chkEndDate = new JCheckBox();
-	
-	JPanel jPanelProgress = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-	JLabel jLabelProgress = new JLabel();
-	JSpinner progress = new JSpinner(new SpinnerNumberModel(0, 0, 100, 5));
 	
 	//Forbid to set dates outside the bounds
 	CalendarDate startDateMin = CurrentProject.get().getStartDate();
@@ -126,7 +108,7 @@ public class TaskDialog extends JDialog {
         border2 = BorderFactory.createEtchedBorder(Color.white, 
             new Color(142, 142, 142));
         border3 = new TitledBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0), 
-        Local.getString("To Do"), TitledBorder.LEFT, TitledBorder.BELOW_TOP);
+        Local.getString("Name"), TitledBorder.LEFT, TitledBorder.BELOW_TOP);
         border4 = BorderFactory.createEmptyBorder(0, 5, 0, 5);
 //        border5 = BorderFactory.createEmptyBorder();
 //        border6 = BorderFactory.createBevelBorder(BevelBorder.LOWERED,
@@ -147,14 +129,7 @@ public class TaskDialog extends JDialog {
 
         startDate = new JSpinner(new SpinnerDateModel(new Date(),null,null,Calendar.DAY_OF_WEEK));
         endDate = new JSpinner(new SpinnerDateModel(new Date(),null,null,Calendar.DAY_OF_WEEK));
-		
-        chkEndDate.setSelected(false);
 		chkEndDate_actionPerformed(null);
-		chkEndDate.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				chkEndDate_actionPerformed(e);
-			}
-		});
         okB.setMaximumSize(new Dimension(100, 26));
         okB.setMinimumSize(new Dimension(100, 26));
         okB.setPreferredSize(new Dimension(100, 26));
@@ -174,7 +149,7 @@ public class TaskDialog extends JDialog {
         //dialogTitlePanel.setPreferredSize(new Dimension(159, 52));
         header.setFont(new java.awt.Font("Dialog", 0, 20));
         header.setForeground(new Color(0, 0, 124));
-        header.setText(Local.getString("To do"));
+        header.setText("Sprint Info");
         header.setIcon(new ImageIcon(main.java.memoranda.ui.TaskDialog.class.getResource(
             "/ui/icons/task48.png")));
         
@@ -206,12 +181,6 @@ public class TaskDialog extends JDialog {
         gbCon.weighty = 3;
         descriptionScrollPane.setPreferredSize(new Dimension(375,96));
         gbLayout.setConstraints(descriptionScrollPane,gbCon);
-
-        jLabelEffort.setMaximumSize(new Dimension(100, 16));
-        jLabelEffort.setMinimumSize(new Dimension(60, 16));
-        jLabelEffort.setText(Local.getString("Est Effort(hrs)"));
-        effortField.setBorder(border8);
-        effortField.setPreferredSize(new Dimension(30, 24));
 
         startDate.setBorder(border8);
         startDate.setPreferredSize(new Dimension(80, 24));                
@@ -262,10 +231,6 @@ public class TaskDialog extends JDialog {
                 setStartDateB_actionPerformed(e);
             }
         });
-        jLabel2.setMaximumSize(new Dimension(270, 16));
-        //jLabel2.setPreferredSize(new Dimension(60, 16));
-        jLabel2.setHorizontalAlignment(SwingConstants.RIGHT);
-        jLabel2.setText(Local.getString("End date"));
         endDate.setBorder(border8);
         endDate.setPreferredSize(new Dimension(80, 24));
         
@@ -309,22 +274,6 @@ public class TaskDialog extends JDialog {
                 setEndDateB_actionPerformed(e);
             }
         });
-        
-        setNotifB.setText(Local.getString("Set notification"));
-        setNotifB.setIcon(
-            new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/notify.png")));
-        setNotifB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                setNotifB_actionPerformed(e);
-            }
-        });
-        jLabel7.setMaximumSize(new Dimension(100, 16));
-        jLabel7.setMinimumSize(new Dimension(60, 16));
-        //jLabel7.setPreferredSize(new Dimension(60, 16));
-        jLabel7.setText(Local.getString("Priority"));
-
-        priorityCB.setFont(new java.awt.Font("Dialog", 0, 11));
-        jPanel4.add(jLabel7, null);
         getContentPane().add(mPanel);
         mPanel.add(areaPanel, BorderLayout.CENTER);
         mPanel.add(buttonsPanel, BorderLayout.SOUTH);
@@ -342,27 +291,21 @@ public class TaskDialog extends JDialog {
         jPanel6.add(startDate, null);
         jPanel6.add(setStartDateB, null);
         jPanel2.add(jPanel1, null);
-		jPanel1.add(chkEndDate, null);
-        jPanel1.add(jLabel2, null);
+		
+        chkEndDate.setSelected(false);
+        chkEndDate.addActionListener(new java.awt.event.ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		chkEndDate_actionPerformed(e);
+        	}
+        });
+        jPanel1.add(chkEndDate, null);
+		jLabel2.setMaximumSize(new Dimension(270, 16));
+		//jLabel2.setPreferredSize(new Dimension(60, 16));
+		jLabel2.setHorizontalAlignment(SwingConstants.RIGHT);
+		jLabel2.setText(Local.getString("End date"));
+		jPanel1.add(jLabel2, null);
         jPanel1.add(endDate, null);
         jPanel1.add(setEndDateB, null);
-        // added by rawsushi
-        jPanel2.add(jPanelEffort, null);
-        jPanelEffort.add(jLabelEffort, null);
-        jPanelEffort.add(effortField, null);
-
-        jPanel2.add(jPanel4, null);
-        jPanel4.add(priorityCB, null);
-        jPanel2.add(jPanel3, null);
-        
-        jPanel3.add(setNotifB, null);
-        
-        jLabelProgress.setText(Local.getString("Progress"));
-        jPanelProgress.add(jLabelProgress, null);
-        jPanelProgress.add(progress, null);
-        jPanel2.add(jPanelProgress);
-        
-        priorityCB.setSelectedItem(Local.getString("Normal"));
         startCalFrame.cal.addSelectionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (ignoreStartChanged)
@@ -434,11 +377,6 @@ public class TaskDialog extends JDialog {
         endCalFrame.setSize(200, 200);
         this.getLayeredPane().add(endCalFrame);
         endCalFrame.show();
-    }
-    
-    void setNotifB_actionPerformed(ActionEvent e) {
-    	((AppFrame)App.getFrame()).workPanel.dailyItemsPanel.eventsPanel.newEventB_actionPerformed(e, 
-			this.todoField.getText(), (Date)startDate.getModel().getValue(),(Date)endDate.getModel().getValue());
     }
 
 }
