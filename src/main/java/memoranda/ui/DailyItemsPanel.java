@@ -187,7 +187,7 @@ public class DailyItemsPanel extends JPanel {
         taskB.setBorderPainted(false);
         taskB.setMaximumSize(new Dimension(24, 24));
         taskB.setOpaque(false);
-        taskB.setIcon(new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/task.png")));
+        taskB.setIcon(new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/sprint.png")));
 
         notesControlPane.setFont(new java.awt.Font("Dialog", 1, 10));
         mainTabsPanel.setLayout(cardLayout2);
