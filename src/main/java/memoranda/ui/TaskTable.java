@@ -152,7 +152,7 @@ public class TaskTable extends JTable {
 		setDefaultEditor(TreeTableModel.class, new TreeTableCellEditor());
 		
 		// column name is repeated in 2 places, do something about it!
-		getColumn( "% " + Local.getString("done") ).setCellEditor(new TaskProgressEditor());
+		//getColumn( "% " + Local.getString("done") ).setCellEditor(new TaskProgressEditor()); ovadia edit
 		
 		// TODO: editor for task progress
 		
@@ -175,7 +175,7 @@ public class TaskTable extends JTable {
     }
 
     void initColumnWidths() {
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 4; i++) { //Ovadia Shalom US8
             TableColumn column = getColumnModel().getColumn(i);
             if (i == 0) {
                 column.setPreferredWidth(8);
