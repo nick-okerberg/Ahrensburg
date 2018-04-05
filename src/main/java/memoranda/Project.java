@@ -48,6 +48,11 @@ public interface Project {
     void setNames(String projectTitle);
     void setGitName(String newName);
     void setName(String newName);
+    
+    // US35 addition for GitHub repo name. 
+    void addRepoName(String repo);
+    String getGitHubRepoName();
+    // End of US35 additions.
         
     void setDescription(String description);
     String getDescription();
