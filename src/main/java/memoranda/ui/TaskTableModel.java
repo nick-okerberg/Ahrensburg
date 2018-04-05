@@ -41,10 +41,12 @@ import java.util.Hashtable;
  */
 public class TaskTableModel extends AbstractTreeTableModel implements TreeTableModel {
 
-    String[] columnNames = {"", Local.getString("To-do"),
-            Local.getString("Start date"), Local.getString("End date"),
-            Local.getString("Priority"), Local.getString("Status"),
-            "% " + Local.getString("done") };
+//    String[] columnNames = {"", Local.getString("To-do"), 
+//            Local.getString("Start date"), Local.getString("End date"),
+//            Local.getString("Priority"), Local.getString("Status"),
+//            "% " + Local.getString("done") };
+    String[] columnNames = {"", Local.getString("To-do"), //Ovadia Shalom US8
+            Local.getString("Start date"), Local.getString("End date")};
 
     protected EventListenerList listenerList = new EventListenerList();
 
