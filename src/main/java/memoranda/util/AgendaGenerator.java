@@ -63,7 +63,7 @@ public class AgendaGenerator {
 
 		Vector tasks = (Vector) tl.getActiveSubTasks(null,date);        
 		if (tasks.size() == 0) {
-			s += "<p>" + Local.getString("No actual tasks") + ".</p>\n";        	
+			s += "<p>" + Local.getString("No sprints added.") + ".</p>\n";        	
 		}
 		else {
 			s += Local.getString("Actual tasks") + ":<br>\n<ul>\n";            
@@ -290,7 +290,7 @@ public class AgendaGenerator {
 		String s =
 				"<td width=\"66%\" valign=\"top\">"
 						+ "<h1>"
-						+ Local.getString("Projects and tasks")
+						+ Local.getString("Projects and sprints")
 						+ "</h1>\n";
 		s += generateProjectInfo(CurrentProject.get(), date, expandedTasks);        
 		for (Iterator i = ProjectManager.getActiveProjects().iterator();
