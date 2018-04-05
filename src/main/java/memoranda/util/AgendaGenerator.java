@@ -274,6 +274,7 @@ public class AgendaGenerator {
 				+ p.getID()
 				+ "\">"
 				+ p.getTitle()
+				+ "<br>Repository: " + p.getGitHubRepoName()		// Added for US35. 
 				+ "<br>Names:" + p.getNames() + "<br>"
 				+ "GitNames:" + p.getGitNames() + "<br>"
 				+ "</a></h2>\n"
