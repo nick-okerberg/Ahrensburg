@@ -106,6 +106,7 @@ public class RepoSet extends JDialog {
 						// Get the String that the user enters. 
 						String inputText = repoName.getText();
 						
+						/* Moved error checking to ProjectImpl. It now throws RuntimeException
 						// If the input text was null, then display an error. 
 						if(repoName.getText().equals("")) {
 							JOptionPane.showMessageDialog(null, "Enter GitHub Owner/Repo Name please");
@@ -115,18 +116,23 @@ public class RepoSet extends JDialog {
 						else if((inputText.length() - inputText.replace("/", "").length()) != 1){
 							JOptionPane.showMessageDialog(null, "Error...Enter in the format:  Owner/RepoName");
 						}
+						*/
 						
 						// If the above input validations pass, then do this next:
-						else {
+						//else {
+						try {
 							// Debugging lines. 
 							System.out.print("Repo Name set to: \"" + repoName.getText() + "\"");
 							System.out.println(" for project: " + CurrentProject.get().getTitle());
 							
 							// Execute "addRepoName" from main.java.memoranda.CurrentProject. 
-							CurrentProject.get().addRepoName(repoName.getText());
-							dispose();
+						  CurrentProject.get().addRepoName(repoName.getText());
+						  App.getFrame().refreshAgenda();
+						  dispose();
 
-						}
+						} catch (RuntimeException ex) {
+              JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
+            }
 					}
 				});
 				okButton.setActionCommand("OK");
