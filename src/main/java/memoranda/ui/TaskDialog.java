@@ -82,7 +82,6 @@ public class TaskDialog extends JDialog {
 //    JSpinner endDate = new JSpinner(new SpinnerDateModel());
     JButton setEndDateB = new JButton();
     JLabel jLabelDescription = new JLabel();
-	JCheckBox chkEndDate = new JCheckBox();
 	
 	//Forbid to set dates outside the bounds
 	CalendarDate startDateMin = CurrentProject.get().getStartDate();
@@ -103,7 +102,7 @@ public class TaskDialog extends JDialog {
     
     void jbInit() throws Exception {
 	this.setResizable(false);
-	this.setSize(new Dimension(430,300));
+	this.setSize(new Dimension(450, 300));
         border1 = BorderFactory.createEmptyBorder(5, 5, 5, 5);
         border2 = BorderFactory.createEtchedBorder(Color.white, 
             new Color(142, 142, 142));
@@ -200,7 +199,11 @@ public class TaskDialog extends JDialog {
                 ignoreStartChanged = true;
                 Date sd = (Date) startDate.getModel().getValue();
                 Date ed = (Date) endDate.getModel().getValue();
-                if (sd.after(ed) && chkEndDate.isSelected()) {
+                
+                // The chkEndDate is being removed as part of US33. 
+                //if (sd.after(ed) && chkEndDate.isSelected()) {	// comment out old. 
+                if (sd.after(ed)) {	// new
+                // End of US33 modification. 
                     startDate.getModel().setValue(ed);
                     sd = ed;
                 }
@@ -291,17 +294,9 @@ public class TaskDialog extends JDialog {
         jPanel6.add(startDate, null);
         jPanel6.add(setStartDateB, null);
         jPanel2.add(jPanel1, null);
-		
-        chkEndDate.setSelected(false);
-        chkEndDate.addActionListener(new java.awt.event.ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        		chkEndDate_actionPerformed(e);
-        	}
-        });
-        jPanel1.add(chkEndDate, null);
 		jLabel2.setMaximumSize(new Dimension(270, 16));
 		//jLabel2.setPreferredSize(new Dimension(60, 16));
-		jLabel2.setHorizontalAlignment(SwingConstants.RIGHT);
+		jLabel2.setHorizontalAlignment(SwingConstants.CENTER);
 		jLabel2.setText(Local.getString("End date"));
 		jPanel1.add(jLabel2, null);
         jPanel1.add(endDate, null);
@@ -352,16 +347,14 @@ public class TaskDialog extends JDialog {
     }
 	
 	void chkEndDate_actionPerformed(ActionEvent e) {
-		endDate.setEnabled(chkEndDate.isSelected());
-		setEndDateB.setEnabled(chkEndDate.isSelected());
-		jLabel2.setEnabled(chkEndDate.isSelected());
-		if(chkEndDate.isSelected()) {
+	    // US33 changes, removing chkEndDate selection box. 
+		//if(chkEndDate.isSelected()) { // US33 changes. 
 			Date currentEndDate = (Date) endDate.getModel().getValue();
 			Date currentStartDate = (Date) startDate.getModel().getValue();
 			if(currentEndDate.getTime() < currentStartDate.getTime()) {
 				endDate.getModel().setValue(currentStartDate);
 			}
-		}
+		//} // US33 changes
 	}
 
     void setStartDateB_actionPerformed(ActionEvent e) {
@@ -373,7 +366,8 @@ public class TaskDialog extends JDialog {
     }
 
     void setEndDateB_actionPerformed(ActionEvent e) {
-        endCalFrame.setLocation(setEndDateB.getLocation());
+        //endCalFrame.setLocation(setEndDateB.getLocation());
+        endCalFrame.setLocation(setStartDateB.getLocation()); // Fix for calendar window popping up. 
         endCalFrame.setSize(200, 200);
         this.getLayeredPane().add(endCalFrame);
         endCalFrame.show();
