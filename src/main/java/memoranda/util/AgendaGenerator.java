@@ -272,13 +272,21 @@ public class AgendaGenerator {
 
 	static String generateProjectInfo(Project p, CalendarDate date, Collection expandedTasks) {
 		String s = "<tr><td>"
-		    + "<h2><a href=\"memoranda:project#"
+		    + "<h2><b><a href=\"memoranda:project#"
 				+ p.getID()
 				+ "\">"
 				+ p.getTitle()
-				+ "<br>Names:" + p.getNames() + "<br>"
-				+ "GitNames:" + p.getGitNames() + "<br>"
-				+ "</a></h2>\n"
+				+"</b></h2>";
+		String[] names = p.getNames().split(",");
+    String[] gitNames = p.getNames().split(",");
+    
+    // Table to hold team members
+    s += "<br><table id=\"table3\" >";
+    s += "<tr id=\"tr2\"><td id=\"td2\"><b>Team Member</b></td><td id=\"td2\"><b>GitHub Username</b></td></tr>";
+    for (int i=0; i < names.length; i++) {
+      s += "<tr id=\"tr2\"><td id=\"td2\">" + names[i] + "</td><td id=\"td2\">" + gitNames[i] +"</td></tr>";
+    }
+		s+= "</table></a>\n"
 				+ "<table border=\"1\" width=\"100%\" cellpadding=\"2\" bgcolor=\"#EFEFEF\"><tr><td>" 
 				+ Local.getString("Start date")+": <i>"+p.getStartDate().getMediumDateString()+"</i>\n";
 		if (p.getEndDate() != null)
@@ -296,7 +304,7 @@ public class AgendaGenerator {
 						+ Local.getString("Scrum Projects")
 						+ "</h1>\n";
 		// Table for projects
-		s += "<table border=\"0\" width=\"100%\" cellpadding=\"2\" >";
+		s += "<table id=\"table2\"  width=\"100%\" cellpadding=\"2\" >";
 		s += generateProjectInfo(CurrentProject.get(), date, expandedTasks);
     //s += "</td></tr>";
 		for (Iterator i = ProjectManager.getActiveProjects().iterator();

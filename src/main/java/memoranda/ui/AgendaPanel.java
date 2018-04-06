@@ -315,7 +315,7 @@ public class AgendaPanel extends JPanel {
 	}
 
 	public void refresh(CalendarDate date) {
-	  //Util.debug(AgendaGenerator.getAgenda(date,expandedTasks));
+	  Util.debug(AgendaGenerator.getAgenda(date,expandedTasks));
 		viewer.setText(AgendaGenerator.getAgenda(date,expandedTasks));
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
