@@ -80,6 +80,7 @@ public class MemberDelete extends JDialog {
 						else {
 							if(CurrentProject.get().deleteMember(username.getText())) {
 								dispose();
+			          App.getFrame().refreshAgenda();
 							}
 							else {
 								JOptionPane.showMessageDialog(null, "Username not found");

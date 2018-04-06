@@ -2286,7 +2286,7 @@ public class HTMLEditor extends JPanel {
 		tTag += " cellspacing=\""
 			+ dlg.cellspacing.getValue().toString()
 			+ "\"";
-
+    //System.out.println(dlg.border.getValue().toString());
 		tTag += " border=\"" + dlg.border.getValue().toString() + "\"";
 
 		if (dlg.alignCB.getSelectedItem().toString().length() > 0)

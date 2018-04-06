@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
@@ -236,8 +237,9 @@ public class AgendaPanel extends JPanel {
 		historyForwardB.setMinimumSize(new Dimension(24, 24));
 		historyForwardB.setMaximumSize(new Dimension(24, 24));
 		historyForwardB.setText("");
-
+		
 		this.setLayout(borderLayout1);
+		
 		scrollPane.getViewport().setBackground(Color.white);
 		scrollPane.setViewportView(viewer);
 		this.add(scrollPane, BorderLayout.CENTER);
@@ -336,6 +338,7 @@ public class AgendaPanel extends JPanel {
 	}
 
 	public void refresh(CalendarDate date) {
+	  Util.debug(AgendaGenerator.getAgenda(date,expandedTasks));
 		viewer.setText(AgendaGenerator.getAgenda(date,expandedTasks));
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
