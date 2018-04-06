@@ -124,6 +124,7 @@ public class RepoSet extends JDialog {
 							
 							// Execute "addRepoName" from main.java.memoranda.CurrentProject. 
 							CurrentProject.get().addRepoName(repoName.getText());
+							App.getFrame().refreshAgenda();
 							dispose();
 
 						}

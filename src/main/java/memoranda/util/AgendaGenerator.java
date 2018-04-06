@@ -271,22 +271,29 @@ public class AgendaGenerator {
 	}
 
 	static String generateProjectInfo(Project p, CalendarDate date, Collection expandedTasks) {
+	  // US35 Start 
+	  // Project Title
 		String s = "<tr><td>"
 		    + "<h2><b><a href=\"memoranda:project#"
 				+ p.getID()
-				+ "\">"
+				+ "\">Project Name: "
 				+ p.getTitle()
 				+"</b></h2>";
-		String[] names = p.getNames().split(",");
-    String[] gitNames = p.getNames().split(",");
+		
+		// US35 GitHub repository name
+		s += "<p>Repository Name: " + p.getGitHubRepoName() + "</p>";
     
     // Table to hold team members
+    String[] names = p.getNames().split(",");
+    String[] gitNames = p.getGitNames().split(",");
     s += "<br><table id=\"table3\" >";
     s += "<tr id=\"tr2\"><td id=\"td2\"><b>Team Member</b></td><td id=\"td2\"><b>GitHub Username</b></td></tr>";
     for (int i=0; i < names.length; i++) {
       s += "<tr id=\"tr2\"><td id=\"td2\">" + names[i] + "</td><td id=\"td2\">" + gitNames[i] +"</td></tr>";
     }
-		s+= "</table></a>\n"
+		s += "</table>";
+		
+		s += "</a>\n"
 				+ "<table border=\"1\" width=\"100%\" cellpadding=\"2\" bgcolor=\"#EFEFEF\"><tr><td>" 
 				+ Local.getString("Start date")+": <i>"+p.getStartDate().getMediumDateString()+"</i>\n";
 		if (p.getEndDate() != null)
@@ -294,7 +301,8 @@ public class AgendaGenerator {
 			+"</i>\n";
 		s += generateTasksInfo(p, date,expandedTasks);
     s += "</td></tr>";
-		return s;        
+		return s;
+		// END US35
 	}
 
 	static String generateAllProjectsInfo(CalendarDate date, Collection expandedTasks) {
