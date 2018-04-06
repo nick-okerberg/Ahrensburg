@@ -297,6 +297,18 @@ public class ProjectImpl implements Project {
         repoName.setValue(repo);
 	} 
 	// End of US35 implementation for GitHub Repo Name. 
+	
+	
+	// US35.2 Implementation for GitHubURL
+	/**
+	 * Changes the Repo Name to a URL and returns a URL object
+	 * @return the URL of the GitHub Repo
+	 */
+	public String getGitHubRepoUrl() {
+	  String gitRepoUrl ="https://github.com/"+this.getGitHubRepoName(); 
+    return gitRepoUrl;	
+	}
+	
 
     public int checkChar(String s) {
         int count = 0;

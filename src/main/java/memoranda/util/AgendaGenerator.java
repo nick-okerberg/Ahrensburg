@@ -41,7 +41,8 @@ public class AgendaGenerator {
 					+ "    h1 {font:20pt sans-serif; background-color:#E0E0E0; margin-top:0}\n"
 					+ "    h2 {font:16pt sans-serif; margin-bottom:0}\n"
 					+ "    li {margin-bottom:5px}\n"
-					+ " a {color:black; text-decoration:none}\n"             
+					+ " a {color:black; text-decoration:none}\n"
+					+ " #a_ext {color: blue; text-decoration: underline;}\n"        
 					+ "</style></head>\n"
 					+ "<body><table width=\"100%\" height=\"100%\" border=\"0\" cellpadding=\"4\" cellspacing=\"4\">\n"
 					+ "<tr>\n";
@@ -281,7 +282,9 @@ public class AgendaGenerator {
 				+"</b></h2>";
 		
 		// US35 GitHub repository name
-		s += "<p>GitHub Repo Name: " + p.getGitHubRepoName() + "</p>";
+		s += "<p>GitHub Repo Name: "
+    + "<a id=\"a_ext\" href=\""+p.getGitHubRepoUrl()+"\">"
+		+ p.getGitHubRepoName() + "</a></p>";
     
     // Table to hold team members
     String[] names = p.getNames().split(",");

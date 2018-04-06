@@ -89,7 +89,7 @@ public class WorkPanel extends JPanel {
 		agendaB.setIcon(
 			new ImageIcon(
 				main.java.memoranda.ui.AppFrame.class.getResource(
-					"/ui/icons/scrum.png")));
+					"/ui/icons/scrum2.png")));
 		agendaB.setOpaque(false);
 		agendaB.setMargin(new Insets(0, 0, 0, 0));
 		agendaB.setSelected(true);
