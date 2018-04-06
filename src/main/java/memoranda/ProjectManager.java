@@ -101,6 +101,10 @@ public class ProjectManager {
     public static Project createProject(String id, String title, CalendarDate startDate, CalendarDate endDate) {
         Element el = new Element("project");
         el.addAttribute(new Attribute("id", id));
+        
+        // US35 added Repo attribute. 
+        el.addAttribute(new Attribute("Repo", ""));
+        
         el.addAttribute(new Attribute("names", ""));
         el.addAttribute(new Attribute("gitnames", ""));
         _root.appendChild(el);

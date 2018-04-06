@@ -43,6 +43,19 @@ public class ProjectImpl implements Project {
             return ta.getValue();
         return "";
 	}
+	
+	/**
+	 * US35 implementation. 
+	 * Returns the GitHub owner/repo information for a specific project. 
+	 * 
+	 * @return The github owner/repo string for a project. 
+	 */
+	public String getGitHubRepoName() {
+        Attribute ta = _root.getAttribute("Repo");
+        if (ta != null)
+            return ta.getValue();
+        return "";
+	}
 
 	/**
      * @see main.java.memoranda.Project#getID()
@@ -235,6 +248,28 @@ public class ProjectImpl implements Project {
             return false;
         }
     }
+    
+    /**
+     * US35 implementation for setting a GitHub owner/repository name for a project. 
+     * Only one repo name is allowed for a single project.  If there was an existing
+     * project name, this functionality will overwrite the existing one with the
+     * new one provided from the input string.  
+     * 
+     * @params repo The input string that represents the repository name.  Should
+     * already be in format "owner/repository".  
+     */
+	public void addRepoName(String repo) {
+        Attribute repoName = _root.getAttribute("Repo");
+        
+        /*
+         * Sets the value of the input repo string that should already be in owner/repository format. 
+         * Overwrites any existing value. 
+         * Only one repo is allowed per project. 
+         */
+        //System.out.println("DEBUG: repo input string == " + repo);
+        repoName.setValue(repo);
+	} 
+	// End of US35 implementation for GitHub Repo Name. 
 
     public int checkChar(String s) {
         int count = 0;

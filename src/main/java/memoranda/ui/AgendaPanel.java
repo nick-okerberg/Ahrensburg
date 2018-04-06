@@ -67,6 +67,8 @@ public class AgendaPanel extends JPanel {
 	boolean isActive = true;
 	private final JButton btnNewButton = new JButton("+Add Member");
 	private final JButton btnNewButton_1 = new JButton("- Delete Member");
+	// US35 - New JButton for setting a GitHub Repo. 
+	private final JButton btnNewButtonRepo = new JButton("Set GitHub Repo");
 
 	public AgendaPanel(DailyItemsPanel _parentPanel) {
 		try {
@@ -262,6 +264,27 @@ public class AgendaPanel extends JPanel {
 		});
 		
 		toolBar.add(btnNewButton_1);
+		
+		/*
+		 * US35 - Begin code modification
+		 * Action Listener for pressing the new "Set GitHub Repo" button. 
+		 */
+		
+		// First, add the new button to the toolBar at the top of the "Agenda" view. 
+		toolBar.add(btnNewButtonRepo);
+		
+		// Next, add an action listener for this new button, calling RepoSet function. 
+		btnNewButtonRepo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RepoSet.main(null);
+				// Get the project name that is currently selected.    
+				System.out.println(CurrentProject.get().getTitle());
+			}
+		});
+		// End of US35 modification for action listener. 
+		
+		
+		
 
 		CurrentDate.addDateListener(new DateListener() {
 			public void dateChange(CalendarDate d) {

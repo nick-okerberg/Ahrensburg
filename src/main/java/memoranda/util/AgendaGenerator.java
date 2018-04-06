@@ -64,7 +64,7 @@ public class AgendaGenerator {
 
 		Vector tasks = (Vector) tl.getActiveSubTasks(null,date);        
 		if (tasks.size() == 0) {
-			s += "<p>" + Local.getString("No actual tasks") + ".</p>\n";        	
+			s += "<p>" + Local.getString("No sprints added.") + ".</p>\n";        	
 		}
 		else {
 			s += Local.getString("Actual tasks") + ":<br>\n<ul>\n";            
