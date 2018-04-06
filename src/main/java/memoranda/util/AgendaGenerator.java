@@ -314,6 +314,7 @@ public class AgendaGenerator {
 		// Table for projects
 		s += "<table id=\"table2\"  width=\"100%\" cellpadding=\"2\" >";
 		s += generateProjectInfo(CurrentProject.get(), date, expandedTasks);
+		s += "<br><br>";
     //s += "</td></tr>";
 		for (Iterator i = ProjectManager.getActiveProjects().iterator();
 				i.hasNext();

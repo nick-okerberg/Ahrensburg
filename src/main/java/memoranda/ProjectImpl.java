@@ -8,10 +8,14 @@
  */
 package main.java.memoranda;
 
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.date.CurrentDate;
+import main.java.memoranda.util.Util;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
@@ -258,8 +262,31 @@ public class ProjectImpl implements Project {
      * @params repo The input string that represents the repository name.  Should
      * already be in format "owner/repository".  
      */
-	public void addRepoName(String repo) {
+	public void addRepoName(String repo) throws RuntimeException{
         Attribute repoName = _root.getAttribute("Repo");
+        
+        // Check for emtpy string
+        if (repo.equals(""))
+          throw new RuntimeException("Repo name must not be empty");
+        
+        // Next check if the repo given matches the correct format "owner/repo"
+        if (! repo.matches("^\\w+-?\\w+(?!-)/\\w+-?\\w+(?!-)$"))
+            throw new RuntimeException("Repo name invalid");
+        
+        // Finally check gitHub to see if that repo actually exists.
+        int code=0;
+        try {
+          URL url = new URL("https://github.com/"+repo);
+          HttpURLConnection huc = (HttpURLConnection) url.openConnection();
+          huc.setRequestMethod("GET");
+          huc.connect();
+          code = huc.getResponseCode();
+          
+        }catch (Exception ex) {
+          Util.debug(ex.getMessage());
+        }
+        if (code == 404)
+          throw new RuntimeException("Repo: "+repo+" is not found on GitHub");
         
         /*
          * Sets the value of the input repo string that should already be in owner/repository format. 
