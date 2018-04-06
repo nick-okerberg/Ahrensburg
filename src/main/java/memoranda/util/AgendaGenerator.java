@@ -21,6 +21,7 @@ import main.java.memoranda.ProjectManager;
 import main.java.memoranda.Task;
 import main.java.memoranda.TaskList;
 import main.java.memoranda.date.CalendarDate;
+import main.java.memoranda.util.Util;
 
 import java.util.Collections;
 
@@ -270,36 +271,55 @@ public class AgendaGenerator {
 	}
 
 	static String generateProjectInfo(Project p, CalendarDate date, Collection expandedTasks) {
-		String s = "<h2><a href=\"memoranda:project#"
+		String s = "<tr><td>"
+		    + "<h2><b><a href=\"memoranda:project#"
 				+ p.getID()
 				+ "\">"
 				+ p.getTitle()
-				+ "<br>Repository: " + p.getGitHubRepoName()		// Added for US35. 
-				+ "<br>Names:" + p.getNames() + "<br>"
-				+ "GitNames:" + p.getGitNames() + "<br>"
-				+ "</a></h2>\n"
-				+ "<table border=\"0\" width=\"100%\" cellpadding=\"2\" bgcolor=\"#EFEFEF\"><tr><td>" 
+				+"</b></h2>";
+		String[] names = p.getNames().split(",");
+    String[] gitNames = p.getNames().split(",");
+    
+    // Table to hold team members
+    s += "<br><table id=\"table3\" >";
+    s += "<tr id=\"tr2\"><td id=\"td2\"><b>Team Member</b></td><td id=\"td2\"><b>GitHub Username</b></td></tr>";
+    for (int i=0; i < names.length; i++) {
+      s += "<tr id=\"tr2\"><td id=\"td2\">" + names[i] + "</td><td id=\"td2\">" + gitNames[i] +"</td></tr>";
+    }
+		s+= "</table></a>\n"
+				+ "<table border=\"1\" width=\"100%\" cellpadding=\"2\" bgcolor=\"#EFEFEF\"><tr><td>" 
 				+ Local.getString("Start date")+": <i>"+p.getStartDate().getMediumDateString()+"</i>\n";
 		if (p.getEndDate() != null)
 			s += "<br>" + Local.getString("End date")+": <i>"+p.getEndDate().getMediumDateString()
-			+"</i>\n";        
-		return s + generateTasksInfo(p, date,expandedTasks);        
+			+"</i>\n";
+		s += generateTasksInfo(p, date,expandedTasks);
+    s += "</td></tr>";
+		return s;        
 	}
 
 	static String generateAllProjectsInfo(CalendarDate date, Collection expandedTasks) {
 		String s =
 				"<td width=\"66%\" valign=\"top\">"
 						+ "<h1>"
-						+ Local.getString("Projects and sprints")
+						+ Local.getString("Scrum Projects")
 						+ "</h1>\n";
-		s += generateProjectInfo(CurrentProject.get(), date, expandedTasks);        
+		// Table for projects
+		s += "<table id=\"table2\"  width=\"100%\" cellpadding=\"2\" >";
+		s += generateProjectInfo(CurrentProject.get(), date, expandedTasks);
+    //s += "</td></tr>";
 		for (Iterator i = ProjectManager.getActiveProjects().iterator();
 				i.hasNext();
 				) {
 			Project p = (Project) i.next();
-			if (!p.getID().equals(CurrentProject.get().getID()))
+			if (!p.getID().equals(CurrentProject.get().getID())) {
+			  //s += "<td><tr>";
 				s += generateProjectInfo(p, date, expandedTasks);
+				//s += "</td></tr>";
+			}
+			
 		}
+		s += "</table>";
+    //Util.debug(s);
 		return s + "</td>";
 	}
 
@@ -425,7 +445,9 @@ public class AgendaGenerator {
 		s += generateEventsInfo(date);
 		s += generateStickers(date);
 		//        /*DEBUG*/System.out.println(s+FOOTER);
-		return s + FOOTER;
+		s += FOOTER;
+		//Util.debug(s);
+		return s;
 	}
 	/*    
     we do not need this. Tasks are sorted using the Comparable interface

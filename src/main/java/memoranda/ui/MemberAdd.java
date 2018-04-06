@@ -95,6 +95,7 @@ public class MemberAdd extends JDialog {
 							System.out.println(CurrentProject.get().getTitle());
 							//CurrentProject.get().setNames(CurrentProject.get().getTitle());
 							CurrentProject.get().addMember(name.getText(), gitusername.getText());
+		          App.getFrame().refreshAgenda();
 							dispose();
 							
 						}

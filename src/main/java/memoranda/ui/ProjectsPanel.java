@@ -94,7 +94,7 @@ public class ProjectsPanel extends JPanel implements ExpandablePanel {
 		} catch (Exception ex) {
 			new ExceptionDialog(ex);
 		}
-	}
+  }
 
 	void jbInit() throws Exception {
 		component1 = Box.createHorizontalStrut(20);
@@ -344,6 +344,7 @@ public class ProjectsPanel extends JPanel implements ExpandablePanel {
 	void ppNewProject_actionPerformed(ActionEvent e) {
 		ProjectDialog.newProject();
 		prjTablePanel.updateUI();
+    App.getFrame().refreshAgenda();
 	}
 
 	void ppDeleteProject_actionPerformed(ActionEvent e) {
@@ -397,6 +398,7 @@ public class ProjectsPanel extends JPanel implements ExpandablePanel {
 		prjTablePanel.projectsTable.clearSelection();
 		prjTablePanel.updateUI();
 		setMenuEnabled(false);
+    App.getFrame().refreshAgenda();
 	}
 
 	void ppProperties_actionPerformed(ActionEvent e) {
