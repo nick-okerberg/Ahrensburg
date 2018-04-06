@@ -281,7 +281,7 @@ public class AgendaGenerator {
 				+"</b></h2>";
 		
 		// US35 GitHub repository name
-		s += "<p>Repository Name: " + p.getGitHubRepoName() + "</p>";
+		s += "<p>GitHub Repo Name: " + p.getGitHubRepoName() + "</p>";
     
     // Table to hold team members
     String[] names = p.getNames().split(",");
