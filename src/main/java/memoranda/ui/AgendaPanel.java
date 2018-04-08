@@ -2,6 +2,7 @@ package main.java.memoranda.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -43,6 +44,9 @@ import javax.swing.JOptionPane;
 
 import nu.xom.Element;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.awt.event.ActionEvent;
 
 /*$Id: AgendaPanel.java,v 1.11 2005/02/15 16:58:02 rawsushi Exp $*/
@@ -90,6 +94,7 @@ public class AgendaPanel extends JPanel {
 			public void hyperlinkUpdate(HyperlinkEvent e) {
 				if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
 					String d = e.getDescription();
+					Util.debug("Link clicked with description: "+ d);
 					if (d.equalsIgnoreCase("memoranda:events"))
 						parentPanel.alarmB_actionPerformed(null);
 					else if (d.startsWith("memoranda:tasks")) {
@@ -214,7 +219,21 @@ public class AgendaPanel extends JPanel {
 						final JFrame parent = new JFrame();
 						String name = JOptionPane.showInputDialog(parent,Local.getString("Enter filename to import"),null);
 						new ImportSticker(name).import_file();
+					// US 35 adding external link for github
+					} else if (d.startsWith("https://github.com")) {
+					  if (Desktop.isDesktopSupported()) {
+					    try {
+                Desktop.getDesktop().browse(new URI(d));
+              } catch (IOException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+              } catch (URISyntaxException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+              }
+					  }
 					}
+					// END US35
 				}
 			}
 		});
@@ -338,7 +357,7 @@ public class AgendaPanel extends JPanel {
 	}
 
 	public void refresh(CalendarDate date) {
-	  Util.debug(AgendaGenerator.getAgenda(date,expandedTasks));
+	  //Util.debug(AgendaGenerator.getAgenda(date,expandedTasks));
 		viewer.setText(AgendaGenerator.getAgenda(date,expandedTasks));
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {

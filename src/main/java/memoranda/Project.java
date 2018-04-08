@@ -8,6 +8,8 @@
  */
 package main.java.memoranda;
 
+import java.net.URL;
+
 import main.java.memoranda.date.CalendarDate;
 
 /**
@@ -52,6 +54,7 @@ public interface Project {
     // US35 addition for GitHub repo name. 
     void addRepoName(String repo);
     String getGitHubRepoName();
+    String getGitHubRepoUrl();
     // End of US35 additions.
         
     void setDescription(String description);
