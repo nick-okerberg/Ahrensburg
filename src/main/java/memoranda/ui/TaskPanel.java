@@ -481,7 +481,7 @@ public class TaskPanel extends JPanel {
  		else
  			ed = null;
  		*/  // Original code before US33. 
-         ed = null;  // New code for US33. 
+         ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());  // New code for US33. 
          
         t.setStartDate(sd);
         t.setEndDate(ed);
@@ -523,7 +523,7 @@ public class TaskPanel extends JPanel {
  		else
  			ed = null;
  		  */  // End of original code before US33. 
-         ed = null;  // US33 change. 
+         ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());  // US33 change. 
          
         //long effort = Util.getMillisFromHours(dlg.effortField.getText());
 		//XXX Task newTask = CurrentProject.getTaskList().createTask(sd, ed, dlg.todoField.getText(), dlg.priorityCB.getSelectedIndex(),effort, dlg.descriptionField.getText(),parentTaskId);
@@ -571,7 +571,7 @@ public class TaskPanel extends JPanel {
  		else
  			ed = null;
  		  */  // End of original code before US33. 
-          ed = null;   // Addition for US33. 
+          ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());;   // Addition for US33. 
      
         //long effort = Util.getMillisFromHours(dlg.effortField.getText());
 		Task newTask = CurrentProject.getTaskList().createTask(sd, ed, dlg.todoField.getText(), dlg.descriptionField.getText(),parentTaskId);
