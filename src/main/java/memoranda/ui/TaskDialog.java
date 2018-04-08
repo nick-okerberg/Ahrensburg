@@ -411,22 +411,54 @@ public class TaskDialog extends JDialog {
     			 * display a pop up message and do not allow the change, force the user
     			 * to select a new date for the current sprint.  
     			 */
-    			if ( ((cdStart.after(t.getStartDate())) && (cdStart.before(t.getEndDate()))) 
-    					|| (cdEnd.after(t.getStartDate()) && cdEnd.before(t.getEndDate())) ) {
+    			
+    			// If current start-date is after t's start date & before t's end-date, there is overlap. 
+    			if ( cdStart.after(t.getStartDate()) && cdStart.before(t.getEndDate())) {
     				
     				// For debugging, print the name of the Sprint that there was a conflict with. 
     				System.out.println("[DEBUG] Sprint: overlapping Sprints detected, "
-    						+ "conflict with: " + t.toString());
+    						+ "start-date conflict with: " + t.toString());
     				
-    				// Display an error dialog box for overlapping sprint dates.
-    				// Force the user to select a date that's not overlapping. 
-    				JOptionPane.showMessageDialog(null, "Error, overlaps with sprint: " + t.toString());
+    				JOptionPane.showMessageDialog(null, "Error, start-date overlaps with sprint: " + t.toString());
     				return;
+    			}
+    			
+    			// If current end-date is after t's start date & before t's end-date, there is overlap. 
+    			if ( cdEnd.after(t.getStartDate()) && cdEnd.before(t.getEndDate())) {
     				
-    			} // End if
+    				// For debugging, print the name of the Sprint that there was a conflict with. 
+    				System.out.println("[DEBUG] Sprint: overlapping Sprints detected, "
+    						+ "end-date conflict with: " + t.toString());
+    				
+    				JOptionPane.showMessageDialog(null, "Error, end-date overlaps with sprint: " + t.toString());
+    				return;
+    			}
+    			
+    			// If current start-date is the same as t's start date, there is overlap. 
+    			if ( cdStart.equals(t.getStartDate())) {
+    				
+    				// For debugging, print the name of the Sprint that there was a conflict with. 
+    				System.out.println("[DEBUG] Sprint: overlapping Sprints detected, "
+    						+ "start-date is the same as the one in sprint: " + t.toString());
+    				
+    				JOptionPane.showMessageDialog(null, "Error, start-date is the same as the one in sprint: " + t.toString());
+    				return;
+    			}
+    			
+    			// If current end-date is the same as t's end date, there is overlap. 
+    			if ( cdEnd.equals(t.getEndDate())) {
+    				
+    				// For debugging, print the name of the Sprint that there was a conflict with. 
+    				System.out.println("[DEBUG] Sprint: overlapping Sprints detected, "
+    						+ "end-date is the same as the one in sprint: " + t.toString());
+    				
+    				JOptionPane.showMessageDialog(null, "Error, end-date is the same as the one in sprint: " + t.toString());
+    				return;
+    			}
     			
     			// Increment the loop iteration counter. 
     			x++;
+    			
     		} // End of for loop. 
     	} // End outer if. 
     	
