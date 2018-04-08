@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -67,10 +68,18 @@ public void saveInFile(URL urlCon,URL urlCom) {
 		
 		if(!conFile.exists())
 		{
-			URLConnection con = urlCon.openConnection();
+			//URLConnection con = urlCon.openConnection();
+			HttpURLConnection con = (HttpURLConnection) urlCon.openConnection();
+			String pass =  "Basic TmVyZ2FsR0l2YXJrZXM6S2VlcDQ0ZG9n";
+			
+			
+			con.setRequestProperty ("Authorization", pass);
+			
+			
 			BufferedReader brCon = new BufferedReader(new InputStreamReader(con.getInputStream()));
 			PrintWriter writeCon = new PrintWriter("contributors.json");
-			
+			System.out.println("--> " + con.getRequestProperty("x-ratelimit-remaining"));
+			System.out.println("--> " + con.getHeaderField("x-ratelimit-remaining"));
 			while ((conLine = brCon.readLine()) != null) 
 			{
 				writeCon.println(conLine);
@@ -81,7 +90,7 @@ public void saveInFile(URL urlCon,URL urlCom) {
 		
 		if(!comFile.exists())
 		{
-			URLConnection com = urlCon.openConnection();
+			URLConnection com = urlCom.openConnection();
 			BufferedReader brCom = new BufferedReader(new InputStreamReader(com.getInputStream()));
 			PrintWriter writeCom = new PrintWriter("commits.json");
 		

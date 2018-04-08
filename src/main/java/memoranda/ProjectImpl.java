@@ -15,6 +15,7 @@ import java.util.List;
 
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.date.CurrentDate;
+import main.java.memoranda.util.JsonApiClass;
 import main.java.memoranda.util.Util;
 import nu.xom.Attribute;
 import nu.xom.Element;
@@ -281,7 +282,9 @@ public class ProjectImpl implements Project {
           huc.setRequestMethod("GET");
           huc.connect();
           code = huc.getResponseCode();
-          
+         JsonApiClass JAC = new JsonApiClass(new URL("https://api.github.com/repos/"+repo));
+         JAC.manage();
+         
         }catch (Exception ex) {
           Util.debug(ex.getMessage());
         }
@@ -358,7 +361,8 @@ public class ProjectImpl implements Project {
     	}
     	else {
             desc.removeChildren();
-            desc.appendChild(s);    	
+            desc.appendChild(s); 
+           
     	}
     }
 
