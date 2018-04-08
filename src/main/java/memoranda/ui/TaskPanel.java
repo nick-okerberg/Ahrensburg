@@ -457,10 +457,14 @@ public class TaskPanel extends JPanel {
         //Ovadia ShalomUS32
 //        dlg.priorityCB.setSelectedIndex(t.getPriority());                
 //        dlg.effortField.setText(Util.getHoursFromMillis(t.getEffort()));
+        
+    /* Original code before US33. 
 	if((t.getStartDate().getDate()).after(t.getEndDate().getDate()))
 		dlg.chkEndDate.setSelected(false);
 	else
 		dlg.chkEndDate.setSelected(true);
+	*/ // End of original code before US33. 
+        
 	//Ovadia Shalom US32
 //		dlg.progress.setValue(new Integer(t.getProgress()));
  	dlg.chkEndDate_actionPerformed(null);	
@@ -470,10 +474,15 @@ public class TaskPanel extends JPanel {
         CalendarDate sd = new CalendarDate((Date) dlg.startDate.getModel().getValue());
 //        CalendarDate ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());
          CalendarDate ed;
+        
+        /* Original code before US33 commented out.  
  		if(dlg.chkEndDate.isSelected())
  			ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());
  		else
  			ed = null;
+ 		*/  // Original code before US33. 
+         ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());  // New code for US33. 
+         
         t.setStartDate(sd);
         t.setEndDate(ed);
         t.setText(dlg.todoField.getText());
@@ -507,10 +516,15 @@ public class TaskPanel extends JPanel {
         CalendarDate sd = new CalendarDate((Date) dlg.startDate.getModel().getValue());
 //        CalendarDate ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());
           CalendarDate ed;
+         
+          /* Original code before US33 commented out.  
  		if(dlg.chkEndDate.isSelected())
  			ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());
  		else
  			ed = null;
+ 		  */  // End of original code before US33. 
+         ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());  // US33 change. 
+         
         //long effort = Util.getMillisFromHours(dlg.effortField.getText());
 		//XXX Task newTask = CurrentProject.getTaskList().createTask(sd, ed, dlg.todoField.getText(), dlg.priorityCB.getSelectedIndex(),effort, dlg.descriptionField.getText(),parentTaskId);
 		Task newTask = CurrentProject.getTaskList().createTask(sd, ed, dlg.todoField.getText(), dlg.descriptionField.getText(),null);
@@ -550,10 +564,15 @@ public class TaskPanel extends JPanel {
         CalendarDate sd = new CalendarDate((Date) dlg.startDate.getModel().getValue());
 //        CalendarDate ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());
           CalendarDate ed;
+          
+          /* Original code before US33 commented out.  
  		if(dlg.chkEndDate.isSelected())
  			ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());
  		else
  			ed = null;
+ 		  */  // End of original code before US33. 
+          ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());;   // Addition for US33. 
+     
         //long effort = Util.getMillisFromHours(dlg.effortField.getText());
 		Task newTask = CurrentProject.getTaskList().createTask(sd, ed, dlg.todoField.getText(), dlg.descriptionField.getText(),parentTaskId);
 //        newTask.setProgress(new Integer(3)); ovadia
