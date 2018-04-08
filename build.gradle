@@ -1,5 +1,6 @@
 apply plugin: 'application'
 apply plugin: "java"
+apply plugin: 'jacoco'
 
 // Variables
 // For now, lets just use the same one ant has in build.xml
@@ -13,11 +14,14 @@ compileJava.options.encoding = 'UTF-8'
 // Repositories and dependencies for code go here
 repositories {
   mavenCentral()
+  jcenter()
 }
 
 dependencies {
   compile 'com.io7m.xom:xom:1.2.+'
   compile 'net.sourceforge.nekohtml:nekohtml:1.9.+'
+  compile "junit:junit:4.12"
+  compile 'org.json:json:20180130'
 }
 
 copy{
@@ -49,7 +53,7 @@ jar {
 		attributes(
       		"Main-Class": "main.java.memoranda.Start",
       		"Implementation-Title": "memoranda",
-      		"Implementation-Version": version,
+      		"Implementation-Version": versionNumber,
       		"Implementation-Vendor": "ASU SER316 Spring2018-B Ahrensburg",
       		"Build-Id": buildNumber
 		)
