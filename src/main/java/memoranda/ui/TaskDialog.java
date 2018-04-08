@@ -13,7 +13,10 @@ import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -36,6 +39,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import main.java.memoranda.CurrentProject;
+import main.java.memoranda.Task;
+import main.java.memoranda.TaskList;
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.util.Local;
 
@@ -337,10 +342,83 @@ public class TaskDialog extends JDialog {
 		this.endDateMax = max;
 	}
 	
+	/**
+	 * The OK button was pressed. 
+	 * @param e
+	 */
     void okB_actionPerformed(ActionEvent e) {
-	CANCELLED = false;
+    	
+    	/* 
+    	 * US33 task 72 feature. nick-okerberg.
+    	 * Prevent sprint start/end date overlapping between multiple sprints within a project. 
+    	 */
+    	
+    	// Get all tasks (Sprints) within the current project. 
+    	TaskList tl = CurrentProject.getTaskList(); 
+    	Vector sprints = (Vector) tl.getAllSubTasks(null); 
+    	
+    	// Enable for debugging. Prints the current sprint startDate and endDate in the current Sprint being added/modified. 
+    	System.out.println("[DEBUG] Sprint: Currently being modified: begin date = "
+    			+ startDate.getValue().toString());
+    	System.out.println("[DEBUG] Sprint: Currently being modified: end date = "
+    			+ endDate.getValue().toString());
+    	
+    	// Values of the Start and End dates that are currently in the Calendar GUI window. 
+    	CalendarDate cdStart = new CalendarDate(new Date(startDate.getValue().toString()));
+    	CalendarDate cdEnd = new CalendarDate(new Date(endDate.getValue().toString()));
+    	// For debugging: 
+    	System.out.println("Calendar GUI startDate = " + cdStart.toString());
+    	System.out.println("Calendar GUI endDate = " + cdEnd.toString());
+    	
+    	// If sprints size is >0, then we need to check for overlapping dates between sprints within a project. 
+    	if (sprints.size() > 0) {
+    		
+    		// Sort
+    		Collections.sort(sprints);
+    		
+    		// Iterate through the list of sprints. 
+    		int x = 0; // counter
+    		for (Iterator i = sprints.iterator(); i.hasNext();) {
+    			
+    			// A single task at a time. 
+    			Task t = (Task) i.next();
+    			
+    			// Enable for debugging to console. Iterates through all sprints and dumps date info. 
+    			System.out.println("[DEBUG] Sprint: Loop iteration index#" + x);
+    			System.out.println("[DEBUG] Sprint: Title = " + t.toString());
+    			System.out.println("[DEBUG] Sprint: Descr = " + t.getDescription());
+    			System.out.println("[DEBUG] Sprint: begin date = " + t.getStartDate());
+    			System.out.println("[DEBUG] Sprint: end date = " + t.getEndDate());
+    			
+    			/*
+    			 * If the start date, or end date, of the current sprint being added/modified
+    			 * is before the end date and after the start date of any other sprint on
+    			 * the project, then there is an overlapping date. In such cases, then 
+    			 * display a pop up message and do not allow the change, force the user
+    			 * to select a new date for the current sprint.  
+    			 */
+    			if ( ((cdStart.after(t.getStartDate())) && (cdStart.before(t.getEndDate()))) 
+    					|| (cdEnd.after(t.getStartDate()) && cdEnd.before(t.getEndDate())) ) {
+    				
+    				// For debugging, print the name of the Sprint that there was a conflict with. 
+    				System.out.println("[DEBUG] Sprint: overlapping Sprints detected, "
+    						+ "conflict with: " + t.toString());
+    				
+    				// Display an error dialog box for overlapping sprint dates.
+    				TaskDialogCalendarError tdce = new TaskDialogCalendarError(new Frame(), "Overlapping Dates");
+    				//return;
+    				
+    			} // End if
+    			
+    			// Increment the loop iteration counter. 
+    			x++;
+    		} // End of for loop. 
+    	} // End outer if. 
+    	
+    	System.out.println("[DEBUT] OK Button pressed for Sprint task");
+    	CANCELLED = false;
         this.dispose();
-    }
+    } // End of function. End of US33 task 72 feature. 
 
     void cancelB_actionPerformed(ActionEvent e) {
         this.dispose();
