@@ -21,6 +21,7 @@ dependencies {
   compile 'com.io7m.xom:xom:1.2.+'
   compile 'net.sourceforge.nekohtml:nekohtml:1.9.+'
   compile "junit:junit:4.12"
+  compile 'org.json:json:20180130'
 }
 
 copy{
