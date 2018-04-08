@@ -283,7 +283,7 @@ public class ProjectImpl implements Project {
           huc.connect();
           code = huc.getResponseCode();
          JsonApiClass JAC = new JsonApiClass(new URL("https://api.github.com/repos/"+repo));
-          JAC.manage();
+         JAC.manage();
          
         }catch (Exception ex) {
           Util.debug(ex.getMessage());
