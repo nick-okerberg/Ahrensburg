@@ -24,6 +24,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
@@ -352,23 +353,23 @@ public class TaskDialog extends JDialog {
     	 * US33 task 72 feature. nick-okerberg.
     	 * Prevent sprint start/end date overlapping between multiple sprints within a project. 
     	 */
-    	
+
     	// Get all tasks (Sprints) within the current project. 
     	TaskList tl = CurrentProject.getTaskList(); 
     	Vector sprints = (Vector) tl.getAllSubTasks(null); 
     	
     	// Enable for debugging. Prints the current sprint startDate and endDate in the current Sprint being added/modified. 
-    	System.out.println("[DEBUG] Sprint: Currently being modified: begin date = "
-    			+ startDate.getValue().toString());
-    	System.out.println("[DEBUG] Sprint: Currently being modified: end date = "
-    			+ endDate.getValue().toString());
+    	//System.out.println("[DEBUG] Sprint: Currently being modified: begin date = "
+    	//		+ startDate.getValue().toString());
+    	//System.out.println("[DEBUG] Sprint: Currently being modified: end date = "
+    	//		+ endDate.getValue().toString());
     	
     	// Values of the Start and End dates that are currently in the Calendar GUI window. 
     	CalendarDate cdStart = new CalendarDate(new Date(startDate.getValue().toString()));
     	CalendarDate cdEnd = new CalendarDate(new Date(endDate.getValue().toString()));
     	// For debugging: 
-    	System.out.println("Calendar GUI startDate = " + cdStart.toString());
-    	System.out.println("Calendar GUI endDate = " + cdEnd.toString());
+    	//System.out.println("Calendar GUI startDate = " + cdStart.toString());
+    	//System.out.println("Calendar GUI endDate = " + cdEnd.toString());
     	
     	// If sprints size is >0, then we need to check for overlapping dates between sprints within a project. 
     	if (sprints.size() > 0) {
@@ -383,12 +384,25 @@ public class TaskDialog extends JDialog {
     			// A single task at a time. 
     			Task t = (Task) i.next();
     			
+    			// The name of the local task being added/modified, from the "Name" field of the JTextField. 
+    			String localTaskName = todoField.getText();
+    			//System.out.println("TEST: Local task name: " + localTaskName);
+    			//System.out.println("TEST: Iteration task name: " + t.toString());
+    			
+    			// If the local task is the same as the one in this loop iteration, just continue. 
+    			// Don't compare to self. 
+    			if (localTaskName.equals(t.toString())) {
+    				x++;
+    				//System.out.println("[DEBUG] Sprint: comparing to same sprint. Ignoring.");
+    				continue;
+    			}
+    			
     			// Enable for debugging to console. Iterates through all sprints and dumps date info. 
-    			System.out.println("[DEBUG] Sprint: Loop iteration index#" + x);
-    			System.out.println("[DEBUG] Sprint: Title = " + t.toString());
-    			System.out.println("[DEBUG] Sprint: Descr = " + t.getDescription());
-    			System.out.println("[DEBUG] Sprint: begin date = " + t.getStartDate());
-    			System.out.println("[DEBUG] Sprint: end date = " + t.getEndDate());
+    			//System.out.println("[DEBUG] Sprint: Loop iteration index#" + x);
+    			//System.out.println("[DEBUG] Sprint: Title = " + t.toString());
+    			//System.out.println("[DEBUG] Sprint: Descr = " + t.getDescription());
+    			//System.out.println("[DEBUG] Sprint: begin date = " + t.getStartDate());
+    			//System.out.println("[DEBUG] Sprint: end date = " + t.getEndDate());
     			
     			/*
     			 * If the start date, or end date, of the current sprint being added/modified
@@ -405,8 +419,9 @@ public class TaskDialog extends JDialog {
     						+ "conflict with: " + t.toString());
     				
     				// Display an error dialog box for overlapping sprint dates.
-    				TaskDialogCalendarError tdce = new TaskDialogCalendarError(new Frame(), "Overlapping Dates");
-    				//return;
+    				// Force the user to select a date that's not overlapping. 
+    				JOptionPane.showMessageDialog(null, "Error, overlaps with sprint: " + t.toString());
+    				return;
     				
     			} // End if
     			
