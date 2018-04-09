@@ -69,32 +69,54 @@ public JsonApiClass(URL url) {
     branchString = branchString.replaceAll("\\{/branch\\}", "");
     URL branchUrl = new URL(branchString); 
     
-    System.out.println("starting to get sha and URL of commit");
-    // Use branch URL to get lastest commit
+    System.out.println("getting all branches");
     JSONArray branchArray = getJsonArrayFromURL(branchUrl);
-    JSONObject latestbranch = branchArray.getJSONObject(0);
-    System.out.println(latestbranch.toString());
-    String latestSha = latestbranch.getJSONObject("commit").getString("sha");
-    URL latestUrl = new URL(comString + "?page_per=100?sha=" + latestSha);
     
+    // Build a linked list to keep track of the commits we've added so far based on sha
+    // We'll use this to prevent adding duplicatess.
+    LinkedList<String> addedCommits= new LinkedList<String>();
     
-    // For now just do this iteratively here but probably should be done recursively
-    // Get the latest commits as an array
-    System.out.println("starting iteration");
-    JSONArray commitsJson = getJsonArrayFromURL(latestUrl);
-    // Keep iterating through commits until the commit at the top of the list
-    // matches the last sha we looked at.
-    while (! commitsJson.getJSONObject(1).get("sha").equals(latestSha)) {
-      JSONObject nextCommit = null;
-      for (int i = 0; i < commitsJson.length(); i++) {
-        commits.add(new JsonCommitClass(commitsJson.getJSONObject(i)));
-       nextCommit = commitsJson.getJSONObject(i);
-      }
+    for (int i=0; i < branchArray.length(); i++) {
+      JSONObject branch = branchArray.getJSONObject(i);
+      System.out.println("starting on branch: " + branch.getString("name"));
       
-      latestSha = nextCommit.getString("sha");
-      URL nextUrl = new URL(comString + "?page_per=100?sha=" + nextCommit.getString("sha"));
-      commitsJson = getJsonArrayFromURL(nextUrl);
-      TimeUnit.MILLISECONDS.sleep(100); // wait so GitHub doesn't kick us out.
+      System.out.println(branch.toString());
+      String latestSha = branch.getJSONObject("commit").getString("sha");
+      URL latestUrl = new URL(comString + "?per_page=100&sha=" + latestSha);
+      
+      
+      // For now just do this iteratively here but probably should be done recursively
+      // Get the latest commits as an array
+      System.out.println("starting iteration on URL: " + latestUrl.toString());
+      JSONArray commitsJson = getJsonArrayFromURL(latestUrl);
+      System.out.println("found " + commitsJson.length() + " commits");
+      // Keep iterating through commits until the commit at the top of the list
+      JSONObject topCommit = commitsJson.getJSONObject(0);
+      JSONObject bottomCommit = null;
+      
+      do {
+        for (int j = 0; j < commitsJson.length(); j++) {
+          String thisSha = commitsJson.getJSONObject(j).getString("sha");
+          if (! addedCommits.contains(thisSha)) {
+            System.out.println("adding commit with sha: " + thisSha);
+            commits.add(new JsonCommitClass(commitsJson.getJSONObject(j)));
+            addedCommits.add(thisSha);
+          }
+        }
+        bottomCommit = commitsJson.getJSONObject(commitsJson.length()-1);
+        
+        // We only have to do this if we had more entries
+        if (bottomCommit.getJSONArray("parents").length()  > 0 ) {
+          System.out.println("Continuing on branch after " + commitsJson.length() +" commits.");
+          URL nextUrl = new URL(comString + "?per_page=100&sha=" + bottomCommit.getString("sha"));
+          commitsJson = getJsonArrayFromURL(nextUrl);
+          System.out.println("found " + commitsJson.length() + " commits");
+          topCommit = commitsJson.getJSONObject(0);          
+        } else {
+          System.out.println("Stopping on branch after " + commitsJson.length() +" commits.");
+        }
+      } while (bottomCommit.getJSONArray("parents").length() > 0);
+      
     }
     
     

@@ -1,5 +1,6 @@
 package main.java.memoranda.util;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class JsonCommitClass {
@@ -64,7 +65,12 @@ public class JsonCommitClass {
 	  this.date = json.getJSONObject("commit").getJSONObject("author").getString("date");
 	  this.message = json.getJSONObject("commit").getString("message");
 	  this.htmlUrl = json.getString("html_url");
-	  this.autLogin = json.getJSONObject("author").getString("login");
+    // Handle if author information is null
+    try {
+      this.autLogin = json.getJSONObject("author").getString("login");
+    } catch (JSONException ex) {
+      this.autLogin = "null";
+    }
 	}
 	
 	
