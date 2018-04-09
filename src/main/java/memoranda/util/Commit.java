@@ -14,6 +14,7 @@ import org.json.JSONObject;
  */
 public class Commit {
 	private String sha, authorName, dateString, message, htmlUrl, authorLogin;
+	private int additions, deletions, totalLoc;
 	private Date date;
 	
 	/**
@@ -28,6 +29,9 @@ public class Commit {
     this.setMessage(null);
     this.setHtmlUrl(null);
     this.setAuthorLogin(null);
+    this.setAdditions(0);
+    this.setDeletions(0);
+    this.setTotalLoc(0);
   }
 	
   /**
@@ -41,7 +45,8 @@ public class Commit {
    */
 	public Commit(String sha, String authorName, 
 	    String dateString, String message, 
-	    String htmlUrl, String authorLogin) {
+	    String htmlUrl, String authorLogin,
+	    int add, int del, int totalLoc) {
     this.setSha(sha);
     this.setAuthorName(authorName);
     this.setDateString(dateString);
@@ -49,6 +54,9 @@ public class Commit {
     this.setMessage(message);
     this.setHtmlUrl(htmlUrl);
     this.setAuthorLogin(authorLogin);
+    this.setAdditions(add);
+    this.setDeletions(del);
+    this.setTotalLoc(totalLoc);
 	}
 	
 	/**
@@ -67,6 +75,17 @@ public class Commit {
       this.authorLogin = json.getJSONObject("author").getString("login");
     } catch (JSONException ex) {
       this.authorLogin = "null";
+    }
+    try {
+      JSONObject stats = json.getJSONObject("stats");
+      this.setAdditions(stats.getInt("additions"));
+      this.setDeletions(stats.getInt("deletions"));
+      this.setTotalLoc(stats.getInt("total"));
+    } catch (JSONException ex) {
+      this.setAdditions(0);
+      this.setDeletions(0);
+      this.setTotalLoc(0);
+      ex.printStackTrace();
     }
 	}
 		
@@ -116,7 +135,36 @@ public class Commit {
 		this.authorLogin = authorLogin;
 	}
 	
-	private Date parseDate(String sDate) {
+	public int getAdditions() {
+    return additions;
+  }
+
+  public void setAdditions(int additions) {
+    this.additions = additions;
+  }
+
+  public int getDeletions() {
+    return deletions;
+  }
+
+  public void setDeletions(int deletions) {
+    this.deletions = deletions;
+  }
+
+  public int getTotalLoc() {
+    return totalLoc;
+  }
+
+  public void setTotalLoc(int totalLoc) {
+    this.totalLoc = totalLoc;
+  }
+  
+  /**
+   * Parses a date string in ISO 8601 format and returns a Date object
+   * @param sDate the ISO 8601 string to parse
+   * @return the Date object representing the input string
+   */
+  private Date parseDate(String sDate) {
 	  SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
     Date date= null;
     

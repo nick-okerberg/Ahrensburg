@@ -32,11 +32,13 @@ public class JsonApiClassTest {
     Deque<Commit> commits = null;
     commits = jac.getCommits();
     System.out.println("Found " + commits.size() + " commits.");
+    System.out.println("JAC ignored " +jac.getIgnoredCount() + " commits");
     Deque<Contributor> contributors = jac.getContributors();
     System.out.println("Found " + contributors.size() + " contributors.");
     while (commits.peek() != null) {
       Commit commit = commits.pop();
       System.out.println("Commit sha: "+commit.getSha());
+      System.out.println("\tTotal LOC: " + commit.getTotalLoc());
       //System.out.println("Message: " +commit.getMessage());
     }
     while (contributors.peek() != null) {

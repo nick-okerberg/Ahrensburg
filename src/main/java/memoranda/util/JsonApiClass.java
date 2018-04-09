@@ -34,6 +34,7 @@ public class JsonApiClass {
 	
 	private URL url; // Base URL of API for GitHub repo
 	private int _apiCalls;
+  private int _ignoredCommitCount;
 	//private URL urlCon;	
 	//private URL urlCom;	
 	
@@ -76,6 +77,10 @@ public class JsonApiClass {
     return _apiCalls;
   }
   
+  public int getIgnoredCount() {
+    return _ignoredCommitCount;
+  }
+  
   /**
    * builds a list of GitHub commits based on the base repo API url string.
    * 
@@ -101,10 +106,10 @@ public class JsonApiClass {
     //System.out.println("getting all branches");
     JSONArray branchArray = getJsonArrayFromURL(branchUrl);
     
-    /* Build a linked list to keep track of the commits we've added so far 
+    /* Build a linked list to keep track of the commits we've checked so far 
     based on the unique sha of the commit.
     We'll use this to prevent adding duplicates. */
-    LinkedList<String> addedCommits= new LinkedList<String>();
+    LinkedList<String> checkCommits= new LinkedList<String>();
     
     // Iterate over array of branches to make sure we don't miss any commits
     for (int i=0; i < branchArray.length(); i++) {
@@ -125,11 +130,21 @@ public class JsonApiClass {
       do {
         for (int j = 0; j < commitsJson.length(); j++) {
           String thisSha = commitsJson.getJSONObject(j).getString("sha");
-          if (! addedCommits.contains(thisSha)) {
-            //System.out.println("adding commit with sha: " + thisSha);
-            tempCommits.add(new Commit(commitsJson.getJSONObject(j)));
-            addedCommits.add(thisSha);
-            addCount++;
+          if (! checkCommits.contains(thisSha)) {
+            // Ignore "merge" commits (commits that have two parents)
+            if (commitsJson.getJSONObject(j).getJSONArray("parents").length() <2) {
+              //System.out.println("adding commit with sha: " + thisSha);
+              // To get LOC we actually have to follow this commits URL
+              // And make a separate API call for it, unfortunately.
+              JSONObject thisCommit = commitsJson.getJSONObject(j);
+              URL thisComUrl = new URL(thisCommit.getString("url"));
+              tempCommits.add(new Commit(getJsonFromURL(thisComUrl)));
+              addCount++;
+            } else {
+              Util.debug("ignoring \"merge\" commit " + thisSha);
+              _ignoredCommitCount++;
+            }
+            checkCommits.add(thisSha);
           }
         }
         bottomCommit = commitsJson.getJSONObject(commitsJson.length()-1);
