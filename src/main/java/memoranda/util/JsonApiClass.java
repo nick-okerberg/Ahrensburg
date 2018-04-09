@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
@@ -13,6 +14,7 @@ import java.net.URLConnection;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -36,6 +38,99 @@ public JsonApiClass(URL url) {
 	JsonCom = new LinkedList<>();
 }
 
+  /**
+   * Added accepting String as a parameter so that calling class doesn't have to build URL
+   * @param urlString String representation of a URL
+   * @throws MalformedURLException 
+   */
+  public JsonApiClass(String urlString) throws MalformedURLException {
+    URL url = new URL(urlString);    
+    this.url = url;
+    JsonCon = new LinkedList<>(); 
+    JsonCom = new LinkedList<>();
+    
+    // For now call manage so caller doesn't have to.
+    this.manage();
+  }
+  
+  
+  public Deque<JsonCommitClass> buildCommits() throws IOException, InterruptedException{
+    Deque<JsonCommitClass> commits = new LinkedList<>();
+    JSONObject baseJson = getJsonFromURL(url);
+    
+    // parse the commits URL
+    String comString= baseJson.getString("commits_url");
+    // Get rid of the sha references
+    comString = comString.replaceAll("\\{/sha\\}", "");
+    
+    // parse branches URL. Need this to iterate over all commits
+    String branchString = baseJson.getString("branches_url");
+    // Get rid of the sha references
+    branchString = branchString.replaceAll("\\{/branch\\}", "");
+    URL branchUrl = new URL(branchString); 
+    
+    System.out.println("starting to get sha and URL of commit");
+    // Use branch URL to get lastest commit
+    JSONArray branchArray = getJsonArrayFromURL(branchUrl);
+    JSONObject latestbranch = branchArray.getJSONObject(0);
+    System.out.println(latestbranch.toString());
+    String latestSha = latestbranch.getJSONObject("commit").getString("sha");
+    URL latestUrl = new URL(comString + "?page_per=100?sha=" + latestSha);
+    
+    
+    // For now just do this iteratively here but probably should be done recursively
+    // Get the latest commits as an array
+    System.out.println("starting iteration");
+    JSONArray commitsJson = getJsonArrayFromURL(latestUrl);
+    // Keep iterating through commits until the commit at the top of the list
+    // matches the last sha we looked at.
+    while (! commitsJson.getJSONObject(1).get("sha").equals(latestSha)) {
+      JSONObject nextCommit = null;
+      for (int i = 0; i < commitsJson.length(); i++) {
+        commits.add(new JsonCommitClass(commitsJson.getJSONObject(i)));
+       nextCommit = commitsJson.getJSONObject(i);
+      }
+      
+      latestSha = nextCommit.getString("sha");
+      URL nextUrl = new URL(comString + "?page_per=100?sha=" + nextCommit.getString("sha"));
+      commitsJson = getJsonArrayFromURL(nextUrl);
+      TimeUnit.MILLISECONDS.sleep(100); // wait so GitHub doesn't kick us out.
+    }
+    
+    
+    return commits;
+  }
+  
+  /**
+   * Downloads a JSON object from a URL
+   * @param url - The URL of the JSON object
+   * @return the downloaded JSON object
+   * @throws IOException
+   */
+  private JSONObject getJsonFromURL(URL url) throws IOException {
+    // Got to the Repo URL to get the base JSON object
+    URLConnection conn = url.openConnection();
+    BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+    JSONObject json = new JSONObject(new JSONTokener(br));
+    
+    return json;
+  }
+    
+  /**
+   * Downloads a JSON array from a URL
+   * @param url - The URL of the JSON array
+   * @return the downloaded JSON array
+   * @throws IOException
+   */
+  private JSONArray getJsonArrayFromURL(URL url) throws IOException {
+    // Got to the Repo URL to get the base JSON object
+    URLConnection conn = url.openConnection();
+    BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+    JSONArray json = new JSONArray(new JSONTokener(br));
+    
+    return json;
+  }
+  
 
 public void manage() {
 		
@@ -46,7 +141,11 @@ public void manage() {
 		JSONObject JO = new JSONObject(new JSONTokener(br));
 		
 		this.urlCon = new URL(JO.getString("contributors_url"));
-		this.urlCom = new URL(JO.getString("commits_url"));
+    String comString= JO.getString("commits_url");
+    System.out.println(comString);
+		String newString = comString.replaceAll("\\{/sha\\}", "");
+		System.out.println(newString);
+		this.urlCom = new URL(newString);
 		
 		saveInFile(this.urlCon,this.urlCom);
 		ReadConFileContent();
