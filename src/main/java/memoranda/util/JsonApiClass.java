@@ -228,6 +228,16 @@ public class JsonApiClass {
     return tempContributors;
   }
   
+  /**
+   * A method to refresh a JsonAPIClass externally
+   * 
+   * @throws IOException
+   */
+  public void refresh() throws IOException {
+    contributors = buildContributors(); 
+    commits = buildCommits();   
+  }
+  
   /*
   public void saveInFile(URL urlCon,URL urlCom) {
   	
