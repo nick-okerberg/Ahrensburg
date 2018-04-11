@@ -15,6 +15,7 @@ import java.util.Deque;
 import java.util.LinkedList;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
@@ -38,7 +39,7 @@ public class JsonApiClass {
 	//private URL urlCon;	
 	//private URL urlCom;	
 	
-  public JsonApiClass(URL url) throws IOException {
+  public JsonApiClass(URL url) throws IOException, JSONException {
   	this.url = url;
   	contributors = buildContributors();	
   	commits = buildCommits();
@@ -49,8 +50,9 @@ public class JsonApiClass {
    * calling class doesn't have to build URL
    * @param urlString String representation of a URL
    * @throws IOException 
+   * @throws JSONException 
    */
-  public JsonApiClass(String urlString) throws IOException {
+  public JsonApiClass(String urlString) throws IOException, JSONException {
     URL url = new URL(urlString);    
     this.url = url;
     contributors = buildContributors(); 
@@ -86,9 +88,10 @@ public class JsonApiClass {
    * 
    * @return List of commits
    * @throws IOException
+   * @throws JSONException 
    * @throws InterruptedException
    */
-  private Deque<Commit> buildCommits() throws IOException{
+  private Deque<Commit> buildCommits() throws IOException, JSONException{
     JSONObject baseJson = getJsonFromURL(this.url);
     Deque<Commit> tempCommits = new LinkedList<>();
     
@@ -171,8 +174,9 @@ public class JsonApiClass {
    * @param url - The URL of the JSON object
    * @return the downloaded JSON object
    * @throws IOException
+   * @throws JSONException 
    */
-  private JSONObject getJsonFromURL(URL url) throws IOException {
+  private JSONObject getJsonFromURL(URL url) throws IOException, JSONException {
     // Got to the Repo URL to get the base JSON object
     HttpURLConnection con = (HttpURLConnection) url.openConnection();
     String pass =  "Basic TmVyZ2FsR0l2YXJrZXM6S2VlcDQ0ZG9n";
@@ -190,8 +194,9 @@ public class JsonApiClass {
    * @param url - The URL of the JSON array
    * @return the downloaded JSON array
    * @throws IOException
+   * @throws JSONException 
    */
-  private JSONArray getJsonArrayFromURL(URL url) throws IOException {
+  private JSONArray getJsonArrayFromURL(URL url) throws IOException, JSONException {
     // Got to the Repo URL to get the base JSON object
     HttpURLConnection con = (HttpURLConnection) url.openConnection();
     String pass =  "Basic TmVyZ2FsR0l2YXJrZXM6S2VlcDQ0ZG9n";
@@ -209,8 +214,9 @@ public class JsonApiClass {
    * of a GitHub repo
    * @return A list of Contributors
    * @throws IOException
+   * @throws JSONException 
    */
-  private Deque<Contributor> buildContributors() throws IOException{
+  private Deque<Contributor> buildContributors() throws IOException, JSONException{
     JSONObject baseJson = getJsonFromURL(this.url);
     Deque<Contributor> tempContributors = new LinkedList<>();
     
@@ -226,16 +232,6 @@ public class JsonApiClass {
       tempContributors.add(new Contributor(contribJson));
     }    
     return tempContributors;
-  }
-  
-  /**
-   * A method to refresh a JsonAPIClass externally
-   * 
-   * @throws IOException
-   */
-  public void refresh() throws IOException {
-    contributors = buildContributors(); 
-    commits = buildCommits();   
   }
   
   /*
