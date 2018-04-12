@@ -1,16 +1,10 @@
 package main.java.memoranda.util;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.Deque;
 import java.util.LinkedList;
 
@@ -24,42 +18,51 @@ import org.json.JSONTokener;
  * Provides public methods to get data from GitHub using the GitHub API. GET 
  * calls to GitHub provide JSON objects when are parsed and saved.
  * 
- * @author Nergal Givarkes, Jordan Wine
  * @Version 1.1
  *
  */
 public class JsonApiClass {
 	
-	Deque<Contributor> contributors;
-	Deque<Commit> commits;
+	private Deque<Contributor> contributors;
+	private Deque<Commit> commits;
 	
 	private URL url; // Base URL of API for GitHub repo
-	private int _apiCalls;
-  private int _ignoredCommitCount;
+	private int _ignoredCommitCount, _apiCalls;
+  
 	//private URL urlCon;	
-	//private URL urlCom;	
+	//private URL urlCom;	 
+  
+  /**
+   * 
+   * @param url the URL of the GitHub API Json
+   * @param autoImport set to true to automatically import from GitHub. defaults
+   *  to false
+   * @throws IOException
+   * @throws JSONException
+   */
+  public JsonApiClass(URL url, boolean autoImport) throws IOException, JSONException {
+    this.url = url;
+    if (autoImport){
+      contributors = importContributors(); 
+      commits = importCommits();
+    }
+  }
+  
+  public JsonApiClass(String urlString, boolean autoImport) throws IOException, JSONException {
+    this(new URL(urlString),autoImport);
+  }
 	
   public JsonApiClass(URL url) throws IOException, JSONException {
-  	this.url = url;
-  	contributors = buildContributors();	
-  	commits = buildCommits();
+    this(url, false);
   }
-
-  /**
-   * Additional constructor that accepts a String as a parameter so that
-   * calling class doesn't have to build URL
-   * @param urlString String representation of a URL
-   * @throws IOException 
-   * @throws JSONException 
-   */
+  
   public JsonApiClass(String urlString) throws IOException, JSONException {
-    URL url = new URL(urlString);    
-    this.url = url;
-    contributors = buildContributors(); 
-    commits = buildCommits();
+    this(urlString, false);
   }
   
   public Deque<Contributor> getContributors(){
+    if (contributors.isEmpty())
+      throw new NullPointerException("No contributors added yet");
     return contributors;    
   }
   
@@ -67,7 +70,10 @@ public class JsonApiClass {
     contributors = newContributors;    
   }
   
-  public Deque<Commit> getCommits(){
+  public Deque<Commit> getCommits() {
+    if (commits.isEmpty())
+      throw new NullPointerException("No commits added yet");
+    
     return commits;    
   }
   
@@ -83,6 +89,19 @@ public class JsonApiClass {
     return _ignoredCommitCount;
   }
   
+  public void refreshAll() throws JSONException, IOException {
+    this.contributors = importContributors(); 
+    this.commits = importCommits();
+  }
+  
+  public void refreshContributors() throws JSONException, IOException {
+    this.contributors = importContributors(); 
+  }
+  
+  public void refreshCommits() throws JSONException, IOException {
+    this.commits = importCommits();
+  }
+  
   /**
    * builds a list of GitHub commits based on the base repo API url string.
    * 
@@ -91,7 +110,7 @@ public class JsonApiClass {
    * @throws JSONException 
    * @throws InterruptedException
    */
-  private Deque<Commit> buildCommits() throws IOException, JSONException{
+  private Deque<Commit> importCommits() throws IOException, JSONException{
     JSONObject baseJson = getJsonFromURL(this.url);
     Deque<Commit> tempCommits = new LinkedList<>();
     
@@ -216,7 +235,7 @@ public class JsonApiClass {
    * @throws IOException
    * @throws JSONException 
    */
-  private Deque<Contributor> buildContributors() throws IOException, JSONException{
+  private Deque<Contributor> importContributors() throws IOException, JSONException{
     JSONObject baseJson = getJsonFromURL(this.url);
     Deque<Contributor> tempContributors = new LinkedList<>();
     
