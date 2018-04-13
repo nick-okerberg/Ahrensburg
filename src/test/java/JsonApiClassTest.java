@@ -32,23 +32,37 @@ public class JsonApiClassTest {
     }
     
     Deque<Commit> commits = null;
-    commits = jac.getCommits();
-    System.out.println("Found " + commits.size() + " commits.");
-    System.out.println("JAC ignored " +jac.getIgnoredCount() + " commits");
+    try {
+      jac.refreshContributors();
+    } catch (JSONException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    //commits = jac.getCommits();
     Deque<Contributor> contributors = jac.getContributors();
-    System.out.println("Found " + contributors.size() + " contributors.");
-    while (commits.peek() != null) {
-      Commit commit = commits.pop();
-      System.out.println("Commit sha: "+commit.getSha());
-      System.out.println("\tTotal LOC: " + commit.getTotalLoc());
-      //System.out.println("Message: " +commit.getMessage());
+    try {
+      //System.out.println("Found " + commits.size() + " commits.");
+      //System.out.println("JAC ignored " +jac.getIgnoredCount() + " commits");
+      //System.out.println("Found " + contributors.size() + " contributors.");
+      //while (commits.peek() != null) {
+      //  Commit commit = commits.pop();
+      //  System.out.println("Commit sha: "+commit.getSha());
+      //  System.out.println("\tTotal LOC: " + commit.getTotalLoc());
+        //System.out.println("Message: " +commit.getMessage());
+      //}
+      while (contributors.peek() != null) {
+        Contributor cb = contributors.pop();
+        System.out.println("Contributor - Name: "+cb.getName() +" Login: " + cb.getLogin());
+        //System.out.println("Message: " +commit.getMessage());
+      }
+      System.out.println("Made " + jac.getApiCallCount() + " API calls.");
+    } catch (NullPointerException ex) {
+      System.out.println("I don't have anything to work with");
+      System.out.println(ex.getMessage());
     }
-    while (contributors.peek() != null) {
-      Contributor cb = contributors.pop();
-      System.out.println("Contributor - Name: "+cb.getName() +" Login: " + cb.getLogin());
-      //System.out.println("Message: " +commit.getMessage());
-    }
-    System.out.println("Made " + jac.getApiCallCount() + " API calls.");
   }
 
 }

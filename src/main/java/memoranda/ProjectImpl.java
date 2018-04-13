@@ -8,13 +8,15 @@
  */
 package main.java.memoranda;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
+import java.util.Deque;
+
 
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.date.CurrentDate;
+import main.java.memoranda.util.Contributor;
 import main.java.memoranda.util.JsonApiClass;
 import main.java.memoranda.util.Util;
 import nu.xom.Attribute;
@@ -310,6 +312,31 @@ public class ProjectImpl implements Project {
          */
         //System.out.println("DEBUG: repo input string == " + repo);
         repoName.setValue(repo);
+        
+        /* US 41 changes
+        First we need to get rid of existing names
+        TODO this should probably be done differently*/
+        Attribute names = _root.getAttribute("names");
+        Attribute gitNames = _root.getAttribute("gitnames");
+        names.setValue("");
+        gitNames.setValue("");
+        
+        /* next we need to auto import the contributor names as soon as the
+        user enters the repo. */
+        JsonApiClass jac = null;
+        try {
+          jac = new JsonApiClass(getGitHubRepoApiUrl());
+          jac.refreshContributors();
+        } catch (IOException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+        Deque<Contributor> contributors = jac.getContributors();
+        while (contributors.peek() != null) {
+          Contributor cb = contributors.pop();
+          this.addMember(cb.getName(), cb.getLogin());
+        }        
+        /* End US41 changes */
 	} 
 	// End of US35 implementation for GitHub Repo Name. 
 	
@@ -323,6 +350,17 @@ public class ProjectImpl implements Project {
 	  String gitRepoUrl ="https://github.com/"+this.getGitHubRepoName(); 
     return gitRepoUrl;	
 	}
+	
+  // US41 Implementation for GitHubAPIURL
+  /**
+   * Changes the Repo Name to a URL and returns a URL object for the GitHub api
+   * @return the URL of the GitHub Repo API
+   */
+  public String getGitHubRepoApiUrl() {
+    String gitApiUrl ="https://api.github.com/repos/"+this.getGitHubRepoName(); 
+    return gitApiUrl;  
+  }
+  // End US41 changes
 	
 
     public int checkChar(String s) {
