@@ -13,6 +13,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Deque;
 
+import org.json.JSONException;
 
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.date.CurrentDate;
@@ -273,11 +274,12 @@ public class ProjectImpl implements Project {
      * Only one repo name is allowed for a single project.  If there was an existing
      * project name, this functionality will overwrite the existing one with the
      * new one provided from the input string.  
+     * @throws JSONException 
      * 
      * @params repo The input string that represents the repository name.  Should
      * already be in format "owner/repository".  
      */
-	public void addRepoName(String repo) throws RuntimeException{
+	public void addRepoName(String repo) throws RuntimeException, JSONException{
         Attribute repoName = _root.getAttribute("Repo");
         
         // Check for emtpy string

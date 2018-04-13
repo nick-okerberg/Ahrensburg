@@ -21,6 +21,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
+import org.json.JSONException;
+
 import main.java.memoranda.CurrentProject;
 import main.java.memoranda.EventNotificationListener;
 import main.java.memoranda.EventsManager;
@@ -316,7 +318,12 @@ public class AgendaPanel extends JPanel {
 		//Next, add an action listener for this new button, calling RepoSet function with parameters
 		btnNewButtonUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CurrentProject.get().addRepoName(CurrentProject.get().getGitHubRepoName());
+				try {
+					CurrentProject.get().addRepoName(CurrentProject.get().getGitHubRepoName());
+				} catch (RuntimeException | JSONException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 		        App.getFrame().refreshAgenda();
 			}
 		});
