@@ -70,7 +70,8 @@ public class AppFrame extends JFrame {
     JMenuBar menuBar = new JMenuBar();
     JMenu jMenuFile = new JMenu();
     JMenuItem jMenuFileExit = new JMenuItem();
-
+    
+    
     JToolBar toolBar = new JToolBar();
     JButton jButton3 = new JButton();
     ImageIcon image1;
@@ -243,6 +244,8 @@ public class AppFrame extends JFrame {
     JMenuItem jMenuHelpWeb = new JMenuItem();
     JMenuItem jMenuHelpBug = new JMenuItem();
     JMenuItem jMenuHelpAbout = new JMenuItem();
+    private final JMenu mnNewMenu = new JMenu("API Settings");
+    private final JMenuItem mntmAuthentciate = new JMenuItem("Authenticate Credentials");
 
     //Construct the frame
     public AppFrame() {
@@ -268,6 +271,7 @@ public class AppFrame extends JFrame {
                 + App.BUILD_INFO + " )");
 
         jMenuFile.setText(Local.getString("File"));
+
         jMenuFileExit.setText(Local.getString("Exit"));
         jMenuFileExit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -444,6 +448,7 @@ public class AppFrame extends JFrame {
         jMenuInsertHR.setText(Local.getString("Horizontal rule"));
         jMenuInsertHR.setToolTipText(Local.getString("Insert Horizontal rule"));
 
+ 
         toolBar.add(jButton3);
         jMenuFile.add(jMenuFileNewPrj);
                 jMenuFile.add(jMenuFileNewNote);
@@ -553,6 +558,16 @@ public class AppFrame extends JFrame {
         jMenuGo.add(jMenuGoDayBack);
         jMenuGo.add(jMenuGoDayFwd);
         jMenuGo.add(jMenuGoToday);
+        
+        menuBar.add(mnNewMenu);
+        mntmAuthentciate.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent arg0) {
+        		System.out.println("clicked");
+        		SetCredDialog.main(null);
+        	}
+        });
+        
+        mnNewMenu.add(mntmAuthentciate);
 
         splitPane.setBorder(null);
         workPanel.setBorder(null);
