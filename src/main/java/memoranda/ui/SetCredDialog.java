@@ -1,3 +1,13 @@
+/**
+  File:	SetCredDialog.java
+  Date:	04/09/2018
+  Author: Nergal Givarkes
+  
+  Description: This file consists of the implementation for the "Authenticate credentials" located under the
+  dropdown list labeled "API Settings"
+*/
+
+
 package main.java.memoranda.ui;
 
 import java.awt.BorderLayout;
@@ -38,13 +48,24 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.awt.event.ActionEvent;
 
+/**
+  Class: SetCredDialog
+  
+  Description: This is the blueprint for bringing up the dialog box for "Authenticate Credentials"
+  Once "Authenticate Credentials" is clicked, the main method of this class is run and the JDialog is populated.
+*/
+
 public class SetCredDialog extends JDialog {
 	private JTextField textField;
 	private JPasswordField passwordField;
 
 	/**
-	 * Launch the application.
-	 */
+	  Method: main
+	  Inputs: String[] args
+	  Returns: nothing
+
+	  Description: This is where the program starts. The application is launched here.
+	*/
 	public static void main(String[] args) {
 		try {
 			SetCredDialog dialog = new SetCredDialog();
@@ -60,8 +81,12 @@ public class SetCredDialog extends JDialog {
 	}
 
 	/**
-	 * Create the dialog.
-	 */
+	  Method: SetCred Dialog
+	  Inputs: nothing
+	  Returns: nothing
+
+	  Description: Constructor for SetCredDialog. The dialog is created
+	*/
 	public SetCredDialog() {
 		setBounds(100, 100, 543, 222);
 		getContentPane().setLayout(new FormLayout(new ColumnSpec[] {
@@ -127,6 +152,17 @@ public class SetCredDialog extends JDialog {
 			getContentPane().add(btnCancel, "1, 12, 6, 1");
 		}
 	}
+	
+	/**
+	  Method: checkAuth
+	  Inputs: nothing
+	  Returns: nothing
+
+	  Description: this creates a file called authencoded.txt if it's not there.
+	  It puts userCredentials in Byte format, then encodes that into a string.
+	  Finally it stores that in authencoded.txt. authencoded.txt is saved in the
+	  .memoranda directory
+	*/
 	public void checkAuth() {
 		File file = new File(Util.getEnvDir()+"authencoded.txt");
 		  
@@ -161,12 +197,12 @@ public class SetCredDialog extends JDialog {
 			content = new String(Files.readAllBytes(Paths.get(Util.getEnvDir()+"authencoded.txt")));
 			con.setRequestProperty("Authorization", content);
 			if(con.getHeaderField("x-ratelimit-limit").equals("5000")) {
-				JOptionPane.showMessageDialog(null, "Authenciated successfull.");
+				JOptionPane.showMessageDialog(null, "Authenciation successful.");
 				System.out.println(con.getHeaderField("x-ratelimit-limit"));
 				dispose();
 			}
 			else {
-				JOptionPane.showMessageDialog(null, "Authenciated failed.");
+				JOptionPane.showMessageDialog(null, "Authenciation failed.");
 				System.out.println(con.getHeaderField("x-ratelimit-limit"));
 			}
 		} catch (IOException e1) {

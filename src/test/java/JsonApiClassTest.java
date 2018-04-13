@@ -19,9 +19,10 @@ public class JsonApiClassTest {
 
   /**
    * This is just to play around with the methods.
+ * @throws JSONException 
    */
   @Test
-  public void test() {
+  public void test() throws JSONException {
     JsonApiClass jac = null;
     try {
       jac = new JsonApiClass("https://api.github.com/repos/ser316asu-2018/Ahrensburg");

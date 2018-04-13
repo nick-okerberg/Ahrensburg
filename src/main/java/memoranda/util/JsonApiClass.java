@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
 
@@ -25,6 +26,7 @@ public class JsonApiClass {
 	
 	private Deque<Contributor> contributors;
 	private Deque<Commit> commits;
+	private ArrayList<Commit> commitsArrLst;	// Needed for US37 to iterate over commits without popping them from a Deque. 
 	
 	private URL url; // Base URL of API for GitHub repo
 	private int _ignoredCommitCount, _apiCalls;
@@ -44,7 +46,8 @@ public class JsonApiClass {
     this.url = url;
     if (autoImport){
       contributors = importContributors(); 
-      commits = importCommits();
+      //commits = importCommits();		// US37
+      commitsArrLst = importCommitsArrLst();	// US37
     }
   }
   
@@ -53,7 +56,7 @@ public class JsonApiClass {
   }
 	
   public JsonApiClass(URL url) throws IOException, JSONException {
-    this(url, false);
+    this(url, false); 
   }
   
   public JsonApiClass(String urlString) throws IOException, JSONException {
@@ -64,6 +67,15 @@ public class JsonApiClass {
     if (contributors.isEmpty())
       throw new NullPointerException("No contributors added yet");
     return contributors;    
+  }
+  
+  /**
+   * Added for US37, return an Array List of Commit objects. 
+   */
+  public ArrayList<Commit> getCommitsArrLst(){
+	    if (commitsArrLst.isEmpty())
+	      throw new NullPointerException("No commits added yet");
+	    return commitsArrLst;    
   }
   
   public void setContributors(Deque<Contributor> newContributors){
@@ -187,6 +199,92 @@ public class JsonApiClass {
     // We've finished with all the commits in each branch
     return tempCommits;
   }
+  
+  /**
+   * US37 - Added functionality to import commit objects into an ArrayList
+   * data structure. 
+   * 
+   * @return The ArrayList of Commit objects. 
+   * @throws IOException
+   * @throws JSONException
+   */
+  private ArrayList<Commit> importCommitsArrLst() throws IOException, JSONException{
+	    JSONObject baseJson = getJsonFromURL(this.url);
+	    ArrayList<Commit> tempCommits = new ArrayList<>();
+	    
+	    // parse the commits URL
+	    String commitsUrlStr= baseJson.getString("commits_url");
+	    // Get rid of the sha references
+	    commitsUrlStr = commitsUrlStr.replaceAll("\\{/sha\\}", "");
+	    
+	    // parse branches URL. Need this to iterate over all commits
+	    String branchString = baseJson.getString("branches_url");
+	    // Get rid of the branch reference
+	    branchString = branchString.replaceAll("\\{/branch\\}", "");
+	    URL branchUrl = new URL(branchString); 
+	    
+	    //System.out.println("getting all branches");
+	    JSONArray branchArray = getJsonArrayFromURL(branchUrl);
+	    
+	    /* Build a linked list to keep track of the commits we've checked so far 
+	    based on the unique sha of the commit.
+	    We'll use this to prevent adding duplicates. */
+	    LinkedList<String> checkCommits= new LinkedList<String>();
+	    
+	    // Iterate over array of branches to make sure we don't miss any commits
+	    for (int i=0; i < branchArray.length(); i++) {
+	      JSONObject branch = branchArray.getJSONObject(i);
+	      //System.out.println("starting on branch: " + branch.getString("name"));
+	      
+	      //System.out.println(branch.toString());
+	      String latestSha = branch.getJSONObject("commit").getString("sha");
+	      URL latestUrl = new URL(commitsUrlStr + "?per_page=100&sha=" + latestSha);
+	      
+	      // Get the commits on this branch as an array
+	      JSONArray commitsJson = getJsonArrayFromURL(latestUrl);
+	      Util.debug("found " + commitsJson.length() + " commits");
+	      int addCount =0;
+	      
+	      // Keep iterating through commits until the commit at the bottom of the list
+	      JSONObject bottomCommit = null;
+	      do {
+	        for (int j = 0; j < commitsJson.length(); j++) {
+	          String thisSha = commitsJson.getJSONObject(j).getString("sha");
+	          if (! checkCommits.contains(thisSha)) {
+	            // Ignore "merge" commits (commits that have two parents)
+	            if (commitsJson.getJSONObject(j).getJSONArray("parents").length() <2) {
+	              //System.out.println("adding commit with sha: " + thisSha);
+	              // To get LOC we actually have to follow this commits URL
+	              // And make a separate API call for it, unfortunately.
+	              JSONObject thisCommit = commitsJson.getJSONObject(j);
+	              URL thisComUrl = new URL(thisCommit.getString("url"));
+	              tempCommits.add(new Commit(getJsonFromURL(thisComUrl)));
+	              addCount++;
+	            } else {
+	              Util.debug("ignoring \"merge\" commit " + thisSha);
+	              _ignoredCommitCount++;
+	            }
+	            checkCommits.add(thisSha);
+	          }
+	        }
+	        bottomCommit = commitsJson.getJSONObject(commitsJson.length()-1);
+	        
+	        // We only have to do this if our API call couldn't get all the commits
+	        // in one call. Often happens because the max in one call is 100
+	        if (bottomCommit.getJSONArray("parents").length()  > 0 ) {
+	          URL nextUrl = new URL(commitsUrlStr
+	              + "?per_page=100&sha="
+	              + bottomCommit.getString("sha"));
+	          commitsJson = getJsonArrayFromURL(nextUrl);
+	          //System.out.println("found " + commitsJson.length() + " commits");      
+	        }
+	      } while (bottomCommit.getJSONArray("parents").length() > 0);
+	      Util.debug("Added " + addCount + " commits from branch " + branch.getString("name") );
+	      
+	    }
+	    // We've finished with all the commits in each branch
+	    return tempCommits;
+	  }
   
   /**
    * Downloads a JSON object from a URL
