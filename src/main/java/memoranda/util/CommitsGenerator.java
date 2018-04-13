@@ -483,7 +483,7 @@ String footer = "</table></body></html>";
 //		//        /*DEBUG*/System.out.println(s+FOOTER);
 //		s += FOOTER;
 //		//Util.debug(s);
-		//generateCommitDetails();
+		generateCommitDetails();
 		String header = "<html><body><h2>Commits for Sprint #</h2><table style=\"width:100%\">";
 
 		String headerOfTable = "<th>Aurthor</th><th>Commit Message</th> <th>Date</th><th>url</th><th>username</th><th>Addtions</th><th>Deletions</th><th>TotalLOC</th>";
@@ -493,20 +493,42 @@ String footer = "</table></body></html>";
 		return header + headerOfTable + hardcodedDataTable + footer;
 	}
 	public static String generateCommitDetails() {
-		System.out.println("test");
+		//System.out.println("test");
 		
-	    Element el = new Element("project");
-	    el.addAttribute(new Attribute("id", "1"));
+	    //Element el = new Element("project");
+	    //el.addAttribute(new Attribute("id", "1"));
 	    
 	    // US35 added Repo attribute. 
-	    el.addAttribute(new Attribute("Repo", ""));
+	    //el.addAttribute(new Attribute("Repo", ""));
 	    
-	    el.addAttribute(new Attribute("names", ""));
-	    el.addAttribute(new Attribute("gitnames", ""));
-		Project y = new ProjectImpl(el);
+	    //el.addAttribute(new Attribute("names", ""));
+	    //el.addAttribute(new Attribute("gitnames", ""));
+		//Project y = new ProjectImpl(el);
+		Project y = CurrentProject.get();
+		System.out.println("[Debug] Current project: " + y.getTitle());
 		JsonApiClass currentProjectJSON = y.getProjectJsonApiClass();
-		System.out.println(currentProjectJSON);
-		ArrayList<Commit> listOfAllCommits = currentProjectJSON.getCommitsArrLst();
+		System.out.println("[Debug] Current project json: " + currentProjectJSON);
+		
+    	// Get all commits from the current project's JsonApiClass. 
+		//ArrayList<Commit> listOfAllCommits = currentProjectJSON.getCommitsArrLst();	// old commented out.
+    	ArrayList<Commit> listOfAllCommits = new ArrayList<>();
+    	try {
+        	listOfAllCommits = currentProjectJSON.getCommitsArrLst();
+        }
+        catch (NullPointerException e) {
+        	System.out.println("[DEBUG] No commits for selected project.");
+        }
+        // If there are no commits, just return. 
+        if (listOfAllCommits == null) {
+        	return "";
+        }
+        // If the Array List is empty, just return.
+        if (listOfAllCommits.isEmpty()) {
+        	return "";
+        }
+        
+        System.out.println("[DEBUG]: Commits list size: " + listOfAllCommits.size());
+		
 		int counter = 0;
 		for(Commit c : listOfAllCommits) {
 			if(counter == 6) {
