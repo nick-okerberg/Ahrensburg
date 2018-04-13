@@ -53,7 +53,7 @@ import java.net.URISyntaxException;
 import java.awt.event.ActionEvent;
 
 /*$Id: AgendaPanel.java,v 1.11 2005/02/15 16:58:02 rawsushi Exp $*/
-public class AgendaPanel extends JPanel {
+public class CommitsPanel extends JPanel {
 	BorderLayout borderLayout1 = new BorderLayout();
 	JButton historyBackB = new JButton();
 	JToolBar toolBar = new JToolBar();
@@ -80,7 +80,7 @@ public class AgendaPanel extends JPanel {
 	// US37 - New JButton for refreshing commit data by calling GitHub API. 
 	private final JButton btnRefreshcommits = new JButton("RefreshCommits");
 
-	public AgendaPanel(DailyItemsPanel _parentPanel) {
+	public CommitsPanel(DailyItemsPanel _parentPanel) {
 		try {
 			parentPanel = _parentPanel;
 			jbInit();
@@ -406,7 +406,7 @@ public class AgendaPanel extends JPanel {
 
 	public void refresh(CalendarDate date) {
 	  //Util.debug(AgendaGenerator.getAgenda(date,expandedTasks));
-		viewer.setText(AgendaGenerator.getAgenda(date,expandedTasks)); 
+		viewer.setText(CommitsGenerator.getAgenda(date,expandedTasks)); 
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				if(gotoTask != null) {
