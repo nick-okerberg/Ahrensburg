@@ -17,6 +17,7 @@ import org.json.JSONException;
 
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.date.CurrentDate;
+import main.java.memoranda.util.Commit;
 import main.java.memoranda.util.Contributor;
 import main.java.memoranda.util.JsonApiClass;
 import main.java.memoranda.util.Util;
@@ -266,6 +267,27 @@ public class ProjectImpl implements Project {
         }
         else {
             return false;
+        }
+    }
+    
+    /**
+     * US37 implementation for building out the Commit objects when the "RefreshCommits" button is pressed.
+     * The Commit objects are built using data from the GitHub API. 
+     * 
+     * @param repo The GitHub repository name (in user/name) format. 
+     */
+    public void addCommitData(String repo) {
+        try {
+            int code = 0;
+        	URL url = new URL("https://github.com/"+ repo);
+            HttpURLConnection huc = (HttpURLConnection) url.openConnection();
+            huc.setRequestMethod("GET");
+            huc.connect();
+            code = huc.getResponseCode();
+            JAC = new JsonApiClass(new URL("https://api.github.com/repos/" + repo), true);
+        }
+        catch (Exception ex) {
+            Util.debug(ex.getMessage());
         }
     }
     

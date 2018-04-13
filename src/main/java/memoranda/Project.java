@@ -60,9 +60,11 @@ public interface Project {
     String getGitHubRepoUrl();
     // End of US35 additions.
     
-    // US37 addition.
+    // US37 additions
     public JsonApiClass getProjectJsonApiClass();
-        
+    void addCommitData(String gitHubRepoName); 
+    // End of US37 additions
+    
     void setDescription(String description);
     String getDescription();
     
@@ -77,6 +79,6 @@ public interface Project {
     //ResourcesList getResourcesList();
     
     void freeze();
-    void unfreeze();  
+    void unfreeze(); 
     
 }

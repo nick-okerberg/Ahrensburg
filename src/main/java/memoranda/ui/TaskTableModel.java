@@ -107,7 +107,7 @@ public class TaskTableModel extends AbstractTreeTableModel implements TreeTableM
         	 * US 37 code for Total number of tests in the Sprint. US37. 
         	 * Call the getNumberSprintTests method from TaskImpl. 
         	 */
-        	System.out.println("TaskTableModel: Triggered Getting Number Sprint Tests");
+        	//System.out.println("TaskTableModel: Triggered Getting Number Sprint Tests");
         	return t.getNumberSprintTests();
         case 5:
             return getStatusString(t.getStatus(CurrentDate.get()));

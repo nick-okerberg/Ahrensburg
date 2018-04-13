@@ -34,7 +34,7 @@ public class Commit {
     this.setDeletions(0);
     this.setTotalLoc(0);
     this.numTests = 0;	// US37 default numTests is 0. 
-    System.out.println("Commit object built - default const");
+    //System.out.println("Commit object built - default const");
   }
 	
   /**
@@ -62,7 +62,7 @@ public class Commit {
     this.setTotalLoc(totalLoc);
     // US37 - Parse the message to get numTests. 
     this.numTests = getNumTestsFromMessage(message);
-    System.out.println("Commit object built - all-params const");
+    //System.out.println("Commit object built - all-params const");
 	}
 	
 	/**
@@ -76,6 +76,7 @@ public class Commit {
 	  this.setDate(parseDate(dateString));
 	  this.message = json.getJSONObject("commit").getString("message");
 	  this.setHtmlUrl(json.getString("html_url"));
+	  this.numTests = getNumTestsFromMessage(message);	// US37
     // Handle if author information is null
     try {
       this.authorLogin = json.getJSONObject("author").getString("login");
@@ -93,7 +94,7 @@ public class Commit {
       this.setTotalLoc(0);
       ex.printStackTrace();
     }
-    System.out.println("Commit object built - Json const");
+    //System.out.println("Commit object built - Json const");
 	}
 		
 	
@@ -214,11 +215,12 @@ public class Commit {
 	   */
 	  if (msg.contains("JUNIT-") && msg.contains("#") && (msg.indexOf("JUNIT-") < msg.indexOf("#")) ){
 		  
-		  String parsed = msg.substring(msg.indexOf("JUNIT-")+6, msg.indexOf("#")-1);
+		  String parsed = msg.substring(msg.indexOf("JUNIT-")+6, msg.indexOf("#"));
 		  
 		  // For debugging:
-		  System.out.println("[DEBUG] commit message: " + msg);
-		  System.out.println("[DEBUG] parsed test value to return: " + Integer.parseInt(parsed));
+		  //System.out.println("[DEBUG] commit message: " + msg);
+		  //System.out.println("   parsed: " + parsed);
+		  //System.out.println("[DEBUG] parsed test value to return: " + Integer.parseInt(parsed));
 		  
 		  // Convert the string result representing the integer, to an int. 
 		  result = Integer.parseInt(parsed);  
