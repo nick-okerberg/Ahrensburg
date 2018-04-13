@@ -1,20 +1,15 @@
 package main.java.memoranda.util;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.Deque;
 import java.util.LinkedList;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
@@ -23,41 +18,51 @@ import org.json.JSONTokener;
  * Provides public methods to get data from GitHub using the GitHub API. GET 
  * calls to GitHub provide JSON objects when are parsed and saved.
  * 
- * @author Nergal Givarkes, Jordan Wine
  * @Version 1.1
  *
  */
 public class JsonApiClass {
 	
-	Deque<Contributor> contributors;
-	Deque<Commit> commits;
+	private Deque<Contributor> contributors;
+	private Deque<Commit> commits;
 	
 	private URL url; // Base URL of API for GitHub repo
-	private int _apiCalls;
-  private int _ignoredCommitCount;
+	private int _ignoredCommitCount, _apiCalls;
+  
 	//private URL urlCon;	
-	//private URL urlCom;	
-	
-  public JsonApiClass(URL url) throws IOException {
-  	this.url = url;
-  	contributors = buildContributors();	
-  	commits = buildCommits();
-  }
-
+	//private URL urlCom;	 
+  
   /**
-   * Additional constructor that accepts a String as a parameter so that
-   * calling class doesn't have to build URL
-   * @param urlString String representation of a URL
-   * @throws IOException 
+   * 
+   * @param url the URL of the GitHub API Json
+   * @param autoImport set to true to automatically import from GitHub. defaults
+   *  to false
+   * @throws IOException
+   * @throws JSONException
    */
-  public JsonApiClass(String urlString) throws IOException {
-    URL url = new URL(urlString);    
+  public JsonApiClass(URL url, boolean autoImport) throws IOException, JSONException {
     this.url = url;
-    contributors = buildContributors(); 
-    commits = buildCommits();
+    if (autoImport){
+      contributors = importContributors(); 
+      commits = importCommits();
+    }
+  }
+  
+  public JsonApiClass(String urlString, boolean autoImport) throws IOException, JSONException {
+    this(new URL(urlString),autoImport);
+  }
+	
+  public JsonApiClass(URL url) throws IOException, JSONException {
+    this(url, false);
+  }
+  
+  public JsonApiClass(String urlString) throws IOException, JSONException {
+    this(urlString, false);
   }
   
   public Deque<Contributor> getContributors(){
+    if (contributors.isEmpty())
+      throw new NullPointerException("No contributors added yet");
     return contributors;    
   }
   
@@ -65,7 +70,10 @@ public class JsonApiClass {
     contributors = newContributors;    
   }
   
-  public Deque<Commit> getCommits(){
+  public Deque<Commit> getCommits() {
+    if (commits.isEmpty())
+      throw new NullPointerException("No commits added yet");
+    
     return commits;    
   }
   
@@ -81,14 +89,28 @@ public class JsonApiClass {
     return _ignoredCommitCount;
   }
   
+  public void refreshAll() throws JSONException, IOException {
+    this.contributors = importContributors(); 
+    this.commits = importCommits();
+  }
+  
+  public void refreshContributors() throws JSONException, IOException {
+    this.contributors = importContributors(); 
+  }
+  
+  public void refreshCommits() throws JSONException, IOException {
+    this.commits = importCommits();
+  }
+  
   /**
    * builds a list of GitHub commits based on the base repo API url string.
    * 
    * @return List of commits
    * @throws IOException
+   * @throws JSONException 
    * @throws InterruptedException
    */
-  private Deque<Commit> buildCommits() throws IOException{
+  private Deque<Commit> importCommits() throws IOException, JSONException{
     JSONObject baseJson = getJsonFromURL(this.url);
     Deque<Commit> tempCommits = new LinkedList<>();
     
@@ -171,8 +193,9 @@ public class JsonApiClass {
    * @param url - The URL of the JSON object
    * @return the downloaded JSON object
    * @throws IOException
+   * @throws JSONException 
    */
-  private JSONObject getJsonFromURL(URL url) throws IOException {
+  private JSONObject getJsonFromURL(URL url) throws IOException, JSONException {
     // Got to the Repo URL to get the base JSON object
     HttpURLConnection con = (HttpURLConnection) url.openConnection();
     String pass =  "Basic TmVyZ2FsR0l2YXJrZXM6S2VlcDQ0ZG9n";
@@ -190,8 +213,9 @@ public class JsonApiClass {
    * @param url - The URL of the JSON array
    * @return the downloaded JSON array
    * @throws IOException
+   * @throws JSONException 
    */
-  private JSONArray getJsonArrayFromURL(URL url) throws IOException {
+  private JSONArray getJsonArrayFromURL(URL url) throws IOException, JSONException {
     // Got to the Repo URL to get the base JSON object
     HttpURLConnection con = (HttpURLConnection) url.openConnection();
     String pass =  "Basic TmVyZ2FsR0l2YXJrZXM6S2VlcDQ0ZG9n";
@@ -209,8 +233,9 @@ public class JsonApiClass {
    * of a GitHub repo
    * @return A list of Contributors
    * @throws IOException
+   * @throws JSONException 
    */
-  private Deque<Contributor> buildContributors() throws IOException{
+  private Deque<Contributor> importContributors() throws IOException, JSONException{
     JSONObject baseJson = getJsonFromURL(this.url);
     Deque<Contributor> tempContributors = new LinkedList<>();
     
