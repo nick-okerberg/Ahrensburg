@@ -13,9 +13,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Deque;
 
+import org.json.JSONException;
 
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.date.CurrentDate;
+import main.java.memoranda.util.Commit;
 import main.java.memoranda.util.Contributor;
 import main.java.memoranda.util.JsonApiClass;
 import main.java.memoranda.util.Util;
@@ -29,6 +31,7 @@ import nu.xom.Element;
 public class ProjectImpl implements Project {
 
     private Element _root = null;
+    private JsonApiClass JAC;
 
     /**
      * Constructor for ProjectImpl.
@@ -62,6 +65,17 @@ public class ProjectImpl implements Project {
         if (ta != null)
             return ta.getValue();
         return "";
+	}
+	
+	/**
+	 * US37 implementation
+	 * Returns the JsonApiClass object back that this project uses. 
+	 * Ensures that duplicate API calls are not made for this US37 implementation.
+	 * 
+	 * @return The JsonApiClass object for this project. 
+	 */
+	public JsonApiClass getProjectJsonApiClass() {
+		return JAC;
 	}
 
 	/**
@@ -257,15 +271,37 @@ public class ProjectImpl implements Project {
     }
     
     /**
+     * US37 implementation for building out the Commit objects when the "RefreshCommits" button is pressed.
+     * The Commit objects are built using data from the GitHub API. 
+     * 
+     * @param repo The GitHub repository name (in user/name) format. 
+     */
+    public void addCommitData(String repo) {
+        try {
+            int code = 0;
+        	URL url = new URL("https://github.com/"+ repo);
+            HttpURLConnection huc = (HttpURLConnection) url.openConnection();
+            huc.setRequestMethod("GET");
+            huc.connect();
+            code = huc.getResponseCode();
+            JAC = new JsonApiClass(new URL("https://api.github.com/repos/" + repo), true);
+        }
+        catch (Exception ex) {
+            Util.debug(ex.getMessage());
+        }
+    }
+    
+    /**
      * US35 implementation for setting a GitHub owner/repository name for a project. 
      * Only one repo name is allowed for a single project.  If there was an existing
      * project name, this functionality will overwrite the existing one with the
      * new one provided from the input string.  
+     * @throws JSONException 
      * 
      * @params repo The input string that represents the repository name.  Should
      * already be in format "owner/repository".  
      */
-	public void addRepoName(String repo) throws RuntimeException{
+	public void addRepoName(String repo) throws RuntimeException, JSONException{
         Attribute repoName = _root.getAttribute("Repo");
         
         // Check for emtpy string
@@ -284,7 +320,7 @@ public class ProjectImpl implements Project {
           huc.setRequestMethod("GET");
           huc.connect();
           code = huc.getResponseCode();
-         JsonApiClass JAC = new JsonApiClass(new URL("https://api.github.com/repos/"+repo));
+         JAC = new JsonApiClass(new URL("https://api.github.com/repos/"+repo));
          //JAC.manage();
          
         }catch (Exception ex) {

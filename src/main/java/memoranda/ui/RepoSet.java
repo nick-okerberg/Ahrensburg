@@ -9,6 +9,8 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import org.json.JSONException;
+
 import main.java.memoranda.CurrentProject;
 import main.java.memoranda.TeamMember;
 
@@ -131,7 +133,7 @@ public class RepoSet extends JDialog {
 						  dispose();
 
 						} catch (RuntimeException ex) {
-              JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
+							JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
             }
 					}
 				});
