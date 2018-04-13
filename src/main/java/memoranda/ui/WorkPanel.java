@@ -149,30 +149,34 @@ public class WorkPanel extends JPanel {
 		
 		
 		
-		btnCommits.setSelected(true);
+		
+		
+		
+		btnCommits.setBackground(Color.white);
+		btnCommits.setMaximumSize(new Dimension(60, 80));
+		btnCommits.setMinimumSize(new Dimension(30, 30));
+
 		btnCommits.setFont(new java.awt.Font("Dialog", 1, 10));
-		btnCommits.setMargin(new Insets(0, 0, 0, 0));
-		btnCommits.setIcon(
-			new ImageIcon(
-				main.java.memoranda.ui.AppFrame.class.getResource(
-					"/ui/icons/githubicon.png")));
-		btnCommits.setVerticalTextPosition(SwingConstants.BOTTOM);
-		btnCommits.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				btnCommits_actionPerformed(e);
-			}
-		});
-		btnCommits.setVerticalAlignment(SwingConstants.TOP);
-		btnCommits.setText(Local.getString("Sprints"));
-		btnCommits.setHorizontalTextPosition(SwingConstants.CENTER);
-		btnCommits.setFocusPainted(false);
+		btnCommits.setPreferredSize(new Dimension(50, 50));
 		btnCommits.setBorderPainted(false);
 		btnCommits.setContentAreaFilled(false);
-		btnCommits.setPreferredSize(new Dimension(50, 50));
-		btnCommits.setMinimumSize(new Dimension(30, 30));
+		btnCommits.setFocusPainted(false);
+		btnCommits.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnCommits.setText(Local.getString("Projects"));
+		btnCommits.setVerticalAlignment(SwingConstants.TOP);
+		btnCommits.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btnCommits.addActionListener(new java.awt.event.ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		    	btnCommits_actionPerformed(e);
+		    }
+		});
+		btnCommits.setIcon(
+		    new ImageIcon(
+		        main.java.memoranda.ui.AppFrame.class.getResource(
+		            "/ui/icons/githubicon.png")));
 		btnCommits.setOpaque(false);
-		btnCommits.setMaximumSize(new Dimension(60, 80));
-		btnCommits.setBackground(Color.white);
+		btnCommits.setMargin(new Insets(0, 0, 0, 0));
+		btnCommits.setSelected(true);
 
 
 		notesB.setFont(new java.awt.Font("Dialog", 1, 10));
@@ -303,9 +307,9 @@ public class WorkPanel extends JPanel {
 	
 	public void btnCommits_actionPerformed(ActionEvent e) {
 		cardLayout1.show(panel, "DAILYITEMS");
-		dailyItemsPanel.selectPanel("TASKS");
+		dailyItemsPanel.selectPanel("AGENDA");
 		setCurrentButton(btnCommits);
-		Context.put("CURRENT_PANEL", "TASKS");
+		Context.put("CURRENT_PANEL", "AGENDA");
 	}
 
 	public void eventsB_actionPerformed(ActionEvent e) {

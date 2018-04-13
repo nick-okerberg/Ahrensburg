@@ -38,6 +38,7 @@ import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.date.CurrentDate;
 import main.java.memoranda.date.DateListener;
 import main.java.memoranda.util.AgendaGenerator;
+import main.java.memoranda.util.CommitsGenerator;
 import main.java.memoranda.util.CurrentStorage;
 import main.java.memoranda.util.Local;
 import main.java.memoranda.util.Util;
@@ -405,7 +406,7 @@ public class AgendaPanel extends JPanel {
 
 	public void refresh(CalendarDate date) {
 	  //Util.debug(AgendaGenerator.getAgenda(date,expandedTasks));
-		viewer.setText(AgendaGenerator.getAgenda(date,expandedTasks));
+		viewer.setText(AgendaGenerator.getAgenda(date,expandedTasks)); 
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				if(gotoTask != null) {
