@@ -76,7 +76,7 @@ public class AgendaPanel extends JPanel {
 	private final JButton btnNewButton_1 = new JButton("- Delete Member");
 	// US35 - New JButton for setting a GitHub Repo. 
 	private final JButton btnNewButtonRepo = new JButton("Set GitHub Repo");
-	private final JButton btnNewButtonUpdate = new JButton("Update");
+	private final JButton btnNewButtonUpdate = new JButton("Import Team");
 	// US37 - New JButton for refreshing commit data by calling GitHub API. 
 	private final JButton btnRefreshcommits = new JButton("RefreshCommits");
 
