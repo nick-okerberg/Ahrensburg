@@ -307,9 +307,9 @@ public class WorkPanel extends JPanel {
 	
 	public void btnCommits_actionPerformed(ActionEvent e) {
 		cardLayout1.show(panel, "DAILYITEMS");
-		dailyItemsPanel.selectPanel("AGENDA");
+		dailyItemsPanel.selectPanel("COMMITS");
 		setCurrentButton(btnCommits);
-		Context.put("CURRENT_PANEL", "AGENDA");
+		Context.put("CURRENT_PANEL", "COMMITS");
 	}
 
 	public void eventsB_actionPerformed(ActionEvent e) {
