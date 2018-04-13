@@ -15,6 +15,7 @@ import org.json.JSONObject;
 public class Commit {
 	private String sha, authorName, dateString, message, htmlUrl, authorLogin;
 	private int additions, deletions, totalLoc;
+	private int numTests;	// US37, number of tests in a commit from parsing commit message. Nick Okerberg.
 	private Date date;
 	
 	/**
@@ -32,6 +33,8 @@ public class Commit {
     this.setAdditions(0);
     this.setDeletions(0);
     this.setTotalLoc(0);
+    this.numTests = 0;	// US37 default numTests is 0. 
+    System.out.println("Commit object built - default const");
   }
 	
   /**
@@ -57,6 +60,9 @@ public class Commit {
     this.setAdditions(add);
     this.setDeletions(del);
     this.setTotalLoc(totalLoc);
+    // US37 - Parse the message to get numTests. 
+    this.numTests = getNumTestsFromMessage(message);
+    System.out.println("Commit object built - all-params const");
 	}
 	
 	/**
@@ -87,6 +93,7 @@ public class Commit {
       this.setTotalLoc(0);
       ex.printStackTrace();
     }
+    System.out.println("Commit object built - Json const");
 	}
 		
 	
@@ -159,6 +166,11 @@ public class Commit {
     this.totalLoc = totalLoc;
   }
   
+  // US37 getter for number of tests. 
+  public int getNumTests() {
+	  return numTests;
+  }
+  
   /**
    * Parses a date string in ISO 8601 format and returns a Date object
    * @param sDate the ISO 8601 string to parse
@@ -175,4 +187,44 @@ public class Commit {
     }
 	  return date;
 	}
-}
+  
+  /**
+   * US37 Nick Okerberg
+   * 
+   * Extracts the number of tests from a specific commit message string. The 
+   * message of the commit follows a standard defined in the Ahrensburg team
+   * quality policy. The format is specified as follows: 
+   * 
+   * 	"JUNIT-XX#" where "XX" represents the number of tests included in this commit.
+   * 
+   * Returns an integer value representing the number of tests. 
+   * 
+   * @param msg The input String representing the commit message. 
+   * @return The number of tests. 
+   */
+  private int getNumTestsFromMessage(String msg) {
+	  // Initialize the result to 0. 
+	  int result = 0;
+	  
+	  /*
+	   * Parse the numbers out of the input string. 
+	   * 	Format:  "JUNIT-XX#"
+	   * This will parse the XX number out of the above example. 
+	   * Find the first " - " and end at the " # " symbol. 
+	   */
+	  if (msg.contains("JUNIT-") && msg.contains("#") && (msg.indexOf("JUNIT-") < msg.indexOf("#")) ){
+		  
+		  String parsed = msg.substring(msg.indexOf("JUNIT-")+6, msg.indexOf("#")-1);
+		  
+		  // For debugging:
+		  System.out.println("[DEBUG] commit message: " + msg);
+		  System.out.println("[DEBUG] parsed test value to return: " + Integer.parseInt(parsed));
+		  
+		  // Convert the string result representing the integer, to an int. 
+		  result = Integer.parseInt(parsed);  
+	  }
+	  
+	  return result;
+  } // End of US37 method getNumTestsFromMessage 
+  
+} // End of class. 

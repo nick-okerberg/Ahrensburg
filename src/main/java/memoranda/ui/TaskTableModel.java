@@ -46,8 +46,9 @@ public class TaskTableModel extends AbstractTreeTableModel implements TreeTableM
 //            Local.getString("Priority"), Local.getString("Status"),
 //            "% " + Local.getString("done") };
     String[] columnNames = {"", Local.getString("To-do"), //Ovadia Shalom US8
-            Local.getString("Start date"), Local.getString("End date")};
-
+            Local.getString("Start date"), 
+            Local.getString("End date"),
+    		Local.getString("Tests")}; 	// Nick Okerberg US37, number of JUnit tests per Sprint. 
     protected EventListenerList listenerList = new EventListenerList();
 
     private boolean activeOnly = check_activeOnly();
@@ -86,17 +87,28 @@ public class TaskTableModel extends AbstractTreeTableModel implements TreeTableM
         switch (column) {
         case 0:
             return "";
+        // Column for Sprint Name. 
         case 1:
             return t;
+        // Column for Sprint Start Date. 
         case 2:
             return t.getStartDate().getDate();
+        // Column for Sprint End Date. 
         case 3:
             if (t.getEndDate() == null)
                 return null;
             else
-                return t.getEndDate().getDate();        
+                return t.getEndDate().getDate();   
+        // Column for total number of tests in the Sprint.  US37. 
         case 4:
-            return getPriorityString(t.getPriority());
+        	// Old code for Priority column, deactivated as part of US37. 
+            //return getPriorityString(t.getPriority());
+        	/* 
+        	 * US 37 code for Total number of tests in the Sprint. US37. 
+        	 * Call the getNumberSprintTests method from TaskImpl. 
+        	 */
+        	System.out.println("TaskTableModel: Triggered Getting Number Sprint Tests");
+        	return t.getNumberSprintTests();
         case 5:
             return getStatusString(t.getStatus(CurrentDate.get()));
         case 6:            

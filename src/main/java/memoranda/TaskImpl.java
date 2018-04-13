@@ -9,10 +9,13 @@
 package main.java.memoranda;
 
 import java.util.Collection;
+import java.util.Deque;
+import java.util.Iterator;
 import java.util.Vector;
 
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.date.CurrentDate;
+import main.java.memoranda.util.Commit;
 
 import java.util.Calendar;
 
@@ -38,6 +41,90 @@ public class TaskImpl implements Task, Comparable {
         _tl = tl;
     }
 
+    /**
+     * getNumberSprintTests
+     * 
+     * Added as part of US37.  Iterates through commit objects and counts
+     * the number of tests from the commit messages. 
+     * 
+     * @return The number of tests in the sprint task, in String form. 
+     */
+    public String getNumberSprintTests() {
+    	
+    	// Initialize result to return. 
+    	String resultStr = "None";
+    	int resultInt = 0;
+    	
+    	// Get the project for this sprint. 
+    	Project p = this._tl.getProject();
+    	//System.out.println("Project Title: " + p.getTitle());
+    	
+    	// Get all commits from the current project's JsonApiClass. 
+        Deque<Commit> commits = null;
+        try {
+        	commits = p.getProjectJsonApiClass().getCommits();
+        }
+        catch (NullPointerException e) {
+        	//System.out.println("No commits");
+        }
+    	
+        try {
+        // Iterate through the deque of commits. 
+        Iterator<Commit> it = commits.iterator();
+        while (it.hasNext()) {
+            
+        	System.out.println("Analyzing commit");
+        	
+        	// Boolean is true when a commit is detected within this Sprint. 
+        	boolean isWithinSprint = false;
+        	
+        	// A single commit object from the deque. 
+        	Commit commit = commits.pop();
+            
+        	// Commit date is the same as the start date of the current sprint. 
+        	if (commit.getDate().equals(this.getStartDate().getDate())) {
+        		isWithinSprint = true;
+        	}
+        	
+        	// Commit date is the same as the end date of the current sprint. 
+        	else if (commit.getDate().equals(this.getEndDate().getDate())) {
+        		isWithinSprint = true;
+        	}
+        	
+        	// Commit date is within the start-date and end-date of the current sprint.
+        	else if (commit.getDate().after(this.getStartDate().getDate()) &&	
+        			(commit.getDate().before(this.getEndDate().getDate())) ) {
+        		isWithinSprint = true;
+        	}
+        	
+        	// Otherwise, leave boolean false.
+        	else {
+        		isWithinSprint = false;
+        	}
+        	
+        	// If this commit is within this Sprint, then increment the number of tests. 
+        	if (isWithinSprint) {
+        		resultInt = resultInt + commit.getNumTests();
+        	}
+            
+          } // End while loop.
+        
+        // Convert the integer result to string. 
+        if (resultInt > 0) {
+        	resultStr = Integer.toString(resultInt);
+        }
+                
+        }
+        catch (NullPointerException e){
+        	System.out.println("Couldn't get commit test stats");
+        }
+        
+    	// Return the result back, as a string. 
+    	return resultStr;
+        
+    } // End of US37 addition. 
+    
+    
     public Element getContent() {
         return _element;
     }

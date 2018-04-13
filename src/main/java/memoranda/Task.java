@@ -42,6 +42,9 @@ public interface Task {
     
     public static final int PRIORITY_HIGHEST = 4;
     
+    // Added as part of US37.  Nick Okerberg. 
+    String getNumberSprintTests();
+    
     CalendarDate getStartDate();
     void setStartDate(CalendarDate date);
 

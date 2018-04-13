@@ -27,6 +27,7 @@ import nu.xom.Element;
 public class ProjectImpl implements Project {
 
     private Element _root = null;
+    private JsonApiClass JAC;
 
     /**
      * Constructor for ProjectImpl.
@@ -60,6 +61,17 @@ public class ProjectImpl implements Project {
         if (ta != null)
             return ta.getValue();
         return "";
+	}
+	
+	/**
+	 * US37 implementation
+	 * Returns the JsonApiClass object back that this project uses. 
+	 * Ensures that duplicate API calls are not made for this US37 implementation.
+	 * 
+	 * @return The JsonApiClass object for this project. 
+	 */
+	public JsonApiClass getProjectJsonApiClass() {
+		return JAC;
 	}
 
 	/**
@@ -282,7 +294,7 @@ public class ProjectImpl implements Project {
           huc.setRequestMethod("GET");
           huc.connect();
           code = huc.getResponseCode();
-         JsonApiClass JAC = new JsonApiClass(new URL("https://api.github.com/repos/"+repo));
+         JAC = new JsonApiClass(new URL("https://api.github.com/repos/"+repo));
          //JAC.manage();
          
         }catch (Exception ex) {

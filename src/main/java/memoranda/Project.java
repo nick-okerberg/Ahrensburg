@@ -11,6 +11,7 @@ package main.java.memoranda;
 import java.net.URL;
 
 import main.java.memoranda.date.CalendarDate;
+import main.java.memoranda.util.JsonApiClass;
 
 /**
  * 
@@ -56,6 +57,9 @@ public interface Project {
     String getGitHubRepoName();
     String getGitHubRepoUrl();
     // End of US35 additions.
+    
+    // US37 addition.
+    public JsonApiClass getProjectJsonApiClass();
         
     void setDescription(String description);
     String getDescription();
