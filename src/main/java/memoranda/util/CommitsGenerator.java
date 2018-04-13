@@ -483,16 +483,21 @@ String footer = "</table></body></html>";
 //		//        /*DEBUG*/System.out.println(s+FOOTER);
 //		s += FOOTER;
 //		//Util.debug(s);
-		generateCommitDetails();
+		//generateCommitDetails();
 		String header = "<html><body><h2>Commits for Sprint #</h2><table style=\"width:100%\">";
 
 		String headerOfTable = "<th>Aurthor</th><th>Commit Message</th> <th>Date</th><th>url</th><th>username</th><th>Addtions</th><th>Deletions</th><th>TotalLOC</th>";
 		String hardcodedDataTable = "<tr><td>Ovadia Shalom</td> <td>Added 4 lines of nothing</td> <td>5/1/2019</td> <td>https://test.com</td> <td>ovidubs</td> <td>4</td> <td>0</td> <td>4</td> </tr> <tr> <td>Sean Rogers</td> <td>Added 4 lines of nothing</td> <td>5/1/2019</td> <td>https://test.com</td> <td>smrogers</td> <td>4</td> <td>0</td> <td>4</td> </tr>";
 		
 		String footer = "</table></body></html>";
-		return header + headerOfTable + hardcodedDataTable + footer;
+		return header + headerOfTable + generateCommitDetails() + footer;
+		//return header + headerOfTable + hardcodedDataTable + footer;
 	}
 	public static String generateCommitDetails() {
+		
+		// Result to Return
+		String result = "";
+		
 		//System.out.println("test");
 		
 	    //Element el = new Element("project");
@@ -505,9 +510,9 @@ String footer = "</table></body></html>";
 	    //el.addAttribute(new Attribute("gitnames", ""));
 		//Project y = new ProjectImpl(el);
 		Project y = CurrentProject.get();
-		System.out.println("[Debug] Current project: " + y.getTitle());
+		//System.out.println("[Debug] Current project: " + y.getTitle());
 		JsonApiClass currentProjectJSON = y.getProjectJsonApiClass();
-		System.out.println("[Debug] Current project json: " + currentProjectJSON);
+		//System.out.println("[Debug] Current project json: " + currentProjectJSON);
 		
     	// Get all commits from the current project's JsonApiClass. 
 		//ArrayList<Commit> listOfAllCommits = currentProjectJSON.getCommitsArrLst();	// old commented out.
@@ -527,19 +532,38 @@ String footer = "</table></body></html>";
         	return "";
         }
         
-        System.out.println("[DEBUG]: Commits list size: " + listOfAllCommits.size());
+        //System.out.println("[DEBUG]: Commits list size: " + listOfAllCommits.size());
 		
-		int counter = 0;
-		for(Commit c : listOfAllCommits) {
-			if(counter == 6) {
-				System.out.println(c.getMessage());
-				counter++;
-			}
-			else {
-				break;
-			}
+		for (int i = 0; i < listOfAllCommits.size(); i++) {
+			Commit c = listOfAllCommits.get(i);
+			//System.out.println("MESSAGE: " + c.getMessage());
+			
+			// Get Commit Author Name.
+			result = result + "<tr><td>" + c.getAuthorName() + "</td> ";
+			
+			// Get Commit message.
+			result = result + "<td>" + c.getMessage() + "</td> ";
+			
+			// Get Commit Date String.
+			result = result + "<td>" + c.getDateString() + "</td> ";
+			
+			// Get Commit URL String.
+			result = result + "<td>" + c.getHtmlUrl() + "</td> ";
+			
+			// Get GitHub username.
+			result = result + "<td>" + c.getAuthorLogin() + "</td> ";
+			
+			// Get Code additions.
+			result = result + "<td>" + c.getAdditions() + "</td> ";
+			
+			// Get Code deletions.
+			result = result + "<td>" + c.getDeletions() + "</td> ";
+			
+			// Get LOC.
+			result = result + "<td>" + c.getTotalLoc() + "</td> </tr> ";
+			
 		}
-		return "";
+		return result;
 	}
 	/*    
     we do not need this. Tasks are sorted using the Comparable interface
