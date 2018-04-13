@@ -73,6 +73,7 @@ public class AgendaPanel extends JPanel {
 	private final JButton btnNewButton_1 = new JButton("- Delete Member");
 	// US35 - New JButton for setting a GitHub Repo. 
 	private final JButton btnNewButtonRepo = new JButton("Set GitHub Repo");
+	private final JButton btnNewButtonUpdate = new JButton("Update");
 
 	public AgendaPanel(DailyItemsPanel _parentPanel) {
 		try {
@@ -138,7 +139,7 @@ public class AgendaPanel extends JPanel {
 							CurrentStorage.get().storeEventsManager();
 						}
 						refresh(CurrentDate.get());
-						System.out.println("agregué un sticker");
+						System.out.println("agreguÃ© un sticker");
 					} else if (d.startsWith("memoranda:expandsubtasks")) {
 						String id = d.split("#")[1];
 						gotoTask = id;
@@ -304,6 +305,22 @@ public class AgendaPanel extends JPanel {
 		
 		
 		
+		/*
+		 * US41 - Begin code modification
+		 * Action LIstener for pressing the new "Update" Button
+		 */
+		
+		// first, add the new button to the toolbar at the top of the "Agenda" view.
+		toolBar.add(btnNewButtonUpdate);
+		
+		//Next, add an action listener for this new button, calling RepoSet function with parameters
+		btnNewButtonUpdate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CurrentProject.get().addRepoName(CurrentProject.get().getGitHubRepoName());
+		        App.getFrame().refreshAgenda();
+			}
+		});
+		
 
 		CurrentDate.addDateListener(new DateListener() {
 			public void dateChange(CalendarDate d) {
@@ -421,3 +438,4 @@ public class AgendaPanel extends JPanel {
 	//
 	//    }
 }
+
