@@ -322,7 +322,7 @@ public class AgendaPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					CurrentProject.get().addRepoName(CurrentProject.get().getGitHubRepoName());
-				} catch (RuntimeException | JSONException e1) {
+				} catch (RuntimeException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}

@@ -132,7 +132,7 @@ public class RepoSet extends JDialog {
 						  App.getFrame().refreshAgenda();
 						  dispose();
 
-						} catch (RuntimeException | JSONException ex) {
+						} catch (RuntimeException ex) {
 							JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
             }
 					}
