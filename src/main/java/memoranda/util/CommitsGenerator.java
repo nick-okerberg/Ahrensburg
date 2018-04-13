@@ -4,6 +4,7 @@
  */
 package main.java.memoranda.util;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -17,6 +18,7 @@ import main.java.memoranda.Event;
 import main.java.memoranda.EventsManager;
 import main.java.memoranda.EventsScheduler;
 import main.java.memoranda.Project;
+import main.java.memoranda.ProjectImpl;
 import main.java.memoranda.ProjectManager;
 import main.java.memoranda.Task;
 import main.java.memoranda.TaskList;
@@ -25,6 +27,7 @@ import main.java.memoranda.util.Util;
 
 import java.util.Collections;
 
+import nu.xom.Attribute;
 import nu.xom.Element;
 /**
  *  
@@ -480,13 +483,41 @@ String footer = "</table></body></html>";
 //		//        /*DEBUG*/System.out.println(s+FOOTER);
 //		s += FOOTER;
 //		//Util.debug(s);
+		//generateCommitDetails();
 		String header = "<html><body><h2>Commits for Sprint #</h2><table style=\"width:100%\">";
 
-		String headerOfTable = "<tr><th><a href='https://google.com'>Aurthor</a></th><th>Message</th>  <th>Commit</th> <th>Date</th></tr>";
-		String hardcodedDataTable = "<tr><td>Jill</td><td>Smith</td><td>50</td></tr><tr><td>Eve</td><td>Jackson</td><td>94</td> </tr><tr><td>John</td><td>Doe</td><td>80</td></tr>";
-
+		String headerOfTable = "<th>Aurthor</th><th>Commit Message</th> <th>Date</th><th>url</th><th>username</th><th>Addtions</th><th>Deletions</th><th>TotalLOC</th>";
+		String hardcodedDataTable = "<tr><td>Ovadia Shalom</td> <td>Added 4 lines of nothing</td> <td>5/1/2019</td> <td>https://test.com</td> <td>ovidubs</td> <td>4</td> <td>0</td> <td>4</td> </tr> <tr> <td>Sean Rogers</td> <td>Added 4 lines of nothing</td> <td>5/1/2019</td> <td>https://test.com</td> <td>smrogers</td> <td>4</td> <td>0</td> <td>4</td> </tr>";
+		
 		String footer = "</table></body></html>";
 		return header + headerOfTable + hardcodedDataTable + footer;
+	}
+	public static String generateCommitDetails() {
+		System.out.println("test");
+		
+	    Element el = new Element("project");
+	    el.addAttribute(new Attribute("id", "1"));
+	    
+	    // US35 added Repo attribute. 
+	    el.addAttribute(new Attribute("Repo", ""));
+	    
+	    el.addAttribute(new Attribute("names", ""));
+	    el.addAttribute(new Attribute("gitnames", ""));
+		Project y = new ProjectImpl(el);
+		JsonApiClass currentProjectJSON = y.getProjectJsonApiClass();
+		System.out.println(currentProjectJSON);
+		ArrayList<Commit> listOfAllCommits = currentProjectJSON.getCommitsArrLst();
+		int counter = 0;
+		for(Commit c : listOfAllCommits) {
+			if(counter == 6) {
+				System.out.println(c.getMessage());
+				counter++;
+			}
+			else {
+				break;
+			}
+		}
+		return "";
 	}
 	/*    
     we do not need this. Tasks are sorted using the Comparable interface
