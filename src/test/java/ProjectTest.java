@@ -2,6 +2,7 @@ package test.java;
 
 import static org.junit.Assert.*;
 
+import org.json.JSONException;
 import org.junit.Test;
 import org.junit.Before;
 import main.java.memoranda.Project;
@@ -27,36 +28,44 @@ public class ProjectTest {
 
   /**
    * Test to make sure addRepoName requires a non-empty string.
+ * @throws JSONException 
+ * @throws RuntimeException 
    */
   @Test (expected=java.lang.RuntimeException.class)
-  public void GitRepoNameShouldNotAcceptEmptyString() {
+  public void GitRepoNameShouldNotAcceptEmptyString() throws RuntimeException, JSONException {
     prj.addRepoName("");
   }
   
   /**
    * Tests to make sure that addRepoName can only accept repos that
    * are formatted correctly (ie. hello/world)
+ * @throws JSONException 
+ * @throws RuntimeException 
    */
   @Test (expected=java.lang.RuntimeException.class)
-  public void GitRepoShouldFailIfRepoInvalidFormat() {
+  public void GitRepoShouldFailIfRepoInvalidFormat() throws RuntimeException, JSONException {
     prj.addRepoName("justowner");
   }
   
   /**
    * Tests to make sure that addRepoName can only accept repos that
    * are formatted correctly (ie. hello/world)
+ * @throws JSONException 
+ * @throws RuntimeException 
    */
   @Test (expected=java.lang.RuntimeException.class)
-  public void GitRepoShouldFailIfRepoInvalidFormat2() {
+  public void GitRepoShouldFailIfRepoInvalidFormat2() throws RuntimeException, JSONException {
     prj.addRepoName("/");
   }
   
   /**
    * Tests to make sure that addRepoName fails when the repo
    * doesn't exist on gitHub.
+ * @throws JSONException 
+ * @throws RuntimeException 
    */
   @Test (expected=java.lang.RuntimeException.class)
-  public void GitRepoShouldFailWhenRepoDNE() {
+  public void GitRepoShouldFailWhenRepoDNE() throws RuntimeException, JSONException {
     // We'll pick a repo name that definitely doesn't exist.
     String testRepo= "hello/world";
     prj.addRepoName(testRepo);
@@ -64,9 +73,11 @@ public class ProjectTest {
   
   /**
    * Tests to make sure that addRepoName adds a valid repo when given
+ * @throws JSONException 
+ * @throws RuntimeException 
    */
   @Test
-  public void GitRepoShouldAcceptGoodRepo() {
+  public void GitRepoShouldAcceptGoodRepo() throws RuntimeException, JSONException {
     // We'll pick a repo name that definitely doesn't exist.
     String testRepo= "regexhq/regex-username";
     prj.addRepoName(testRepo);

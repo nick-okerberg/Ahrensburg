@@ -13,9 +13,10 @@ import org.json.JSONObject;
  *
  */
 public class Commit {
-	private String sha, authorName, dateString, message, htmlUrl, authorLogin;
-	private int additions, deletions, totalLoc;
-	private Date date;
+	private String _sha, _authorName, _dateString, _message, _htmlUrl, _authorLogin;
+	private int _additions, _deletions, _totalLoc;
+	private int _numTests;	// US37, number of tests in a commit from parsing commit message. Nick Okerberg.
+	private Date _date;
 	
 	/**
 	 * An unlikely form of constructor to be used but helpful to include
@@ -32,6 +33,8 @@ public class Commit {
     this.setAdditions(0);
     this.setDeletions(0);
     this.setTotalLoc(0);
+    this._numTests = 0;	// US37 default numTests is 0. 
+    //System.out.println("Commit object built - default const");
   }
 	
   /**
@@ -57,6 +60,9 @@ public class Commit {
     this.setAdditions(add);
     this.setDeletions(del);
     this.setTotalLoc(totalLoc);
+    // US37 - Parse the message to get numTests. 
+    this._numTests = getNumTestsFromMessage(message);
+    //System.out.println("Commit object built - all-params const");
 	}
 	
 	/**
@@ -64,17 +70,18 @@ public class Commit {
 	 * @param json JSON object in the form of a GitHub API Commit
 	 */
 	public Commit (JSONObject json) throws JSONException{
-	  this.sha = json.getString("sha");
-	  this.authorName = json.getJSONObject("commit").getJSONObject("author").getString("name");
+	  this._sha = json.getString("sha");
+	  this._authorName = json.getJSONObject("commit").getJSONObject("author").getString("name");
 	  this.setDateString(json.getJSONObject("commit").getJSONObject("author").getString("date"));
-	  this.setDate(parseDate(dateString));
-	  this.message = json.getJSONObject("commit").getString("message");
+	  this.setDate(parseDate(_dateString));
+	  this._message = json.getJSONObject("commit").getString("message");
 	  this.setHtmlUrl(json.getString("html_url"));
+	  this._numTests = getNumTestsFromMessage(_message);	// US37
     // Handle if author information is null
     try {
-      this.authorLogin = json.getJSONObject("author").getString("login");
+      this._authorLogin = json.getJSONObject("author").getString("login");
     } catch (JSONException ex) {
-      this.authorLogin = "null";
+      this._authorLogin = "null";
     }
     try {
       JSONObject stats = json.getJSONObject("stats");
@@ -87,76 +94,82 @@ public class Commit {
       this.setTotalLoc(0);
       ex.printStackTrace();
     }
+    //System.out.println("Commit object built - Json const");
 	}
 		
 	
 	public String getSha() {
-		return sha;
+		return _sha;
 	}
 	public void setSha(String sha) {
-		this.sha = sha;
+		this._sha = sha;
 	}
 
   public String getAuthorName() {
-    return authorName;
+    return _authorName;
   }
   public void setAuthorName(String authorName) {
-    this.authorName = authorName;
+    this._authorName = authorName;
   }
   public String getDateString() {
-    return dateString;
+    return _dateString;
   }
   public void setDateString(String dateString) {
-    this.dateString = dateString;
+    this._dateString = dateString;
   }
   public Date getDate() {
-    return date;
+    return _date;
   }
   public void setDate(Date date) {
-    this.date = date;
+    this._date = date;
   }
   public String getMessage() {
-    return message;
+    return _message;
   }
   public void setMessage(String message) {
-    this.message = message;
+    this._message = message;
   }
   public String getHtmlUrl() {
-    return htmlUrl;
+    return _htmlUrl;
   }
 
   public void setHtmlUrl(String htmlUrl) {
-    this.htmlUrl = htmlUrl;
+    this._htmlUrl = htmlUrl;
   }
 	public String getAuthorLogin() {
-		return authorLogin;
+		return _authorLogin;
 	}
 	public void setAuthorLogin(String authorLogin) {
-		this.authorLogin = authorLogin;
+		this._authorLogin = authorLogin;
 	}
 	
 	public int getAdditions() {
-    return additions;
+    return _additions;
   }
 
   public void setAdditions(int additions) {
-    this.additions = additions;
+    this._additions = additions;
   }
 
   public int getDeletions() {
-    return deletions;
+    return _deletions;
   }
 
   public void setDeletions(int deletions) {
-    this.deletions = deletions;
+    this._deletions = deletions;
   }
 
   public int getTotalLoc() {
-    return totalLoc;
+    return _totalLoc;
   }
 
   public void setTotalLoc(int totalLoc) {
-    this.totalLoc = totalLoc;
+    this._totalLoc = totalLoc;
+  }
+  
+  // US37 getter for number of tests. 
+  public int getNumTests() {
+	  return _numTests;
   }
   
   /**
@@ -175,4 +188,45 @@ public class Commit {
     }
 	  return date;
 	}
-}
+  
+  /**
+   * US37 Nick Okerberg
+   * 
+   * Extracts the number of tests from a specific commit message string. The 
+   * message of the commit follows a standard defined in the Ahrensburg team
+   * quality policy. The format is specified as follows: 
+   * 
+   * 	"JUNIT-XX#" where "XX" represents the number of tests included in this commit.
+   * 
+   * Returns an integer value representing the number of tests. 
+   * 
+   * @param msg The input String representing the commit message. 
+   * @return The number of tests. 
+   */
+  private int getNumTestsFromMessage(String msg) {
+	  // Initialize the result to 0. 
+	  int result = 0;
+	  
+	  /*
+	   * Parse the numbers out of the input string. 
+	   * 	Format:  "JUNIT-XX#"
+	   * This will parse the XX number out of the above example. 
+	   * Find the first " - " and end at the " # " symbol. 
+	   */
+	  if (msg.contains("JUNIT-") && msg.contains("#") && (msg.indexOf("JUNIT-") < msg.indexOf("#")) ){
+		  
+		  String parsed = msg.substring(msg.indexOf("JUNIT-")+6, msg.indexOf("#"));
+		  
+		  // For debugging:
+		  //System.out.println("[DEBUG] commit message: " + msg);
+		  //System.out.println("   parsed: " + parsed);
+		  //System.out.println("[DEBUG] parsed test value to return: " + Integer.parseInt(parsed));
+		  
+		  // Convert the string result representing the integer, to an int. 
+		  result = Integer.parseInt(parsed);  
+	  }
+	  
+	  return result;
+  } // End of US37 method getNumTestsFromMessage 
+  
+} // End of class. 
