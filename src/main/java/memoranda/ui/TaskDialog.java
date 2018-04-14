@@ -13,7 +13,10 @@ import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -21,6 +24,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
@@ -36,6 +40,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import main.java.memoranda.CurrentProject;
+import main.java.memoranda.Task;
+import main.java.memoranda.TaskList;
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.util.Local;
 
@@ -60,9 +66,6 @@ public class TaskDialog extends JDialog {
 //    Border border6;
     JPanel jPanel2 = new JPanel(new GridLayout(3, 2));
     JTextField todoField = new JTextField();
-    
-    // added by rawsushi
-    JTextField effortField = new JTextField();
     JTextArea descriptionField = new JTextArea();
     JScrollPane descriptionScrollPane = new JScrollPane(descriptionField);
     
@@ -75,7 +78,6 @@ public class TaskDialog extends JDialog {
         Local.getString("Highest")};
     boolean ignoreStartChanged = false;
     boolean ignoreEndChanged = false;
-    JPanel jPanel4 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
     JPanel jPanel6 = new JPanel(new FlowLayout(FlowLayout.LEFT));
     JLabel jLabel6 = new JLabel();
     JButton setStartDateB = new JButton();
@@ -85,22 +87,7 @@ public class TaskDialog extends JDialog {
     JSpinner endDate;
 //    JSpinner endDate = new JSpinner(new SpinnerDateModel());
     JButton setEndDateB = new JButton();
-    //JPanel jPanel3 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-    JPanel jPanel3 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-    JPanel jPanelEffort = new JPanel(new FlowLayout(FlowLayout.LEFT));
-//    JPanel jPanelNotes = new JPanel(new FlowLayout(FlowLayout.LEFT));
-    
-    JButton setNotifB = new JButton();
-    JComboBox priorityCB = new JComboBox(priority);
-    JLabel jLabel7 = new JLabel();
-    // added by rawsushi
-    JLabel jLabelEffort = new JLabel();
     JLabel jLabelDescription = new JLabel();
-	JCheckBox chkEndDate = new JCheckBox();
-	
-	JPanel jPanelProgress = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-	JLabel jLabelProgress = new JLabel();
-	JSpinner progress = new JSpinner(new SpinnerNumberModel(0, 0, 100, 5));
 	
 	//Forbid to set dates outside the bounds
 	CalendarDate startDateMin = CurrentProject.get().getStartDate();
@@ -121,12 +108,12 @@ public class TaskDialog extends JDialog {
     
     void jbInit() throws Exception {
 	this.setResizable(false);
-	this.setSize(new Dimension(430,300));
+	this.setSize(new Dimension(450, 300));
         border1 = BorderFactory.createEmptyBorder(5, 5, 5, 5);
         border2 = BorderFactory.createEtchedBorder(Color.white, 
             new Color(142, 142, 142));
         border3 = new TitledBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0), 
-        Local.getString("To Do"), TitledBorder.LEFT, TitledBorder.BELOW_TOP);
+        Local.getString("Name"), TitledBorder.LEFT, TitledBorder.BELOW_TOP);
         border4 = BorderFactory.createEmptyBorder(0, 5, 0, 5);
 //        border5 = BorderFactory.createEmptyBorder();
 //        border6 = BorderFactory.createBevelBorder(BevelBorder.LOWERED,
@@ -147,14 +134,7 @@ public class TaskDialog extends JDialog {
 
         startDate = new JSpinner(new SpinnerDateModel(new Date(),null,null,Calendar.DAY_OF_WEEK));
         endDate = new JSpinner(new SpinnerDateModel(new Date(),null,null,Calendar.DAY_OF_WEEK));
-		
-        chkEndDate.setSelected(false);
 		chkEndDate_actionPerformed(null);
-		chkEndDate.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				chkEndDate_actionPerformed(e);
-			}
-		});
         okB.setMaximumSize(new Dimension(100, 26));
         okB.setMinimumSize(new Dimension(100, 26));
         okB.setPreferredSize(new Dimension(100, 26));
@@ -174,7 +154,7 @@ public class TaskDialog extends JDialog {
         //dialogTitlePanel.setPreferredSize(new Dimension(159, 52));
         header.setFont(new java.awt.Font("Dialog", 0, 20));
         header.setForeground(new Color(0, 0, 124));
-        header.setText(Local.getString("To do"));
+        header.setText("Sprint Info");
         header.setIcon(new ImageIcon(main.java.memoranda.ui.TaskDialog.class.getResource(
             "/ui/icons/task48.png")));
         
@@ -207,12 +187,6 @@ public class TaskDialog extends JDialog {
         descriptionScrollPane.setPreferredSize(new Dimension(375,96));
         gbLayout.setConstraints(descriptionScrollPane,gbCon);
 
-        jLabelEffort.setMaximumSize(new Dimension(100, 16));
-        jLabelEffort.setMinimumSize(new Dimension(60, 16));
-        jLabelEffort.setText(Local.getString("Est Effort(hrs)"));
-        effortField.setBorder(border8);
-        effortField.setPreferredSize(new Dimension(30, 24));
-
         startDate.setBorder(border8);
         startDate.setPreferredSize(new Dimension(80, 24));                
 		SimpleDateFormat sdf = new SimpleDateFormat();
@@ -231,7 +205,11 @@ public class TaskDialog extends JDialog {
                 ignoreStartChanged = true;
                 Date sd = (Date) startDate.getModel().getValue();
                 Date ed = (Date) endDate.getModel().getValue();
-                if (sd.after(ed) && chkEndDate.isSelected()) {
+                
+                // The chkEndDate is being removed as part of US33. 
+                //if (sd.after(ed) && chkEndDate.isSelected()) {	// comment out old. 
+                if (sd.after(ed)) {	// new
+                // End of US33 modification. 
                     startDate.getModel().setValue(ed);
                     sd = ed;
                 }
@@ -262,10 +240,6 @@ public class TaskDialog extends JDialog {
                 setStartDateB_actionPerformed(e);
             }
         });
-        jLabel2.setMaximumSize(new Dimension(270, 16));
-        //jLabel2.setPreferredSize(new Dimension(60, 16));
-        jLabel2.setHorizontalAlignment(SwingConstants.RIGHT);
-        jLabel2.setText(Local.getString("End date"));
         endDate.setBorder(border8);
         endDate.setPreferredSize(new Dimension(80, 24));
         
@@ -309,22 +283,6 @@ public class TaskDialog extends JDialog {
                 setEndDateB_actionPerformed(e);
             }
         });
-        
-        setNotifB.setText(Local.getString("Set notification"));
-        setNotifB.setIcon(
-            new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/notify.png")));
-        setNotifB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                setNotifB_actionPerformed(e);
-            }
-        });
-        jLabel7.setMaximumSize(new Dimension(100, 16));
-        jLabel7.setMinimumSize(new Dimension(60, 16));
-        //jLabel7.setPreferredSize(new Dimension(60, 16));
-        jLabel7.setText(Local.getString("Priority"));
-
-        priorityCB.setFont(new java.awt.Font("Dialog", 0, 11));
-        jPanel4.add(jLabel7, null);
         getContentPane().add(mPanel);
         mPanel.add(areaPanel, BorderLayout.CENTER);
         mPanel.add(buttonsPanel, BorderLayout.SOUTH);
@@ -342,27 +300,13 @@ public class TaskDialog extends JDialog {
         jPanel6.add(startDate, null);
         jPanel6.add(setStartDateB, null);
         jPanel2.add(jPanel1, null);
-		jPanel1.add(chkEndDate, null);
-        jPanel1.add(jLabel2, null);
+		jLabel2.setMaximumSize(new Dimension(270, 16));
+		//jLabel2.setPreferredSize(new Dimension(60, 16));
+		jLabel2.setHorizontalAlignment(SwingConstants.CENTER);
+		jLabel2.setText(Local.getString("End date"));
+		jPanel1.add(jLabel2, null);
         jPanel1.add(endDate, null);
         jPanel1.add(setEndDateB, null);
-        // added by rawsushi
-        jPanel2.add(jPanelEffort, null);
-        jPanelEffort.add(jLabelEffort, null);
-        jPanelEffort.add(effortField, null);
-
-        jPanel2.add(jPanel4, null);
-        jPanel4.add(priorityCB, null);
-        jPanel2.add(jPanel3, null);
-        
-        jPanel3.add(setNotifB, null);
-        
-        jLabelProgress.setText(Local.getString("Progress"));
-        jPanelProgress.add(jLabelProgress, null);
-        jPanelProgress.add(progress, null);
-        jPanel2.add(jPanelProgress);
-        
-        priorityCB.setSelectedItem(Local.getString("Normal"));
         startCalFrame.cal.addSelectionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (ignoreStartChanged)
@@ -399,26 +343,143 @@ public class TaskDialog extends JDialog {
 		this.endDateMax = max;
 	}
 	
+	/**
+	 * The OK button was pressed. 
+	 * @param e
+	 */
     void okB_actionPerformed(ActionEvent e) {
-	CANCELLED = false;
+    	
+    	/* 
+    	 * US33 task 72 feature. nick-okerberg.
+    	 * Prevent sprint start/end date overlapping between multiple sprints within a project. 
+    	 */
+
+    	// Get all tasks (Sprints) within the current project. 
+    	TaskList tl = CurrentProject.getTaskList(); 
+    	Vector sprints = (Vector) tl.getAllSubTasks(null); 
+    	
+    	// Enable for debugging. Prints the current sprint startDate and endDate in the current Sprint being added/modified. 
+    	//System.out.println("[DEBUG] Sprint: Currently being modified: begin date = "
+    	//		+ startDate.getValue().toString());
+    	//System.out.println("[DEBUG] Sprint: Currently being modified: end date = "
+    	//		+ endDate.getValue().toString());
+    	
+    	// Values of the Start and End dates that are currently in the Calendar GUI window. 
+    	CalendarDate cdStart = new CalendarDate(new Date(startDate.getValue().toString()));
+    	CalendarDate cdEnd = new CalendarDate(new Date(endDate.getValue().toString()));
+    	// For debugging: 
+    	//System.out.println("Calendar GUI startDate = " + cdStart.toString());
+    	//System.out.println("Calendar GUI endDate = " + cdEnd.toString());
+    	
+    	// If sprints size is >0, then we need to check for overlapping dates between sprints within a project. 
+    	if (sprints.size() > 0) {
+    		
+    		// Sort
+    		Collections.sort(sprints);
+    		
+    		// Iterate through the list of sprints. 
+    		int x = 0; // counter
+    		for (Iterator i = sprints.iterator(); i.hasNext();) {
+    			
+    			// A single task at a time. 
+    			Task t = (Task) i.next();
+    			
+    			// The name of the local task being added/modified, from the "Name" field of the JTextField. 
+    			String localTaskName = todoField.getText();
+    			//System.out.println("TEST: Local task name: " + localTaskName);
+    			//System.out.println("TEST: Iteration task name: " + t.toString());
+    			
+    			// If the local task is the same as the one in this loop iteration, just continue. 
+    			// Don't compare to self. 
+    			if (localTaskName.equals(t.toString())) {
+    				x++;
+    				//System.out.println("[DEBUG] Sprint: comparing to same sprint. Ignoring.");
+    				continue;
+    			}
+    			
+    			// Enable for debugging to console. Iterates through all sprints and dumps date info. 
+    			//System.out.println("[DEBUG] Sprint: Loop iteration index#" + x);
+    			//System.out.println("[DEBUG] Sprint: Title = " + t.toString());
+    			//System.out.println("[DEBUG] Sprint: Descr = " + t.getDescription());
+    			//System.out.println("[DEBUG] Sprint: begin date = " + t.getStartDate());
+    			//System.out.println("[DEBUG] Sprint: end date = " + t.getEndDate());
+    			
+    			/*
+    			 * If the start date, or end date, of the current sprint being added/modified
+    			 * is before the end date and after the start date of any other sprint on
+    			 * the project, then there is an overlapping date. In such cases, then 
+    			 * display a pop up message and do not allow the change, force the user
+    			 * to select a new date for the current sprint.  
+    			 */
+    			
+    			// If current start-date is after t's start date & before t's end-date, there is overlap. 
+    			if ( cdStart.after(t.getStartDate()) && cdStart.before(t.getEndDate())) {
+    				
+    				// For debugging, print the name of the Sprint that there was a conflict with. 
+    				System.out.println("[DEBUG] Sprint: overlapping Sprints detected, "
+    						+ "start-date conflict with: " + t.toString());
+    				
+    				JOptionPane.showMessageDialog(null, "Error, start-date overlaps with sprint: " + t.toString());
+    				return;
+    			}
+    			
+    			// If current end-date is after t's start date & before t's end-date, there is overlap. 
+    			if ( cdEnd.after(t.getStartDate()) && cdEnd.before(t.getEndDate())) {
+    				
+    				// For debugging, print the name of the Sprint that there was a conflict with. 
+    				System.out.println("[DEBUG] Sprint: overlapping Sprints detected, "
+    						+ "end-date conflict with: " + t.toString());
+    				
+    				JOptionPane.showMessageDialog(null, "Error, end-date overlaps with sprint: " + t.toString());
+    				return;
+    			}
+    			
+    			// If current start-date is the same as t's start date, there is overlap. 
+    			if ( cdStart.equals(t.getStartDate())) {
+    				
+    				// For debugging, print the name of the Sprint that there was a conflict with. 
+    				System.out.println("[DEBUG] Sprint: overlapping Sprints detected, "
+    						+ "start-date is the same as the one in sprint: " + t.toString());
+    				
+    				JOptionPane.showMessageDialog(null, "Error, start-date is the same as the one in sprint: " + t.toString());
+    				return;
+    			}
+    			
+    			// If current end-date is the same as t's end date, there is overlap. 
+    			if ( cdEnd.equals(t.getEndDate())) {
+    				
+    				// For debugging, print the name of the Sprint that there was a conflict with. 
+    				System.out.println("[DEBUG] Sprint: overlapping Sprints detected, "
+    						+ "end-date is the same as the one in sprint: " + t.toString());
+    				
+    				JOptionPane.showMessageDialog(null, "Error, end-date is the same as the one in sprint: " + t.toString());
+    				return;
+    			}
+    			
+    			// Increment the loop iteration counter. 
+    			x++;
+    			
+    		} // End of for loop. 
+    	} // End outer if. 
+    	
+    	System.out.println("[DEBUT] OK Button pressed for Sprint task");
+    	CANCELLED = false;
         this.dispose();
-    }
+    } // End of function. End of US33 task 72 feature. 
 
     void cancelB_actionPerformed(ActionEvent e) {
         this.dispose();
     }
 	
 	void chkEndDate_actionPerformed(ActionEvent e) {
-		endDate.setEnabled(chkEndDate.isSelected());
-		setEndDateB.setEnabled(chkEndDate.isSelected());
-		jLabel2.setEnabled(chkEndDate.isSelected());
-		if(chkEndDate.isSelected()) {
+	    // US33 changes, removing chkEndDate selection box. 
+		//if(chkEndDate.isSelected()) { // US33 changes. 
 			Date currentEndDate = (Date) endDate.getModel().getValue();
 			Date currentStartDate = (Date) startDate.getModel().getValue();
 			if(currentEndDate.getTime() < currentStartDate.getTime()) {
 				endDate.getModel().setValue(currentStartDate);
 			}
-		}
+		//} // US33 changes
 	}
 
     void setStartDateB_actionPerformed(ActionEvent e) {
@@ -430,15 +491,11 @@ public class TaskDialog extends JDialog {
     }
 
     void setEndDateB_actionPerformed(ActionEvent e) {
-        endCalFrame.setLocation(setEndDateB.getLocation());
+        //endCalFrame.setLocation(setEndDateB.getLocation());
+        endCalFrame.setLocation(setStartDateB.getLocation()); // Fix for calendar window popping up. 
         endCalFrame.setSize(200, 200);
         this.getLayeredPane().add(endCalFrame);
         endCalFrame.show();
-    }
-    
-    void setNotifB_actionPerformed(ActionEvent e) {
-    	((AppFrame)App.getFrame()).workPanel.dailyItemsPanel.eventsPanel.newEventB_actionPerformed(e, 
-			this.todoField.getText(), (Date)startDate.getModel().getValue(),(Date)endDate.getModel().getValue());
     }
 
 }

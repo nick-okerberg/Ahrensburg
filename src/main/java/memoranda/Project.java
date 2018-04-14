@@ -8,7 +8,12 @@
  */
 package main.java.memoranda;
 
+import java.net.URL;
+
+import org.json.JSONException;
+
 import main.java.memoranda.date.CalendarDate;
+import main.java.memoranda.util.JsonApiClass;
 
 /**
  * 
@@ -48,7 +53,18 @@ public interface Project {
     void setNames(String projectTitle);
     void setGitName(String newName);
     void setName(String newName);
-        
+    
+    // US35 addition for GitHub repo name. 
+    void addRepoName(String repo) throws RuntimeException, JSONException;
+    String getGitHubRepoName();
+    String getGitHubRepoUrl();
+    // End of US35 additions.
+    
+    // US37 additions
+    public JsonApiClass getProjectJsonApiClass();
+    void addCommitData(String gitHubRepoName); 
+    // End of US37 additions
+    
     void setDescription(String description);
     String getDescription();
     
@@ -63,6 +79,6 @@ public interface Project {
     //ResourcesList getResourcesList();
     
     void freeze();
-    void unfreeze();  
+    void unfreeze(); 
     
 }

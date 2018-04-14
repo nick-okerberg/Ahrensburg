@@ -9,11 +9,20 @@
 package main.java.memoranda;
 
 import java.util.Collection;
+import java.util.Deque;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Vector;
 
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.date.CurrentDate;
+import main.java.memoranda.util.Commit;
+import main.java.memoranda.util.JsonApiClass;
+import main.java.memoranda.util.Util;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import nu.xom.Attribute;
@@ -38,6 +47,102 @@ public class TaskImpl implements Task, Comparable {
         _tl = tl;
     }
 
+    /**
+     * getNumberSprintTests
+     * 
+     * Added as part of US37.  Iterates through commit objects and counts
+     * the number of tests from the commit messages. 
+     * 
+     * @return The number of tests in the sprint task, in String form. 
+     */
+    public String getNumberSprintTests() {
+    	
+    	JsonApiClass JAC;			// For Json API call, when the button was pressed. 
+    	
+    	String resultStr = "None";	// Initialize String result to return. 
+    	int resultInt = 0;			// Initialize integer result to 0. 
+    	
+    	// Get the project for this sprint. 
+    	Project p = this._tl.getProject();
+    	//System.out.println("Project Title: " + p.getTitle());
+    	
+    	// Get the Project's JsonApiClass object, which should contain commit objects. 
+    	JAC = p.getProjectJsonApiClass();
+    	
+    	// Get all commits from the current project's JsonApiClass. 
+    	ArrayList<Commit> myCommits = new ArrayList<>();
+    	try {
+        	myCommits = JAC.getCommitsArrLst();
+        }
+        catch (NullPointerException e) {
+        	//System.out.println("No commits for selected sprint.");
+        }
+    	
+    	//System.out.println("myCommits size: " + myCommits.size());
+    	
+        // If there are no commits, just return. 
+        if (myCommits == null) {
+        	return resultStr;
+        }
+        
+        // If the Array List is empty, just return.
+        if (myCommits.isEmpty()) {
+        	return resultStr;
+        }
+        
+        // Iterate through the ArrayList of commits. 
+        for (int i = 0; i < myCommits.size(); i++) {
+            
+        	//System.out.println("Iterating through commits... index = " + i);
+        	
+        	// Boolean is true when a commit is detected within this Sprint. 
+        	boolean isWithinSprint = false;
+        	
+        	// A single commit object from the ArrayList. 
+        	Commit myCommit = myCommits.get(i);
+            
+        	// Commit date is the same as the start date of the current sprint. 
+        	if (myCommit.getDate().equals(this.getStartDate().getDate())) {
+        		isWithinSprint = true;
+        	}
+        	
+        	// Commit date is the same as the end date of the current sprint. 
+        	else if (myCommit.getDate().equals(this.getEndDate().getDate())) {
+        		isWithinSprint = true;
+        	}
+        	
+        	// Commit date is within the start-date and end-date of the current sprint.
+        	else if (myCommit.getDate().after(this.getStartDate().getDate()) &&	
+        			(myCommit.getDate().before(this.getEndDate().getDate())) ) {
+        		isWithinSprint = true;
+        	}
+        	
+        	// Otherwise, leave boolean false.
+        	else {
+        		isWithinSprint = false;
+        	}
+        		
+        	//System.out.println("... Commit #" + i + ": isWithinSprint? " + isWithinSprint);
+        	
+        	// If this commit is within this Sprint, then increment the number of tests. 
+        	if (isWithinSprint) {
+        		resultInt = resultInt + myCommit.getNumTests();
+        	}
+        	//System.out.println("Iteration " + i + " result counter = " + resultInt);
+        		
+        } // End for loop.
+        
+        // Convert the integer result to string. 
+       	if (resultInt > 0) {
+       		resultStr = Integer.toString(resultInt);
+       	}
+                
+       	// Return the result back, as a string. 
+       	//System.out.println("Returning back: " + resultStr);
+       	return resultStr;
+        
+   	} // End of US37 addition. 
+    
     public Element getContent() {
         return _element;
     }
@@ -65,9 +170,12 @@ public class TaskImpl implements Task, Comparable {
     }
 
     public void setEndDate(CalendarDate date) {
-		if (date == null)
+		if (date == null) {
 			setAttr("endDate", "");
-		setAttr("endDate", date.toString());
+		}
+		else {
+			setAttr("endDate", date.toString());
+		}
     }
 
     public long getEffort() {

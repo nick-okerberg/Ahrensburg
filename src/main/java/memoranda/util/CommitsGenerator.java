@@ -4,6 +4,7 @@
  */
 package main.java.memoranda.util;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -17,6 +18,7 @@ import main.java.memoranda.Event;
 import main.java.memoranda.EventsManager;
 import main.java.memoranda.EventsScheduler;
 import main.java.memoranda.Project;
+import main.java.memoranda.ProjectImpl;
 import main.java.memoranda.ProjectManager;
 import main.java.memoranda.Task;
 import main.java.memoranda.TaskList;
@@ -25,6 +27,7 @@ import main.java.memoranda.util.Util;
 
 import java.util.Collections;
 
+import nu.xom.Attribute;
 import nu.xom.Element;
 /**
  *  
@@ -32,8 +35,29 @@ import nu.xom.Element;
 
 /*$Id: AgendaGenerator.java,v 1.12 2005/06/13 21:25:27 velhonoja Exp $*/
 
-public class AgendaGenerator {
+public class CommitsGenerator {
 
+
+String header = "<html><body><h2>Basic HTML Table</h2><table style=\"width:100%\">";
+
+String headerOfTable = "<tr><th>Aurthor</th><th>Message</th>  <th>Commit</th> <th>Date</th></tr>";
+//  <tr>
+//    <td>Jill</td>
+//    <td>Smith</td>
+//    <td>50</td>
+//  </tr>
+//  <tr>
+//    <td>Eve</td>
+//    <td>Jackson</td>
+//    <td>94</td>
+//  </tr>
+//  <tr>
+//    <td>John</td>
+//    <td>Doe</td>
+//    <td>80</td>
+//  </tr>
+String footer = "</table></body></html>";
+	
 	static String HEADER =
 			"<html><head><title></title>\n"
 					+ "<style>\n"
@@ -452,14 +476,94 @@ public class AgendaGenerator {
 		 }
 	
 	public static String getAgenda(CalendarDate date, Collection expandedTasks) {
-		String s = HEADER;
-		s += generateAllProjectsInfo(date, expandedTasks);
-		s += generateEventsInfo(date);
-		s += generateStickers(date);
-		//        /*DEBUG*/System.out.println(s+FOOTER);
-		s += FOOTER;
-		//Util.debug(s);
-		return s;
+//		String s = HEADER;
+//		s += generateAllProjectsInfo(date, expandedTasks);
+//		s += generateEventsInfo(date);
+//		s += generateStickers(date);
+//		//        /*DEBUG*/System.out.println(s+FOOTER);
+//		s += FOOTER;
+//		//Util.debug(s);
+		//generateCommitDetails();
+		String header = "<html><body><h2>Commits for Sprint #</h2><table style=\"width:100%\">";
+
+		String headerOfTable = "<th>Aurthor</th><th>Commit Message</th> <th>Date</th><th>url</th><th>username</th><th>Addtions</th><th>Deletions</th><th>TotalLOC</th>";
+		String hardcodedDataTable = "<tr><td>Ovadia Shalom</td> <td>Added 4 lines of nothing</td> <td>5/1/2019</td> <td>https://test.com</td> <td>ovidubs</td> <td>4</td> <td>0</td> <td>4</td> </tr> <tr> <td>Sean Rogers</td> <td>Added 4 lines of nothing</td> <td>5/1/2019</td> <td>https://test.com</td> <td>smrogers</td> <td>4</td> <td>0</td> <td>4</td> </tr>";
+		
+		String footer = "</table></body></html>";
+		return header + headerOfTable + generateCommitDetails() + footer;
+		//return header + headerOfTable + hardcodedDataTable + footer;
+	}
+	public static String generateCommitDetails() {
+		
+		// Result to Return
+		String result = "";
+		
+		//System.out.println("test");
+		
+	    //Element el = new Element("project");
+	    //el.addAttribute(new Attribute("id", "1"));
+	    
+	    // US35 added Repo attribute. 
+	    //el.addAttribute(new Attribute("Repo", ""));
+	    
+	    //el.addAttribute(new Attribute("names", ""));
+	    //el.addAttribute(new Attribute("gitnames", ""));
+		//Project y = new ProjectImpl(el);
+		Project y = CurrentProject.get();
+		//System.out.println("[Debug] Current project: " + y.getTitle());
+		JsonApiClass currentProjectJSON = y.getProjectJsonApiClass();
+		//System.out.println("[Debug] Current project json: " + currentProjectJSON);
+		
+    	// Get all commits from the current project's JsonApiClass. 
+		//ArrayList<Commit> listOfAllCommits = currentProjectJSON.getCommitsArrLst();	// old commented out.
+    	ArrayList<Commit> listOfAllCommits = new ArrayList<>();
+    	try {
+        	listOfAllCommits = currentProjectJSON.getCommitsArrLst();
+        }
+        catch (NullPointerException e) {
+        	System.out.println("[DEBUG] No commits for selected project.");
+        }
+        // If there are no commits, just return. 
+        if (listOfAllCommits == null) {
+        	return "";
+        }
+        // If the Array List is empty, just return.
+        if (listOfAllCommits.isEmpty()) {
+        	return "";
+        }
+        
+        //System.out.println("[DEBUG]: Commits list size: " + listOfAllCommits.size());
+		
+		for (int i = 0; i < listOfAllCommits.size(); i++) {
+			Commit c = listOfAllCommits.get(i);
+			//System.out.println("MESSAGE: " + c.getMessage());
+			
+			// Get Commit Author Name.
+			result = result + "<tr><td>" + c.getAuthorName() + "</td> ";
+			
+			// Get Commit message.
+			result = result + "<td>" + c.getMessage() + "</td> ";
+			
+			// Get Commit Date String.
+			result = result + "<td>" + c.getDateString() + "</td> ";
+			
+			// Get Commit URL String.
+			result = result + "<td>" + c.getHtmlUrl() + "</td> ";
+			
+			// Get GitHub username.
+			result = result + "<td>" + c.getAuthorLogin() + "</td> ";
+			
+			// Get Code additions.
+			result = result + "<td>" + c.getAdditions() + "</td> ";
+			
+			// Get Code deletions.
+			result = result + "<td>" + c.getDeletions() + "</td> ";
+			
+			// Get LOC.
+			result = result + "<td>" + c.getTotalLoc() + "</td> </tr> ";
+			
+		}
+		return result;
 	}
 	/*    
     we do not need this. Tasks are sorted using the Comparable interface

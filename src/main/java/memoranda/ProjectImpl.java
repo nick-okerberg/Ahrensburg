@@ -8,10 +8,19 @@
  */
 package main.java.memoranda;
 
-import java.util.List;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Deque;
+
+import org.json.JSONException;
 
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.date.CurrentDate;
+import main.java.memoranda.util.Commit;
+import main.java.memoranda.util.Contributor;
+import main.java.memoranda.util.JsonApiClass;
+import main.java.memoranda.util.Util;
 import nu.xom.Attribute;
 import nu.xom.Element;
 
@@ -22,6 +31,7 @@ import nu.xom.Element;
 public class ProjectImpl implements Project {
 
     private Element _root = null;
+    private JsonApiClass JAC;
 
     /**
      * Constructor for ProjectImpl.
@@ -42,6 +52,30 @@ public class ProjectImpl implements Project {
         if (ta != null)
             return ta.getValue();
         return "";
+	}
+	
+	/**
+	 * US35 implementation. 
+	 * Returns the GitHub owner/repo information for a specific project. 
+	 * 
+	 * @return The github owner/repo string for a project. 
+	 */
+	public String getGitHubRepoName() {
+        Attribute ta = _root.getAttribute("Repo");
+        if (ta != null)
+            return ta.getValue();
+        return "";
+	}
+	
+	/**
+	 * US37 implementation
+	 * Returns the JsonApiClass object back that this project uses. 
+	 * Ensures that duplicate API calls are not made for this US37 implementation.
+	 * 
+	 * @return The JsonApiClass object for this project. 
+	 */
+	public JsonApiClass getProjectJsonApiClass() {
+		return JAC;
 	}
 
 	/**
@@ -235,6 +269,123 @@ public class ProjectImpl implements Project {
             return false;
         }
     }
+    
+    /**
+     * US37 implementation for building out the Commit objects when the "RefreshCommits" button is pressed.
+     * The Commit objects are built using data from the GitHub API. 
+     * 
+     * @param repo The GitHub repository name (in user/name) format. 
+     */
+    public void addCommitData(String repo) {
+        try {
+            int code = 0;
+        	URL url = new URL("https://github.com/"+ repo);
+            HttpURLConnection huc = (HttpURLConnection) url.openConnection();
+            huc.setRequestMethod("GET");
+            huc.connect();
+            code = huc.getResponseCode();
+            JAC = new JsonApiClass(new URL("https://api.github.com/repos/" + repo), true);
+        }
+        catch (Exception ex) {
+            Util.debug(ex.getMessage());
+        }
+    }
+    
+    /**
+     * US35 implementation for setting a GitHub owner/repository name for a project. 
+     * Only one repo name is allowed for a single project.  If there was an existing
+     * project name, this functionality will overwrite the existing one with the
+     * new one provided from the input string.  
+     * @throws JSONException 
+     * 
+     * @params repo The input string that represents the repository name.  Should
+     * already be in format "owner/repository".  
+     */
+	public void addRepoName(String repo) throws RuntimeException, JSONException{
+        Attribute repoName = _root.getAttribute("Repo");
+        
+        // Check for emtpy string
+        if (repo.equals(""))
+          throw new RuntimeException("Repo name must not be empty");
+        
+        // Next check if the repo given matches the correct format "owner/repo"
+        if (! repo.matches("^\\w+-?\\w+(?!-)/\\w+-?\\w+(?!-)$"))
+            throw new RuntimeException("Repo name invalid");
+        
+        // Finally check gitHub to see if that repo actually exists.
+        int code=0;
+        try {
+          URL url = new URL("https://github.com/"+repo);
+          HttpURLConnection huc = (HttpURLConnection) url.openConnection();
+          huc.setRequestMethod("GET");
+          huc.connect();
+          code = huc.getResponseCode();
+         JAC = new JsonApiClass(new URL("https://api.github.com/repos/"+repo));
+         //JAC.manage();
+         
+        }catch (Exception ex) {
+          Util.debug(ex.getMessage());
+        }
+        if (code == 404)
+          throw new RuntimeException("Repo: "+repo+" is not found on GitHub");
+        
+        /*
+         * Sets the value of the input repo string that should already be in owner/repository format. 
+         * Overwrites any existing value. 
+         * Only one repo is allowed per project. 
+         */
+        //System.out.println("DEBUG: repo input string == " + repo);
+        repoName.setValue(repo);
+        
+        /* US 41 changes
+        First we need to get rid of existing names
+        TODO this should probably be done differently*/
+        Attribute names = _root.getAttribute("names");
+        Attribute gitNames = _root.getAttribute("gitnames");
+        names.setValue("");
+        gitNames.setValue("");
+        
+        /* next we need to auto import the contributor names as soon as the
+        user enters the repo. */
+        JsonApiClass jac = null;
+        try {
+          jac = new JsonApiClass(getGitHubRepoApiUrl());
+          jac.refreshContributors();
+        } catch (IOException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+        Deque<Contributor> contributors = jac.getContributors();
+        while (contributors.peek() != null) {
+          Contributor cb = contributors.pop();
+          this.addMember(cb.getName(), cb.getLogin());
+        }        
+        /* End US41 changes */
+	} 
+	// End of US35 implementation for GitHub Repo Name. 
+	
+	
+	// US35.2 Implementation for GitHubURL
+	/**
+	 * Changes the Repo Name to a URL and returns a URL object
+	 * @return the URL of the GitHub Repo
+	 */
+	public String getGitHubRepoUrl() {
+	  String gitRepoUrl ="https://github.com/"+this.getGitHubRepoName(); 
+    return gitRepoUrl;	
+	}
+	
+  // US41 Implementation for GitHubAPIURL
+  /**
+   * Changes the Repo Name to a URL and returns a URL object for the GitHub api
+   * @return the URL of the GitHub Repo API
+   */
+  public String getGitHubRepoApiUrl() {
+    String gitApiUrl ="https://api.github.com/repos/"+this.getGitHubRepoName(); 
+    return gitApiUrl;  
+  }
+  // End US41 changes
+	
 
     public int checkChar(String s) {
         int count = 0;
@@ -284,7 +435,8 @@ public class ProjectImpl implements Project {
     	}
     	else {
             desc.removeChildren();
-            desc.appendChild(s);    	
+            desc.appendChild(s); 
+           
     	}
     }
 
