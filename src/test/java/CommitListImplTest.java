@@ -88,20 +88,39 @@ public class CommitListImplTest {
     }
     
     @Test
-    public void testRemoveCommit() {
-        commitListFromFile.addCommit(cmt);
-        commitListFromFile.addCommit(cmt2);
-        commitListFromFile.removeCommit(cmt2.getSha());
-        assertTrue(commitListFromFile.getCommit(cmt2.getSha()) == null);
-        assertTrue(commitListFromFile.getAllCommitsCount() == 2);
-        
+    public void testGetCommitsEmpty() {
+        assertTrue(commitListNew.getAllCommits().size() == 0);
     }
     
-    @Test public void testGetCommit() {
+    @Test 
+    public void testGetCommitsByAuthorInvalid() {
+        assertEquals(commitListFromFile.getAllCommitsByAuthor("nothere").size(),0);
+    }
+    
+    @Test
+    public void testRemoveCommitExist() {
+        commitListFromFile.addCommit(cmt);
+        commitListFromFile.addCommit(cmt2);
+        assertTrue(commitListFromFile.removeCommit(cmt2.getSha()));
+        assertEquals(commitListFromFile.getCommit(cmt2.getSha()),null);
+        assertEquals(commitListFromFile.getAllCommitsCount(),2);
+    }
+    
+    @Test
+    public void testRemoveCommitInvalid() {
+        assertFalse(commitListFromFile.removeCommit("nothere"));
+    }
+    
+    @Test public void testGetCommitExist() {
         commitListFromFile.addCommit(cmt);
         
         Commit dupCommit = commitListFromFile.getCommit(cmt.getSha());
-        assertTrue(dupCommit.compareTo(cmt) == 0);
+        assertEquals(dupCommit.compareTo(cmt),0);
+        
+    }
+    
+    @Test public void testGetCommitInvalid() {
+        assertNull(commitListFromFile.getCommit("nothere"));
         
     }
 
