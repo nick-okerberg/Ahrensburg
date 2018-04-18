@@ -23,6 +23,7 @@ import javax.swing.event.HyperlinkListener;
 
 import org.json.JSONException;
 
+import main.java.memoranda.CommitList;
 import main.java.memoranda.CurrentProject;
 import main.java.memoranda.EventNotificationListener;
 import main.java.memoranda.EventsManager;
@@ -365,7 +366,8 @@ public class CommitsPanel extends JPanel {
 					Project prj,
 					NoteList nl,
 					TaskList tl,
-					ResourcesList rl) {
+					ResourcesList rl,
+					CommitList cl) {
 			}
 
 			public void projectWasChanged() {

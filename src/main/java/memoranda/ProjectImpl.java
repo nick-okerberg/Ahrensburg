@@ -11,7 +11,9 @@ package main.java.memoranda;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Deque;
+import java.util.List;
 
 import org.json.JSONException;
 
@@ -285,6 +287,10 @@ public class ProjectImpl implements Project {
             huc.connect();
             code = huc.getResponseCode();
             JAC = new JsonApiClass(new URL("https://api.github.com/repos/" + repo), true);
+            List<Commit> commits = new ArrayList<Commit>(JAC.getCommits());
+            for (Commit cmt : commits) {
+                CurrentProject.getCommitList().addCommit(cmt);
+            }
         }
         catch (Exception ex) {
             Util.debug(ex.getMessage());
