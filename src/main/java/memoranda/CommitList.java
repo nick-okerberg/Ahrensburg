@@ -19,6 +19,8 @@ public interface CommitList {
     
     List<Commit> getAllCommits();
     
+    List<Commit> getAllCommitsByAuthor(String login);
+    
     Commit getCommit(String sha);
     
     boolean addCommit(Commit commit);
