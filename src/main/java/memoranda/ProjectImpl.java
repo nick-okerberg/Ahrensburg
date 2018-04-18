@@ -287,9 +287,11 @@ public class ProjectImpl implements Project {
             huc.connect();
             code = huc.getResponseCode();
             JAC = new JsonApiClass(new URL("https://api.github.com/repos/" + repo), true);
-            List<Commit> commits = new ArrayList<Commit>(JAC.getCommits());
-            for (Commit cmt : commits) {
-                CurrentProject.getCommitList().addCommit(cmt);
+            List<Commit> commits = JAC.getCommitsArrLst();
+            CommitList cl = CurrentProject.getCommitList();
+            for (int i = 0; i < commits.size(); i++) {
+                cl.addCommit(commits.get(i));
+                //Util.debug("added commit: "+ commits.get(i).getSha() + "to cl " + cl);
             }
         }
         catch (Exception ex) {

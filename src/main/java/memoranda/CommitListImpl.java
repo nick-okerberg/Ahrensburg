@@ -9,6 +9,9 @@ package main.java.memoranda;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Vector;
 
 import main.java.memoranda.util.Commit;
@@ -26,7 +29,7 @@ public class CommitListImpl implements CommitList {
     
     
     private String filePath = null;
-    Vector<Commit> commits = new Vector<Commit>();
+    ArrayList<Commit> commits = new ArrayList<Commit>();
     private Document document = null;
     
     
@@ -65,7 +68,7 @@ public class CommitListImpl implements CommitList {
     }
     
     
-    public Vector<Commit> getAllCommits() {
+    public List<Commit> getAllCommits() {
         return commits;
     }
     
@@ -103,10 +106,24 @@ public class CommitListImpl implements CommitList {
         
     }
     
+    /**
+     * Adds a commit to both the ArrayList of commits as well as the document
+     * that's holding all the commits if that commit hasn't already been added
+     * based on the commit's sha.
+     * @param cmt The commit object to be added
+     * @return true if the commit was added, false if it already exists.
+     */
     public boolean addCommit(Commit cmt) {
-        Element root = document.getRootElement();
-        root.appendChild(cmt.toXml());
-        return commits.add(cmt);
+        // First lets check if the new commit's sha is already in our arraylist.
+        if (this.getCommit(cmt.getSha()) == null) {
+            Element root = document.getRootElement();
+            commits.add(cmt);
+            Collections.sort(commits, Collections.reverseOrder());
+            root.appendChild(cmt.toXml());
+            return true;
+        } else {
+            return false;
+        }
     }
     
     public int getAllCommitsCount() {

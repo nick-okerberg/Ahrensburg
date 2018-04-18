@@ -471,6 +471,7 @@ public class FileStorage implements Storage {
         saveDocument(
                 cl.getXmlContent(),
             JN_DOCPATH + prj.getID() + File.separator + ".commits");
+        Util.debug("saved cl: " + cl);
     }
     
     /**
