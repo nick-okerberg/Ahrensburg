@@ -23,6 +23,7 @@ import javax.swing.event.HyperlinkListener;
 
 import org.json.JSONException;
 
+import main.java.memoranda.CommitList;
 import main.java.memoranda.CurrentProject;
 import main.java.memoranda.EventNotificationListener;
 import main.java.memoranda.EventsManager;
@@ -72,13 +73,10 @@ public class CommitsPanel extends JPanel {
 	String gotoTask = null;
 
 	boolean isActive = true;
-	private final JButton btnNewButton = new JButton("+Add Member");
-	private final JButton btnNewButton_1 = new JButton("- Delete Member");
-	// US35 - New JButton for setting a GitHub Repo. 
-	private final JButton btnNewButtonRepo = new JButton("Set GitHub Repo");
 	private final JButton btnNewButtonUpdate = new JButton("Update");
 	// US37 - New JButton for refreshing commit data by calling GitHub API. 
 	private final JButton btnRefreshcommits = new JButton("RefreshCommits");
+	private final JButton btnNewButton = new JButton("Compare TeamMembers");
 
 	public CommitsPanel(DailyItemsPanel _parentPanel) {
 		try {
@@ -273,39 +271,6 @@ public class CommitsPanel extends JPanel {
 		toolBar.addSeparator(new Dimension(8, 24));
 
 		this.add(toolBar, BorderLayout.NORTH);
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				MemberAdd.main(null);
-				System.out.println(CurrentProject.get().getTitle());
-			}
-		});
-		
-		toolBar.add(btnNewButton);
-		btnNewButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				MemberDelete.main(null);
-				System.out.println(CurrentProject.get().getTitle());
-			}
-		});
-		
-		toolBar.add(btnNewButton_1);
-		
-		/*
-		 * US35 - Begin code modification
-		 * Action Listener for pressing the new "Set GitHub Repo" button. 
-		 */
-		
-		// First, add the new button to the toolBar at the top of the "Agenda" view. 
-		toolBar.add(btnNewButtonRepo);
-		
-		// Next, add an action listener for this new button, calling RepoSet function. 
-		btnNewButtonRepo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				RepoSet.main(null);
-				// Get the project name that is currently selected.    
-				System.out.println(CurrentProject.get().getTitle());
-			}
-		});
 		// End of US35 modification for action listener. 
 		
 		
@@ -333,6 +298,8 @@ public class CommitsPanel extends JPanel {
 		
 		// US37 - Add a button to the toolbar for refreshing commit data from GitHub API. 
 		toolBar.add(btnRefreshcommits);
+		
+		toolBar.add(btnNewButton);
 		
 		// US37 - Add an action listener for this new button, calling GitHub API to update commit data. 
 		btnRefreshcommits.addActionListener(new ActionListener() {
@@ -365,7 +332,8 @@ public class CommitsPanel extends JPanel {
 					Project prj,
 					NoteList nl,
 					TaskList tl,
-					ResourcesList rl) {
+					ResourcesList rl,
+					CommitList cl) {
 			}
 
 			public void projectWasChanged() {
