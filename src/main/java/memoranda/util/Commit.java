@@ -20,7 +20,7 @@ import nu.xom.Element;
  * @Version 1.1
  *
  */
-public class Commit {
+public class Commit implements Comparable {
     private String _sha, _authorName, _dateString, _message, _htmlUrl,
             _authorLogin;
     private int _additions, _deletions, _totalLoc;
@@ -36,7 +36,6 @@ public class Commit {
         this.setSha(null);
         this.setAuthorName(null);
         this.setDateString(null);
-        this.setDate(null);
         this.setMessage(null);
         this.setHtmlUrl(null);
         this.setAuthorLogin(null);
@@ -69,7 +68,6 @@ public class Commit {
         this.setSha(sha);
         this.setAuthorName(authorName);
         this.setDateString(dateString);
-        this.setDate(parseDate(dateString));
         this.setMessage(message);
         this.setHtmlUrl(htmlUrl);
         this.setAuthorLogin(authorLogin);
@@ -93,7 +91,6 @@ public class Commit {
                 .getString("name");
         this.setDateString(json.getJSONObject("commit").getJSONObject("author")
                 .getString("date"));
-        this.setDate(parseDate(_dateString));
         this._message = json.getJSONObject("commit").getString("message");
         this.setHtmlUrl(json.getString("html_url"));
         this._numTests = getNumTestsFromMessage(_message); // US37
@@ -116,7 +113,7 @@ public class Commit {
         }
         // System.out.println("Commit object built - Json const");
     }
-    
+
     public Commit(Element root) {
         this.setSha(root.getAttributeValue("sha"));
         this.setAuthorName(root.getAttributeValue("authorName"));
@@ -124,8 +121,10 @@ public class Commit {
         this.setMessage(root.getAttributeValue("message"));
         this.setHtmlUrl(root.getAttributeValue("url"));
         this.setAuthorLogin(root.getAttributeValue("authorLogin"));
-        this.setAdditions(Integer.parseInt(root.getAttributeValue("additions")));
-        this.setDeletions(Integer.parseInt(root.getAttributeValue("deletions")));
+        this.setAdditions(
+                Integer.parseInt(root.getAttributeValue("additions")));
+        this.setDeletions(
+                Integer.parseInt(root.getAttributeValue("deletions")));
         this.setTotalLoc(Integer.parseInt(root.getAttributeValue("totalLoc")));
         this.setNumTests(Integer.parseInt(root.getAttributeValue("numTests")));
     }
@@ -162,10 +161,10 @@ public class Commit {
 
     public void setDate(Date date) {
         this._date = date;
-        
+
         // Also update dateString
         TimeZone tz = TimeZone.getTimeZone("UTC");
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         df.setTimeZone(tz);
         this._dateString = df.format(date);
     }
@@ -245,7 +244,7 @@ public class Commit {
         }
         return date;
     }
-    
+
     public Element toXml() {
         Element root = new Element("commit");
         root.addAttribute(new Attribute("sha", _sha));
@@ -254,10 +253,12 @@ public class Commit {
         root.addAttribute(new Attribute("message", _message));
         root.addAttribute(new Attribute("url", _htmlUrl));
         root.addAttribute(new Attribute("authorLogin", _authorLogin));
-        root.addAttribute(new Attribute("additions", String.valueOf(_additions)));
-        root.addAttribute(new Attribute("deletions", String.valueOf(_deletions)));
+        root.addAttribute(
+                new Attribute("additions", String.valueOf(_additions)));
+        root.addAttribute(
+                new Attribute("deletions", String.valueOf(_deletions)));
         root.addAttribute(new Attribute("totalLoc", String.valueOf(_totalLoc)));
-        root.addAttribute(new Attribute("numTests", String.valueOf(_numTests)));     
+        root.addAttribute(new Attribute("numTests", String.valueOf(_numTests)));
         return root;
     }
 
@@ -304,5 +305,14 @@ public class Commit {
 
         return result;
     } // End of US37 method getNumTestsFromMessage
+
+    @Override
+    public int compareTo(Object cmt) {
+        if (cmt instanceof Commit) {
+            return this.getSha().compareTo(((Commit) cmt).getSha());
+        } else {
+            throw new ClassCastException("this is not a commit");
+        }
+    }
 
 } // End of class.
