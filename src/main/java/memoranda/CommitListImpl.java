@@ -71,7 +71,24 @@ public class CommitListImpl implements CommitList {
     public List<Commit> getAllCommits() {
         return commits;
     }
+
     
+    /**
+     * Filters for commits that match a specified author GitHub login name
+     * and returns a list of commits by that author.
+     * @param authorLogin the GitHub login name of the author
+     * @return A list of commits authored by the specified login name
+     */
+    public List<Commit> getAllCommitsByAuthor(String authorLogin) {  
+        List<Commit> tempCommits = new ArrayList<Commit>(); 
+        for (int i = 0; i < commits.size(); i++) {
+            if (commits.get(i).getAuthorLogin().equals(authorLogin)) {
+                tempCommits.add(commits.get(i));
+            }
+        }
+        return tempCommits;
+    }
+       
     /**
      * Searches a vector of commits for the first commit to have a sha matching
      * the specified sha.
