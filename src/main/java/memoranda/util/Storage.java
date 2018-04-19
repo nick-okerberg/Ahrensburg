@@ -8,6 +8,7 @@
  */
 package main.java.memoranda.util;
 
+import main.java.memoranda.CommitList;
 import main.java.memoranda.Note;
 import main.java.memoranda.NoteList;
 import main.java.memoranda.Project;
@@ -45,6 +46,9 @@ public interface Storage {
    
     ResourcesList openResourcesList(Project prj);
     void storeResourcesList(ResourcesList rl, Project prj);
+    
+    CommitList openCommitList(Project prj);
+    void storeCommitList(CommitList cl, Project prj);
     
     void restoreContext();
     void storeContext(); 

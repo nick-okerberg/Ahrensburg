@@ -34,6 +34,7 @@ import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.text.html.HTMLDocument;
 
+import main.java.memoranda.CommitList;
 import main.java.memoranda.CurrentProject;
 import main.java.memoranda.History;
 import main.java.memoranda.Note;
@@ -244,8 +245,8 @@ public class AppFrame extends JFrame {
     JMenuItem jMenuHelpWeb = new JMenuItem();
     JMenuItem jMenuHelpBug = new JMenuItem();
     JMenuItem jMenuHelpAbout = new JMenuItem();
-    private final JMenu mnNewMenu = new JMenu("API Settings");
-    private final JMenuItem mntmAuthentciate = new JMenuItem("Authenticate Credentials");
+    private final JMenu _mnNewMenu = new JMenu("API Settings");
+    private final JMenuItem _mntmAuthentciate = new JMenuItem("Authenticate Credentials");
 
     //Construct the frame
     public AppFrame() {
@@ -260,7 +261,7 @@ public class AppFrame extends JFrame {
     //Component initialization
     private void jbInit() throws Exception {
         this.setIconImage(new ImageIcon(AppFrame.class.getResource(
-                "/ui/icons/jnotes16.png"))
+                "/ui/icons/icon.png"))
                 .getImage());
         contentPane = (JPanel) this.getContentPane();
         contentPane.setLayout(borderLayout1);
@@ -559,15 +560,15 @@ public class AppFrame extends JFrame {
         jMenuGo.add(jMenuGoDayFwd);
         jMenuGo.add(jMenuGoToday);
         
-        menuBar.add(mnNewMenu);
-        mntmAuthentciate.addActionListener(new ActionListener() {
+        menuBar.add(_mnNewMenu);
+        _mntmAuthentciate.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
         		System.out.println("clicked");
         		SetCredDialog.main(null);
         	}
         });
         
-        mnNewMenu.add(mntmAuthentciate);
+        _mnNewMenu.add(_mntmAuthentciate);
 
         splitPane.setBorder(null);
         workPanel.setBorder(null);
@@ -637,7 +638,7 @@ public class AppFrame extends JFrame {
         CurrentProject.addProjectListener(new ProjectListener() {
 
             public void projectChange(Project prj, NoteList nl, TaskList tl,
-                    ResourcesList rl) {
+                    ResourcesList rl, CommitList cl) {
             }
 
             public void projectWasChanged() {

@@ -19,6 +19,8 @@ import java.net.URL;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
+import main.java.memoranda.CommitList;
+import main.java.memoranda.CommitListImpl;
 import main.java.memoranda.EventsManager;
 import main.java.memoranda.Note;
 import main.java.memoranda.NoteList;
@@ -33,7 +35,6 @@ import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.ui.ExceptionDialog;
 import main.java.memoranda.ui.htmleditor.AltHTMLWriter;
 import nu.xom.Builder;
-import nu.xom.DocType;
 import nu.xom.Document;
 
 
@@ -439,6 +440,40 @@ public class FileStorage implements Storage {
             rl.getXMLContent(),
             JN_DOCPATH + prj.getID() + File.separator + ".resources");
     }
+    
+    /**
+     * @see main.java.memoranda.util.Storage#openCommitList(main.java.memoranda.Project)
+     */
+    public CommitList openCommitList(Project prj) {
+        String fn = JN_DOCPATH + prj.getID() + File.separator + ".commits";
+        if (documentExists(fn)) {
+            /*DEBUG*/
+            System.out.println("[DEBUG] Open commit list: " + fn);
+            return new CommitListImpl(fn);
+        }
+        else {
+            /*DEBUG*/
+            System.out.println("[DEBUG] New commit list created");
+            return new CommitListImpl(fn, true);
+        }
+    }
+    /**
+     * @see main.java.memoranda.util.Storage#storeResourcesList(main.java.memoranda.ResourcesList, main.java.memoranda.Project)
+     */
+    public void storeCommitList(CommitList cl, Project prj) {
+        /*DEBUG*/
+        System.out.println(
+            "[DEBUG] Save commit list: "
+                + JN_DOCPATH
+                + prj.getID()
+                + File.separator
+                + ".commits");
+        saveDocument(
+                cl.getXmlContent(),
+            JN_DOCPATH + prj.getID() + File.separator + ".commits");
+        Util.debug("saved cl: " + cl);
+    }
+    
     /**
      * @see main.java.memoranda.util.Storage#restoreContext()
      */

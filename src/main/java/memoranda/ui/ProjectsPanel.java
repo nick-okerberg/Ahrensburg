@@ -33,6 +33,7 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import main.java.memoranda.CommitList;
 import main.java.memoranda.CurrentProject;
 import main.java.memoranda.NoteList;
 import main.java.memoranda.Project;
@@ -240,7 +241,8 @@ public class ProjectsPanel extends JPanel implements ExpandablePanel {
 				Project p,
 				NoteList nl,
 				TaskList tl,
-				ResourcesList rl) {
+				ResourcesList rl,
+				CommitList cl) {
 			}
 			public void projectWasChanged() {
 				curProjectTitle.setText(CurrentProject.get().getTitle());
