@@ -516,7 +516,7 @@ String footer = "</table></body></html>";
 		
     	// Get all commits from the current project's JsonApiClass. 
 		//ArrayList<Commit> listOfAllCommits = currentProjectJSON.getCommitsArrLst();	// old commented out.
-    	ArrayList<Commit> listOfAllCommits = new ArrayList<>();
+    	Vector<Commit> listOfAllCommits = new Vector<>();
     	try {
         	listOfAllCommits = currentProjectJSON.getCommitsArrLst();
         }

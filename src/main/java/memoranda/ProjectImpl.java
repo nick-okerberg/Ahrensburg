@@ -14,6 +14,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
+import java.util.Vector;
 
 import org.json.JSONException;
 
@@ -363,11 +364,11 @@ public class ProjectImpl implements Project {
           // TODO Auto-generated catch block
           e.printStackTrace();
         }
-        Deque<Contributor> contributors = jac.getContributors();
-        while (contributors.peek() != null) {
-          Contributor cb = contributors.pop();
-          this.addMember(cb.getName(), cb.getLogin());
-        }        
+        Vector<Contributor> contributors = jac.getContributors();
+        for (int i = 0; i < contributors.size(); i++) {
+            Contributor cb = contributors.get(i);
+            this.addMember(cb.getName(), cb.getLogin());
+        }
         /* End US41 changes */
 	} 
 	// End of US35 implementation for GitHub Repo Name. 
