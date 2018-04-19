@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
@@ -296,8 +298,8 @@ public class JsonApiClass {
   private JSONObject getJsonFromURL(URL url) throws IOException, JSONException {
     // Got to the Repo URL to get the base JSON object
     HttpURLConnection con = (HttpURLConnection) url.openConnection();
-    String pass =  "Basic TmVyZ2FsR0l2YXJrZXM6S2VlcDQ0ZG9n";
-    con.setRequestProperty ("Authorization", pass);
+    String content = new String(Files.readAllBytes(Paths.get(Util.getEnvDir()+"authencoded.txt")));
+    con.setRequestProperty ("Authorization", content);	
     BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
     Util.debug("Making gitHub API call to: " + url.toString());
     JSONObject json = new JSONObject(new JSONTokener(br));
@@ -316,8 +318,8 @@ public class JsonApiClass {
   private JSONArray getJsonArrayFromURL(URL url) throws IOException, JSONException {
     // Got to the Repo URL to get the base JSON object
     HttpURLConnection con = (HttpURLConnection) url.openConnection();
-    String pass =  "Basic TmVyZ2FsR0l2YXJrZXM6S2VlcDQ0ZG9n";
-    con.setRequestProperty ("Authorization", pass);
+    String content = new String(Files.readAllBytes(Paths.get(Util.getEnvDir()+"authencoded.txt")));
+    con.setRequestProperty ("Authorization", content);	
     BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
     Util.debug("Making gitHub API call to: " + url.toString());
     JSONArray json = new JSONArray(new JSONTokener(br));
