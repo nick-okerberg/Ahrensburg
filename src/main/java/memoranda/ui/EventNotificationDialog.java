@@ -63,7 +63,7 @@ public class EventNotificationDialog extends JFrame {
   }
   void jbInit() throws Exception {
     this.setResizable(false);
-    this.setIconImage(new ImageIcon(EventNotificationDialog.class.getResource("/ui/icons/jnotes16.png")).getImage());
+    this.setIconImage(new ImageIcon(EventNotificationDialog.class.getResource("/ui/icons/icon.png")).getImage());
     this.getContentPane().setBackground(new Color(251, 197, 63));
     border2 = BorderFactory.createEmptyBorder(0,30,0,30);
     border3 = BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(Color.white,new Color(142, 142, 142)),BorderFactory.createEmptyBorder(0,30,0,30));
