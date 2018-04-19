@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -298,8 +299,14 @@ public class JsonApiClass {
   private JSONObject getJsonFromURL(URL url) throws IOException, JSONException {
     // Got to the Repo URL to get the base JSON object
     HttpURLConnection con = (HttpURLConnection) url.openConnection();
-    String content = new String(Files.readAllBytes(Paths.get(Util.getEnvDir()+"authencoded.txt")));
-    con.setRequestProperty ("Authorization", content);	
+    try {
+        String content = new String(Files.readAllBytes(Paths.get(Util.getEnvDir()+"authencoded.txt")));
+        con.setRequestProperty ("Authorization", content);	
+    }
+    catch(Exception e) {
+    	System.out.println("File does not exist...Reverting to 60 request per hour");
+    	System.out.println(e.getMessage());
+    }
     BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
     Util.debug("Making gitHub API call to: " + url.toString());
     JSONObject json = new JSONObject(new JSONTokener(br));
@@ -318,8 +325,14 @@ public class JsonApiClass {
   private JSONArray getJsonArrayFromURL(URL url) throws IOException, JSONException {
     // Got to the Repo URL to get the base JSON object
     HttpURLConnection con = (HttpURLConnection) url.openConnection();
-    String content = new String(Files.readAllBytes(Paths.get(Util.getEnvDir()+"authencoded.txt")));
-    con.setRequestProperty ("Authorization", content);	
+    try {
+        String content = new String(Files.readAllBytes(Paths.get(Util.getEnvDir()+"authencoded.txt")));
+        con.setRequestProperty ("Authorization", content);	
+    }
+    catch(Exception e) {
+    	System.out.println("File does not exist...Reverting to 60 request per hour");
+    	System.out.println(e.getMessage());
+    }
     BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
     Util.debug("Making gitHub API call to: " + url.toString());
     JSONArray json = new JSONArray(new JSONTokener(br));
