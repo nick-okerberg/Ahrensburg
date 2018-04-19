@@ -6,7 +6,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({ CommitListImplTest.class, GitCredTest.class,
-        JsonApiClassTest.class, ProjectTest.class })
+        JsonApiClassTest.class, ProjectTest.class, PullRequestTest.class })
 public class AllTests {
 
 }
