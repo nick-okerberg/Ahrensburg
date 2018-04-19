@@ -1,17 +1,22 @@
 package test.java;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.List;
 
-import main.java.memoranda.CommitList;
-import main.java.memoranda.CommitListImpl;
-import main.java.memoranda.util.Commit;
-
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import main.java.memoranda.CommitList;
+import main.java.memoranda.CommitListImpl;
+import main.java.memoranda.util.Commit;
 
 public class CommitListImplTest {
     CommitList commitListFromFile;
@@ -62,8 +67,17 @@ public class CommitListImplTest {
         }
         commitListFromFile = new CommitListImpl(filePathFull);
         commitListNew = new CommitListImpl(filePathEmpty, true);
-        
-        
+    }
+    
+    /**
+     * Cleans up files created during testing
+     */
+    @After
+    public void removeTestFiles() {
+        File full = new File(filePathFull);
+        File empty = new File(filePathEmpty);
+        full.delete();
+        empty.delete();
     }
 
     @Test

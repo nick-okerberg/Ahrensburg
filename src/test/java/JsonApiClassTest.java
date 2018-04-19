@@ -7,6 +7,7 @@ import main.java.memoranda.util.JsonApiClass;
 
 import org.json.JSONException;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 
@@ -16,12 +17,13 @@ import static org.junit.Assert.*;
 
 public class JsonApiClassTest {
     URL url = null;
-    JsonApiClass jac = null;
+    static JsonApiClass jac = null;
     
     /**
      * Builds a JsonApiClass based on Jordan Wine's SER316 repo to use to test.
      */
-    public JsonApiClassTest() {
+    @BeforeClass
+    public static void setup() {
         URL url;
         try {
             url = new URL("https://api.github.com/repos/DrChunks/jwine2_review");
