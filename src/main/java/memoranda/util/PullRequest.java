@@ -35,7 +35,7 @@ import nu.xom.Element;
  * @Version 1.0
  *
  */
-public class PullRequest {
+public class PullRequest  implements Comparable {
 	private String _state; 		// The Pull request state: Either Open, Closed. Default is Open. 
 	private String _title;		// The Pull request title. 
 	private int _id; 			// The Pull request id number. 
@@ -158,8 +158,27 @@ public class PullRequest {
     	
     	System.out.println("[DEBUG] PullRequest object built - constructor based on json");
     }
-    	
 
+    /**
+     * Parse an nu.xom (basically xml) element for the relevant attributes.
+     * @param root the XOM Element to parse
+     */
+    public PullRequest(Element root) {
+        this.set_state(root.getAttributeValue("state"));
+        this.set_title(root.getAttributeValue("title"));
+        this.set_id(Integer.parseInt(root.getAttributeValue("id")));
+        this.set_number(Integer.parseInt(root.getAttributeValue("number")));
+        this.set_createdAt(parseDate(root.getAttributeValue("created_at")));
+        this.set_url(root.getAttributeValue("html_url"));
+        this.set_user(root.getAttributeValue("user"));
+        this.set_mergedBy(root.getAttributeValue("merged_by"));
+        this.set_head(root.getAttributeValue("head"));
+        this.set_base(root.getAttributeValue("base"));
+        this.set_merged(Boolean.parseBoolean(root.getAttributeValue("merged")));
+        
+        // TODO handle list of reviewers
+        // TODO handle approved by list??? I don't see this one in the GitHub API
+    }
     
 	/**
 	 * @return the _state
@@ -342,6 +361,48 @@ public class PullRequest {
 	public void set_approvedBy(ArrayList<String> approvedBy) {
 		this._approvedBy = approvedBy;
 	}
+
+    @Override
+    public int compareTo(Object pr) {
+        if (pr instanceof PullRequest) {
+            Integer newId = Integer.valueOf(((PullRequest)pr).get_id());
+            Integer myId = Integer.valueOf(this.get_id());
+            return myId.compareTo(newId);
+        } else {
+            throw new ClassCastException("this is not a commit");
+        }
+    }
+
+    /**
+     * returns the XML version of this object.
+     * @return the nu.xom Element of this Pull Request.
+     */
+    public Element toXml() {
+        Element root = new Element("pullrequest");
+        root.addAttribute(new Attribute("state", _state));
+        root.addAttribute(new Attribute("title", _title));
+        root.addAttribute(new Attribute("id", String.valueOf(_id)));
+        root.addAttribute(new Attribute("number", String.valueOf(_number)));
+        root.addAttribute(new Attribute("created_at", dateToString(_createdAt)));
+        root.addAttribute(new Attribute("html_url", _url));
+        root.addAttribute(new Attribute("user", _user));
+        root.addAttribute(new Attribute("merged_by", _mergedBy));
+        root.addAttribute(new Attribute("head", _head));
+        root.addAttribute(new Attribute("base", _base));
+        root.addAttribute(new Attribute("merged", String.valueOf(_merged)));
+        // TODO handle reviewers list and approved list 
+        return root;
+    }
+    
+    private String dateToString(Date date) {
+        String tempDateStr = null;
+        // Also update dateString
+        TimeZone tz = TimeZone.getTimeZone("UTC");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        df.setTimeZone(tz);
+        tempDateStr = df.format(date);
+        return tempDateStr;
+    }
 	
 	/**
 	 * Setter for approvedBy, using JSONArray as input.

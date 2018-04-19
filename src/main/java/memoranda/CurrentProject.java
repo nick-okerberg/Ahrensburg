@@ -29,6 +29,7 @@ public class CurrentProject {
     private static NoteList _notelist = null;
     private static ResourcesList _resources = null;
     private static CommitList _commits = null;
+    private static PullRequestList _pullRequests = null;
     private static Vector projectListeners = new Vector();
 
         
@@ -55,6 +56,7 @@ public class CurrentProject {
         _notelist = CurrentStorage.get().openNoteList(_project);
         _resources = CurrentStorage.get().openResourcesList(_project);
         _commits = CurrentStorage.get().openCommitList(_project);
+        _pullRequests = CurrentStorage.get().openPullRequestList(_project);
         AppFrame.addExitListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 save();                                               
@@ -82,6 +84,10 @@ public class CurrentProject {
     public static CommitList getCommitList() {
             return _commits;
     }
+    
+    public static PullRequestList getPullRequestList() {
+            return _pullRequests;
+    }
 
     public static void set(Project project) {
         if (project.getID().equals(_project.getID())) return;
@@ -89,12 +95,15 @@ public class CurrentProject {
         NoteList newnotelist = CurrentStorage.get().openNoteList(project);
         ResourcesList newresources = CurrentStorage.get().openResourcesList(project);
         CommitList newcommits = CurrentStorage.get().openCommitList(project);
-        notifyListenersBefore(project, newnotelist, newtasklist, newresources, newcommits);
+        PullRequestList newpullrequests = CurrentStorage.get().openPullRequestList(project);
+        notifyListenersBefore(project, newnotelist, newtasklist, 
+                newresources, newcommits, newpullrequests);
         _project = project;
         _tasklist = newtasklist;
         _notelist = newnotelist;
         _resources = newresources;
         _commits = newcommits;
+        _pullRequests = newpullrequests;
         notifyListenersAfter();
         Context.put("LAST_OPENED_PROJECT_ID", project.getID());
     }
@@ -108,9 +117,9 @@ public class CurrentProject {
     }
 
     private static void notifyListenersBefore(Project project, NoteList nl, 
-            TaskList tl, ResourcesList rl, CommitList cl) {
+            TaskList tl, ResourcesList rl, CommitList cl, PullRequestList prl) {
         for (int i = 0; i < projectListeners.size(); i++) {
-            ((ProjectListener)projectListeners.get(i)).projectChange(project, nl, tl, rl, cl);
+            ((ProjectListener)projectListeners.get(i)).projectChange(project, nl, tl, rl, cl, prl);
             /*DEBUGSystem.out.println(projectListeners.get(i));*/
         }
     }
@@ -128,6 +137,7 @@ public class CurrentProject {
         storage.storeTaskList(_tasklist, _project); 
         storage.storeResourcesList(_resources, _project);
         storage.storeCommitList(_commits, _project);
+        storage.storePullRequestList(_pullRequests, _project);
         storage.storeProjectManager();
     }
     
@@ -137,5 +147,6 @@ public class CurrentProject {
         _notelist = null;
         _resources = null;
         _commits = null;
+        _pullRequests = null;
     }
 }

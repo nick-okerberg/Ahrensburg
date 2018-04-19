@@ -12,6 +12,7 @@ import main.java.memoranda.CommitList;
 import main.java.memoranda.Note;
 import main.java.memoranda.NoteList;
 import main.java.memoranda.Project;
+import main.java.memoranda.PullRequestList;
 import main.java.memoranda.ResourcesList;
 import main.java.memoranda.TaskList;
 /**
@@ -49,6 +50,9 @@ public interface Storage {
     
     CommitList openCommitList(Project prj);
     void storeCommitList(CommitList cl, Project prj);
+    
+    PullRequestList openPullRequestList(Project prj);
+    void storePullRequestList(PullRequestList prl, Project prj);
     
     void restoreContext();
     void storeContext(); 

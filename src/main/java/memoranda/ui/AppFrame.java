@@ -41,6 +41,7 @@ import main.java.memoranda.Note;
 import main.java.memoranda.NoteList;
 import main.java.memoranda.Project;
 import main.java.memoranda.ProjectListener;
+import main.java.memoranda.PullRequestList;
 import main.java.memoranda.ResourcesList;
 import main.java.memoranda.TaskList;
 import main.java.memoranda.date.CurrentDate;
@@ -638,7 +639,7 @@ public class AppFrame extends JFrame {
         CurrentProject.addProjectListener(new ProjectListener() {
 
             public void projectChange(Project prj, NoteList nl, TaskList tl,
-                    ResourcesList rl, CommitList cl) {
+                    ResourcesList rl, CommitList cl, PullRequestList prl) {
             }
 
             public void projectWasChanged() {

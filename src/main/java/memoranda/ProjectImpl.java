@@ -23,6 +23,7 @@ import main.java.memoranda.date.CurrentDate;
 import main.java.memoranda.util.Commit;
 import main.java.memoranda.util.Contributor;
 import main.java.memoranda.util.JsonApiClass;
+import main.java.memoranda.util.PullRequest;
 import main.java.memoranda.util.Util;
 import nu.xom.Attribute;
 import nu.xom.Element;
@@ -292,8 +293,15 @@ public class ProjectImpl implements Project {
             CommitList cl = CurrentProject.getCommitList();
             for (int i = 0; i < commits.size(); i++) {
                 cl.addCommit(commits.get(i));
-                //Util.debug("added commit: "+ commits.get(i).getSha() + "to cl " + cl);
             }
+            
+            // TODO probably need to move this to addPullRequest or something like that
+            List<PullRequest> pullRequests = JAC.getPullRequests();
+            PullRequestList prl = CurrentProject.getPullRequestList();
+            for (int i = 0; i < pullRequests.size(); i++) {
+                prl.addPullRequest(pullRequests.get(i));
+            }
+            
         }
         catch (Exception ex) {
             Util.debug(ex.getMessage());

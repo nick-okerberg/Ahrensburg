@@ -35,6 +35,7 @@ import main.java.memoranda.NoteList;
 import main.java.memoranda.NoteListener;
 import main.java.memoranda.Project;
 import main.java.memoranda.ProjectListener;
+import main.java.memoranda.PullRequestList;
 import main.java.memoranda.ResourcesList;
 import main.java.memoranda.Task;
 import main.java.memoranda.TaskList;
@@ -226,11 +227,11 @@ public class DailyItemsPanel extends JPanel {
         });
 
         CurrentProject.addProjectListener(new ProjectListener() {
-            public void projectChange(Project p, NoteList nl, TaskList tl, ResourcesList rl, CommitList cl) {
+            public void projectChange(Project p, NoteList nl, TaskList tl, ResourcesList rl, CommitList cl, PullRequestList prl) {
 //            	Util.debug("DailyItemsPanel Project Listener: Project is going to be changed!");				
 //            	Util.debug("current project is " + CurrentProject.get().getTitle());
 
-            	currentProjectChanged(p, nl, tl, rl);
+            	currentProjectChanged(p, nl, tl, rl, cl, prl);
             }
             public void projectWasChanged() {
 //            	Util.debug("DailyItemsPanel Project Listener: Project has been changed!");            	
@@ -367,7 +368,7 @@ public class DailyItemsPanel extends JPanel {
 		editorPanel.editor.requestFocus();		
 	}
 	
-    void currentProjectChanged(Project newprj, NoteList nl, TaskList tl, ResourcesList rl) {
+    void currentProjectChanged(Project newprj, NoteList nl, TaskList tl, ResourcesList rl, CommitList cl, PullRequestList prl) {
 //		Util.debug("currentProjectChanged");
 
         Cursor cur = App.getFrame().getCursor();

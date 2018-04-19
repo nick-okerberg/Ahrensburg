@@ -50,6 +50,7 @@ import main.java.memoranda.CurrentProject;
 import main.java.memoranda.NoteList;
 import main.java.memoranda.Project;
 import main.java.memoranda.ProjectListener;
+import main.java.memoranda.PullRequestList;
 import main.java.memoranda.ResourcesList;
 import main.java.memoranda.TaskList;
 import main.java.memoranda.date.CalendarDate;
@@ -115,7 +116,7 @@ public class TaskTable extends JTable {
         });
         CurrentProject.addProjectListener(new ProjectListener() {
             public void projectChange(Project p, NoteList nl, TaskList tl,
-                    ResourcesList rl, CommitList cl) {
+                    ResourcesList rl, CommitList cl, PullRequestList prl) {
             }
 
             public void projectWasChanged() {
