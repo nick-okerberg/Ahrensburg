@@ -5,8 +5,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.TimeZone;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -56,7 +58,7 @@ public class PullRequest {
         this.set_base("");
         this.set_merged(false);
         this.set_reviewers(null);
-        this.set_approvedBy(null);
+        this.set_approvedBy(new ArrayList<String>(null));
         System.out.println("[DEBUG] PullRequest object built - default constructor");
     }
 
@@ -127,7 +129,17 @@ public class PullRequest {
     	this._base = json.getJSONObject("base").getString("ref");
     	this._merged = json.getBoolean("merged");
     	
-    	// TODO: ArrayLists. 
+    	// Get an Array of the requested reviewers, if any, for the pull request. 
+    	JSONArray jReviewers = (JSONArray)json.get("requested_reviewers");
+    	if (jReviewers != null) {
+    	    for (int i = 0; i < jReviewers.length(); i++) {
+    	        this._reviewers.add(jReviewers.getString(i));
+    	    }
+    	}
+    	
+    	// this._approvedBy is not populated because it requires a different API call. 
+    	// Use the Setter for this. 
+    	// https://developer.github.com/v3/pulls/reviews/
     	
     	System.out.println("[DEBUG] PullRequest object built - constructor based on json");
     }
@@ -315,6 +327,43 @@ public class PullRequest {
 	public void set_approvedBy(ArrayList<String> approvedBy) {
 		this._approvedBy = approvedBy;
 	}
+	
+	/**
+	 * Setter for approvedBy, using JSONObject as input.
+	 * Uses this format: 
+	 *     https://developer.github.com/v3/pulls/reviews/
+	 *     
+	 * @param j The input JSON object from the GitHub pulls/reviews API. 
+	 */
+	public void set_approvedBy(JSONObject j) {
+	   // The JSONArray of Approvers, empty to start with.  
+	   JSONArray jApprovers = new JSONArray();
+	   
+	   // Build an iterator over the input JSONObject j. 
+	   Iterator itr = j.keys(); 
+	   
+	   // Iterate over the input JSONObject j, adding each item to the JSONArray. 
+	   while (itr.hasNext()) {
+	       try {
+	           jApprovers.put(j.get( (String) itr.next()) );
+	       } catch (JSONException e) {
+	           e.printStackTrace();
+	       }
+	   }
+	   
+	   if (jApprovers != null) {
+	       for (int i = 0; i < jApprovers.length(); i++) {
+	           try {
+	               this._approvedBy.add(jApprovers.getString(i));
+	           } catch (JSONException e) {
+                e.printStackTrace();
+	           }
+	       } // End for
+	   } // End if
+	   
+   } // End of method
+	
+	
 	
 	/**
 	 * Takes a string representing the date as input, then parses
