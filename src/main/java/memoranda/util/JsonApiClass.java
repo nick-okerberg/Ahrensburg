@@ -249,8 +249,14 @@ public class JsonApiClass {
             throws IOException, JSONException {
         // Got to the Repo URL to get the base JSON object
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        String pass = "Basic TmVyZ2FsR0l2YXJrZXM6S2VlcDQ0ZG9n";
-        con.setRequestProperty("Authorization", pass);
+        try {
+            String content = new String(Files.readAllBytes(Paths.get(Util.getEnvDir()+"authencoded.txt")));
+            con.setRequestProperty ("Authorization", content);	
+        }
+        catch(Exception e) {
+        	System.out.println("File does not exist...Reverting to 60 request per hour");
+        	System.out.println(e.getMessage());
+        }
         BufferedReader br = new BufferedReader(
                 new InputStreamReader(con.getInputStream()));
         Util.debug("Making gitHub API call to: " + url.toString());
@@ -273,8 +279,14 @@ public class JsonApiClass {
             throws IOException, JSONException {
         // Got to the Repo URL to get the base JSON object
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        String pass = "Basic TmVyZ2FsR0l2YXJrZXM6S2VlcDQ0ZG9n";
-        con.setRequestProperty("Authorization", pass);
+        try {
+            String content = new String(Files.readAllBytes(Paths.get(Util.getEnvDir()+"authencoded.txt")));
+            con.setRequestProperty ("Authorization", content);	
+        }
+        catch(Exception e) {
+        	System.out.println("File does not exist...Reverting to 60 request per hour");
+        	System.out.println(e.getMessage());
+        }
         BufferedReader br = new BufferedReader(
                 new InputStreamReader(con.getInputStream()));
         Util.debug("Making gitHub API call to: " + url.toString());
