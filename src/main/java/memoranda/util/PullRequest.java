@@ -111,8 +111,8 @@ public class PullRequest {
     public PullRequest(JSONObject json) throws JSONException {
     	this._state = json.getString("state");
     	this._title = json.getString("title");
-    	this._id = Integer.parseInt(json.getString("id"));
-    	this._number = Integer.parseInt(json.getString("number"));
+    	this._id = json.getInt("id");
+    	this._number = json.getInt("number");
     	this._createdAt = parseDate(json.getString("created_at"));
     	this._url = json.getString("html_url");
     	this._user = json.getJSONObject("user").getString("login");

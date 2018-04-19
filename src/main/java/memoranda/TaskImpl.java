@@ -70,7 +70,7 @@ public class TaskImpl implements Task, Comparable {
     	JAC = p.getProjectJsonApiClass();
     	
     	// Get all commits from the current project's JsonApiClass. 
-    	ArrayList<Commit> myCommits = new ArrayList<>();
+    	Vector<Commit> myCommits = new Vector<>();
     	try {
         	myCommits = JAC.getCommitsArrLst();
         }
