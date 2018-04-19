@@ -5,8 +5,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.TimeZone;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,6 +20,16 @@ import nu.xom.Element;
  * Class to define a Pull Request to store data from a GitHub repo. When the GitHub
  * data is analzyed and parsed, these Pull Request objects can be built to store
  * that data for later use in displaying it. 
+ * 
+ * Most of the PullRequest object data can be built with the API using the following 
+ * JSONObject format as an example:
+ * 
+ *      https://api.github.com/repos/ser316asu-2018/Ahrensburg/pulls/118
+ *      
+ * However, the approvers are on a separate API page.  The following can be
+ * used for the approvers as an example as JSONArray: 
+ * 
+ *      https://developer.github.com/v3/pulls/reviews/
  * 
  * @author nick-okerberg
  * @Version 1.0
@@ -55,8 +67,8 @@ public class PullRequest {
         this.set_head("");
         this.set_base("");
         this.set_merged(false);
-        this.set_reviewers(null);
-        this.set_approvedBy(null);
+        this.set_reviewers(new ArrayList<String>());
+        this.set_approvedBy(new ArrayList<String>());
         System.out.println("[DEBUG] PullRequest object built - default constructor");
     }
 
@@ -109,6 +121,10 @@ public class PullRequest {
      * 
      */
     public PullRequest(JSONObject json) throws JSONException {
+        // Initialize the Reviewers ArrayList.
+        this._reviewers = new ArrayList<String>();
+        
+        // Parse the JSONObject, adding the values based on key. 
     	this._state = json.getString("state");
     	this._title = json.getString("title");
     	this._id = json.getInt("id");
@@ -127,7 +143,18 @@ public class PullRequest {
     	this._base = json.getJSONObject("base").getString("ref");
     	this._merged = json.getBoolean("merged");
     	
-    	// TODO: ArrayLists. 
+    	// Get an Array of the requested reviewers, if any, for the pull request. 
+    	JSONArray jReviewers = (JSONArray)json.get("requested_reviewers");
+    	if (jReviewers != null) {
+    	    for (int i = 0; i < jReviewers.length(); i++) {
+    	        //System.out.println("PullRequest debug reviewers: " + jReviewers.getJSONObject(i).getString("login"));
+    	        this._reviewers.add(jReviewers.getJSONObject(i).getString("login"));
+    	    }
+    	}
+    	
+    	// this._approvedBy is not populated because it requires a different API call. 
+    	// Use the Setter for this. 
+    	// https://developer.github.com/v3/pulls/reviews/
     	
     	System.out.println("[DEBUG] PullRequest object built - constructor based on json");
     }
@@ -315,6 +342,33 @@ public class PullRequest {
 	public void set_approvedBy(ArrayList<String> approvedBy) {
 		this._approvedBy = approvedBy;
 	}
+	
+	/**
+	 * Setter for approvedBy, using JSONArray as input.
+	 * Uses this format: 
+	 *     https://developer.github.com/v3/pulls/reviews/
+	 *     
+	 * @param j The input JSON array from the GitHub pulls/reviews API. 
+	 * 
+	 * @throws JSONException 
+	 */
+	public void set_approvedBy(JSONArray jApprovers) throws JSONException {
+	    
+	   // Initialize the Class variable first.
+	   this._approvedBy = new ArrayList<String>();
+	    
+	   // Iterate over the input JSONArray
+       // Get an Array of the approvers for the pull request. 
+       if (jApprovers != null) {
+           for (int i = 0; i < jApprovers.length(); i++) {
+               //System.out.println("PullRequest debug approvers: " + jApprovers.getJSONObject(i).getJSONObject("user").getString("login"));
+               this._approvedBy.add(jApprovers.getJSONObject(i).getJSONObject("user").getString("login"));
+           }
+       }
+	   
+   } // End of method
+	
+	
 	
 	/**
 	 * Takes a string representing the date as input, then parses
