@@ -27,6 +27,7 @@ import main.java.memoranda.Note;
 import main.java.memoranda.NoteList;
 import main.java.memoranda.Project;
 import main.java.memoranda.ProjectListener;
+import main.java.memoranda.PullRequestList;
 import main.java.memoranda.ResourcesList;
 import main.java.memoranda.TaskList;
 import main.java.memoranda.util.CurrentStorage;
@@ -115,7 +116,8 @@ public class SearchPanel extends JPanel {
         jPanel4.add(regexpCB, BorderLayout.CENTER);
         jPanel3.add(searchB, BorderLayout.SOUTH);
         CurrentProject.addProjectListener(new ProjectListener() {
-            public void projectChange(Project p, NoteList nl, TaskList tl, ResourcesList rl, CommitList cl) {
+            public void projectChange(Project p, NoteList nl, TaskList tl, 
+                    ResourcesList rl, CommitList cl, PullRequestList prl) {
                 notesList.update(new Vector());
             }
             public void projectWasChanged() {}

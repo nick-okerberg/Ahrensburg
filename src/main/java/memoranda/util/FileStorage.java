@@ -27,6 +27,8 @@ import main.java.memoranda.NoteList;
 import main.java.memoranda.NoteListImpl;
 import main.java.memoranda.Project;
 import main.java.memoranda.ProjectManager;
+import main.java.memoranda.PullRequestList;
+import main.java.memoranda.PullRequestListImpl;
 import main.java.memoranda.ResourcesList;
 import main.java.memoranda.ResourcesListImpl;
 import main.java.memoranda.TaskList;
@@ -450,8 +452,7 @@ public class FileStorage implements Storage {
             /*DEBUG*/
             System.out.println("[DEBUG] Open commit list: " + fn);
             return new CommitListImpl(fn);
-        }
-        else {
+        } else {
             /*DEBUG*/
             System.out.println("[DEBUG] New commit list created");
             return new CommitListImpl(fn, true);
@@ -472,6 +473,39 @@ public class FileStorage implements Storage {
                 cl.getXmlContent(),
             JN_DOCPATH + prj.getID() + File.separator + ".commits");
         Util.debug("saved cl: " + cl);
+    }
+    
+    /**
+     * @see main.java.memoranda.util.Storage#openPullRequestListList(main.java.memoranda.Project)
+     */
+    public PullRequestList openPullRequestList(Project prj) {
+        String fn = JN_DOCPATH + prj.getID() + File.separator + ".pullrequests";
+        if (documentExists(fn)) {
+            /*DEBUG*/
+            System.out.println("[DEBUG] Open pull request list: " + fn);
+            return new PullRequestListImpl(fn);
+        } else {
+            /*DEBUG*/
+            System.out.println("[DEBUG] New pull request list created");
+            return new PullRequestListImpl(fn, true);
+        }
+    }
+    
+    /**
+     * @see main.java.memoranda.util.Storage#storePullRequestList
+     */
+    public void storePullRequestList(PullRequestList prl, Project prj) {
+        /*DEBUG*/
+        System.out.println(
+            "[DEBUG] Save pull request list: "
+                + JN_DOCPATH
+                + prj.getID()
+                + File.separator
+                + ".pullrequests");
+        saveDocument(
+                prl.getXmlContent(),
+            JN_DOCPATH + prj.getID() + File.separator + ".pullrequests");
+        Util.debug("saved prl: " + prl);
     }
     
     /**

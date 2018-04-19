@@ -39,6 +39,7 @@ import main.java.memoranda.NoteList;
 import main.java.memoranda.Project;
 import main.java.memoranda.ProjectListener;
 import main.java.memoranda.ProjectManager;
+import main.java.memoranda.PullRequestList;
 import main.java.memoranda.ResourcesList;
 import main.java.memoranda.TaskList;
 import main.java.memoranda.date.CalendarDate;
@@ -242,7 +243,7 @@ public class ProjectsPanel extends JPanel implements ExpandablePanel {
 				NoteList nl,
 				TaskList tl,
 				ResourcesList rl,
-				CommitList cl) {
+				CommitList cl, PullRequestList prl) {
 			}
 			public void projectWasChanged() {
 				curProjectTitle.setText(CurrentProject.get().getTitle());
