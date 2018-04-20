@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 import java.util.Date;
 import java.util.Vector;
 
+import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
@@ -20,6 +21,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -47,6 +49,10 @@ public class TaskPanel extends JPanel {
     JButton historyBackB = new JButton();
     JToolBar tasksToolBar = new JToolBar();
     JButton historyForwardB = new JButton();
+    JButton newTransB = new JButton();          // Nick Okerberg US43 Task 145
+    JButton editTransB = new JButton();         // Nick Okerberg US43 Task 145
+    JButton removeTransB = new JButton();       // Nick Okerberg US43 Task 145
+    JButton completeTransB = new JButton();     // Nick Okerberg US43 Task 145
     JButton newTaskB = new JButton();
 //    JButton subTaskB = new JButton(); Ovadia Shalom US32
     JButton editTaskB = new JButton();
@@ -116,6 +122,27 @@ public class TaskPanel extends JPanel {
         });
         newTaskB.setBorderPainted(false);
         
+        /*
+         * US43 task 145 - Create a new Transition button on Sprint page. 
+         */
+        newTransB.setIcon(
+                new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/plus.png")));
+            newTransB.setEnabled(true);
+            newTransB.setMaximumSize(new Dimension(24, 24));
+            newTransB.setMinimumSize(new Dimension(24, 24));
+            newTransB.setToolTipText(Local.getString("Create new transition"));
+            newTransB.setRequestFocusEnabled(false);
+            newTransB.setPreferredSize(new Dimension(24, 24));
+            newTransB.setFocusable(false);
+            newTransB.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("[DEBUG] Clicked on \"New Transition\" from Sprint page");
+                    //TODO
+                    //newTransB_actionPerformed(e);
+                }
+            });
+            newTransB.setBorderPainted(false);
+        
 //        subTaskB.setIcon( Ovadia Shalom US32
 //            new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/todo_new_sub.png")));
 //        subTaskB.setEnabled(false);
@@ -148,6 +175,28 @@ public class TaskPanel extends JPanel {
         editTaskB.setIcon(
             new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/edit.png")));
 
+        /*
+         * US43 - Button to Edit a Transition, on the Sprint page. 
+         */
+        editTransB.setBorderPainted(false);
+        editTransB.setFocusable(false);
+        editTransB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // TODO: 
+                //editTransB_actionPerformed(e);
+            }
+        });
+        editTransB.setPreferredSize(new Dimension(24, 24));
+        editTransB.setRequestFocusEnabled(false);
+        editTransB.setToolTipText(Local.getString("Edit transition"));
+        editTransB.setMinimumSize(new Dimension(24, 24));
+        editTransB.setMaximumSize(new Dimension(24, 24));
+//        editTransB.setEnabled(true);
+        editTransB.setIcon(
+            new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/edit.png")));
+        
+        
+        
         removeTaskB.setBorderPainted(false);
         removeTaskB.setFocusable(false);
         removeTaskB.addActionListener(new java.awt.event.ActionListener() {
@@ -161,6 +210,25 @@ public class TaskPanel extends JPanel {
         removeTaskB.setMinimumSize(new Dimension(24, 24));
         removeTaskB.setMaximumSize(new Dimension(24, 24));
         removeTaskB.setIcon(
+            new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/minus.png")));
+        
+        /*
+         * US43 - Button to remove transition.
+         */
+        removeTransB.setBorderPainted(false);
+        removeTransB.setFocusable(false);
+        removeTransB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                //TODO:
+                //removeTransB_actionPerformed(e);
+            }
+        });
+        removeTransB.setPreferredSize(new Dimension(24, 24));
+        removeTransB.setRequestFocusEnabled(false);
+        removeTransB.setToolTipText(Local.getString("Remove transition"));
+        removeTransB.setMinimumSize(new Dimension(24, 24));
+        removeTransB.setMaximumSize(new Dimension(24, 24));
+        removeTransB.setIcon(
             new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/minus.png")));
         
         completeTaskB.setBorderPainted(false);
@@ -178,6 +246,33 @@ public class TaskPanel extends JPanel {
         completeTaskB.setIcon(
             new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/check.png")));
 
+        completeTaskB.setBorderPainted(false);
+        completeTaskB.setFocusable(false);
+        completeTaskB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                ppCompleteTask_actionPerformed(e);
+            }
+        });
+        
+        /*
+         * US43 - Button to Complete the Transition.
+         */
+        completeTransB.setPreferredSize(new Dimension(24, 24));
+        completeTransB.setRequestFocusEnabled(false);
+        completeTransB.setToolTipText(Local.getString("Complete transition"));
+        completeTransB.setMinimumSize(new Dimension(24, 24));
+        completeTransB.setMaximumSize(new Dimension(24, 24));
+        completeTransB.setIcon(
+            new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/check.png")));
+        completeTransB.setBorderPainted(false);
+        completeTransB.setFocusable(false);
+        completeTransB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // TODO:
+                //ppCompleteTrans_actionPerformed(e);
+            }
+        });
+        
 		// added by rawsushi
 //		showActiveOnly.setBorderPainted(false);
 //		showActiveOnly.setFocusable(false);
@@ -323,7 +418,17 @@ public class TaskPanel extends JPanel {
         tasksToolBar.addSeparator(new Dimension(8, 24));
         tasksToolBar.add(editTaskB, null);
         tasksToolBar.add(completeTaskB, null);
-
+        
+        // Add separation between the Sprint section and Transition section for buttons. 
+        tasksToolBar.addSeparator(new Dimension(100, 24));
+        
+        // US43 - New transition button on Sprint page, add to toolbar. 
+        tasksToolBar.add(newTransB, null);  
+        tasksToolBar.add(removeTransB, null);
+        tasksToolBar.addSeparator(new Dimension(8, 24));
+        tasksToolBar.add(editTransB, null);
+        tasksToolBar.add(completeTransB, null);
+        
 		//tasksToolBar.add(showActiveOnly, null);
         
 
