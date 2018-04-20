@@ -36,7 +36,7 @@ class ImagePanel extends JPanel {
   Image image;
 
   public ImagePanel() {
-    image = Toolkit.getDefaultToolkit().createImage(System.getProperty("user.dir") +"\\src\\main\\resources\\icons\\loading.gif");
+    image = Toolkit.getDefaultToolkit().createImage(System.getProperty("user.dir") +"\\src\\main\\resources\\ui\\icons\\loading.gif");
   }
 
   @Override
