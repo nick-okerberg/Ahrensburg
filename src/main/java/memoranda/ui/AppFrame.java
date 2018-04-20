@@ -613,7 +613,8 @@ public class AppFrame extends JFrame {
 
         this.workPanel.tasksB.addActionListener(setMenusDisabled);
         this.workPanel.eventsB.addActionListener(setMenusDisabled);
-        this.workPanel.filesB.addActionListener(setMenusDisabled);
+        // US101 - Remove Resources button on main page.
+        //this.workPanel.filesB.addActionListener(setMenusDisabled);
         this.workPanel.agendaB.addActionListener(setMenusDisabled);
 
         /*
