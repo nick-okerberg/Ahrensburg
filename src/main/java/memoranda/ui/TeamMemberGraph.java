@@ -32,6 +32,7 @@ public class TeamMemberGraph extends JPanel {
     private int pointWidth = 4;
     private int numberYDivisions = 10;
     private List<Integer> scores;
+    public static int delta = 1000;
     public TeamMemberGraph(List<Integer> scores) {
         this.scores = scores;
         int colorR = Math.abs((int) r.nextInt() % 255);
@@ -141,14 +142,16 @@ public class TeamMemberGraph extends JPanel {
     
     public void displayGraph() {
         
-        TeamMemberGraph mainPanel = new TeamMemberGraph(scores);
-        mainPanel.setPreferredSize(new Dimension(800, 600));
+        TeamMemberGraph mainPanel = this; //new TeamMemberGraph(scores);
+        mainPanel.setPreferredSize(new Dimension(400, 300));
         JFrame frame = new JFrame("DrawGraph");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //need this removed
         frame.getContentPane().add(mainPanel);
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+        Random random = new Random();
+        frame.setLocation(random.nextInt(500), random.nextInt(500));
     }
     
     public static void main(String[] args) {

@@ -7,6 +7,8 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
@@ -35,11 +37,13 @@ import main.java.memoranda.ProjectListener;
 import main.java.memoranda.ProjectManager;
 import main.java.memoranda.PullRequestList;
 import main.java.memoranda.ResourcesList;
+import main.java.memoranda.Task;
 import main.java.memoranda.TaskList;
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.date.CurrentDate;
 import main.java.memoranda.date.DateListener;
 import main.java.memoranda.util.AgendaGenerator;
+import main.java.memoranda.util.Commit;
 import main.java.memoranda.util.CommitsGenerator;
 import main.java.memoranda.util.CurrentStorage;
 import main.java.memoranda.util.Local;
@@ -299,6 +303,17 @@ public class CommitsPanel extends JPanel {
 		
 		// US37 - Add a button to the toolbar for refreshing commit data from GitHub API. 
 		toolBar.add(btnRefreshcommits);
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				SelectSprint.main(null);
+
+//				CommitList test = CurrentProject.getCommitList();
+//				List<Commit> test2 = test.getAllCommitsByAuthor("ovidubya");
+//				for(Commit a : test2) {
+//					System.out.println(a.getMessage());
+//				}
+			}
+		});
 		
 		toolBar.add(btnNewButton);
 		
