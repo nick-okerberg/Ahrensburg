@@ -16,11 +16,13 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -251,6 +253,8 @@ public class JNCalendarPanel extends JPanel {
     if (_date.equals(dt)) return;
     _date = new CalendarDate(d, _date.getMonth(), _date.getYear());
     notifyListeners();
+    JInternalFrame frame = (JInternalFrame)SwingUtilities.getAncestorOfClass(JInternalFrame.class, this); //super hacky but it works
+    frame.dispose();
   }
 
   private void refreshView() {
