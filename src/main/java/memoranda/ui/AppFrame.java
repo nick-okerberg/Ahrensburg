@@ -605,13 +605,17 @@ public class AppFrame extends JFrame {
         this.workPanel.filesB.addActionListener(setMenusDisabled);
         this.workPanel.agendaB.addActionListener(setMenusDisabled);
 
+        /*
+         * US101 - Remove Notes button.
+         *
         this.workPanel.notesB.addActionListener(
                 new java.awt.event.ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         setEnabledEditorMenus(true);
                     }
                 });
-
+        */
+        
         Object fwo = Context.get("FRAME_WIDTH");
         Object fho = Context.get("FRAME_HEIGHT");
         if ((fwo != null) && (fho != null)) {
