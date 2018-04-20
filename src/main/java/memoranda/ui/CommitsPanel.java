@@ -82,6 +82,8 @@ public class CommitsPanel extends JPanel {
 	// US37 - New JButton for refreshing commit data by calling GitHub API. 
 	private final JButton btnRefreshcommits = new JButton("RefreshCommits");
 	private final JButton btnNewButton = new JButton("Compare TeamMembers");
+	private final JButton btnTeamMemberCommits = new JButton("TeamMember Commits");
+	
 
 	public CommitsPanel(DailyItemsPanel _parentPanel) {
 		try {
@@ -335,6 +337,20 @@ public class CommitsPanel extends JPanel {
 			}
 		});
 		
+	      // US40 - Add a button to the toolbar to select team member and sprint
+        toolBar.add(btnTeamMemberCommits);
+        
+        // US40 - Add an action listener for this button
+        btnTeamMemberCommits.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Print debug statement
+                System.out.println("[DEBUG] TeamMember Commits button pressed!");
+                /*SelectTeamMemberAndSprintDialog select = new SelectTeamMemberAndSprintDialog();
+                select.main(null);*/
+                SelectTeamMemberAndSprintDialog.main(null);
+                
+            }
+        });
 
 		CurrentDate.addDateListener(new DateListener() {
 			public void dateChange(CalendarDate d) {
