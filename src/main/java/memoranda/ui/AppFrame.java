@@ -1,6 +1,6 @@
 package main.java.memoranda.ui;
 
-import java.awt.AWTEvent;
+import java.awt.AWTEvent; 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -118,6 +118,9 @@ public class AppFrame extends JFrame {
         }
     };
     
+    /*
+     * US101 - removing Notes from "File" menu. 
+     *
     public Action exportNotesAction =
                 new AbstractAction(Local.getString("Export notes") + "...") {
 
@@ -140,16 +143,20 @@ public class AppFrame extends JFrame {
                         p1Import_actionPerformed(e);
                 }
         };
+    */
     
     JMenuItem jMenuFileNewPrj = new JMenuItem();
-        JMenuItem jMenuFileNewNote = new JMenuItem(workPanel.dailyItemsPanel.editorPanel.newAction);
+    // US101 - removing Notes from "File" menu. 
+    //JMenuItem jMenuFileNewNote = new JMenuItem(workPanel.dailyItemsPanel.editorPanel.newAction);
     JMenuItem jMenuFilePackPrj = new JMenuItem(prjPackAction);
     JMenuItem jMenuFileUnpackPrj = new JMenuItem(prjUnpackAction);
-    JMenuItem jMenuFileExportPrj = new JMenuItem(exportNotesAction);
-    JMenuItem jMenuFileImportPrj = new JMenuItem(importNotesAction);
-    JMenuItem jMenuFileImportNote = new JMenuItem(importOneNoteAction);
-    JMenuItem jMenuFileExportNote = new JMenuItem(
-            workPanel.dailyItemsPanel.editorPanel.exportAction);
+    
+    // US101 - removing Notes from "File" menu. 
+    //JMenuItem jMenuFileExportPrj = new JMenuItem(exportNotesAction);
+    //JMenuItem jMenuFileImportPrj = new JMenuItem(importNotesAction);
+    //JMenuItem jMenuFileImportNote = new JMenuItem(importOneNoteAction);
+    //JMenuItem jMenuFileExportNote = new JMenuItem(
+    //        workPanel.dailyItemsPanel.editorPanel.exportAction);
     JMenuItem jMenuFileMin = new JMenuItem(minimizeAction);
 
     JMenuItem jMenuItem1 = new JMenuItem();
@@ -338,10 +345,12 @@ public class AppFrame extends JFrame {
         jMenuFileNewPrj.setAction(projectsPanel.newProjectAction);
 
         jMenuFileUnpackPrj.setText(Local.getString("Unpack project") + "...");
-        jMenuFileExportNote.setText(Local.getString("Export current note")
-                + "...");
-        jMenuFileImportNote.setText(Local.getString("Import one note")
-                + "...");
+        
+        // US101 - removing Notes from "File" menu. 
+        //jMenuFileExportNote.setText(Local.getString("Export current note")
+        //        + "...");
+        //jMenuFileImportNote.setText(Local.getString("Import one note")
+        //        + "...");
         jMenuFilePackPrj.setText(Local.getString("Pack project") + "...");
         jMenuFileMin.setText(Local.getString("Close the window"));
         jMenuFileMin.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F10,
@@ -453,15 +462,17 @@ public class AppFrame extends JFrame {
  
         toolBar.add(jButton3);
         jMenuFile.add(jMenuFileNewPrj);
-                jMenuFile.add(jMenuFileNewNote);
+        // US101 - removing Notes from "File" menu. 
+        //jMenuFile.add(jMenuFileNewNote);
         jMenuFile.addSeparator();
         jMenuFile.add(jMenuFilePackPrj);
         jMenuFile.add(jMenuFileUnpackPrj);
         jMenuFile.addSeparator();
-        jMenuFile.add(jMenuFileExportPrj);
-        jMenuFile.add(jMenuFileExportNote);
-        jMenuFile.add(jMenuFileImportNote);
-        jMenuFile.add(jMenuFileImportPrj);
+        // US101 - removing Notes from "File" menu. 
+        //jMenuFile.add(jMenuFileExportPrj);
+        //jMenuFile.add(jMenuFileExportNote);
+        //jMenuFile.add(jMenuFileImportNote);
+        //jMenuFile.add(jMenuFileImportPrj);
         jMenuFile.addSeparator();
         jMenuFile.add(jMenuEditPref);
         jMenuFile.addSeparator();
@@ -740,8 +751,9 @@ public class AppFrame extends JFrame {
         this.jMenuEdit.setEnabled(enabled);
         this.jMenuFormat.setEnabled(enabled);
         this.jMenuInsert.setEnabled(enabled);
-        this.jMenuFileNewNote.setEnabled(enabled);
-        this.jMenuFileExportNote.setEnabled(enabled);
+        // US101 - removing Notes from "File" menu. 
+        //this.jMenuFileNewNote.setEnabled(enabled);
+        //this.jMenuFileExportNote.setEnabled(enabled);
     }
 
     public void doPrjPack() {
