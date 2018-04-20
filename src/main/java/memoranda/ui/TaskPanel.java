@@ -47,6 +47,7 @@ public class TaskPanel extends JPanel {
     JButton historyBackB = new JButton();
     JToolBar tasksToolBar = new JToolBar();
     JButton historyForwardB = new JButton();
+    JButton newTransB = new JButton();   // Nick Okerberg US43 Task 145
     JButton newTaskB = new JButton();
 //    JButton subTaskB = new JButton(); Ovadia Shalom US32
     JButton editTaskB = new JButton();
@@ -115,6 +116,27 @@ public class TaskPanel extends JPanel {
             }
         });
         newTaskB.setBorderPainted(false);
+        
+        /*
+         * US43 task 145 - Create a new Transition button on Sprint page. 
+         */
+        newTransB.setIcon(
+                new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/plus.png")));
+            newTransB.setEnabled(true);
+            newTransB.setMaximumSize(new Dimension(24, 24));
+            newTransB.setMinimumSize(new Dimension(24, 24));
+            newTransB.setToolTipText(Local.getString("Create new transition"));
+            newTransB.setRequestFocusEnabled(false);
+            newTransB.setPreferredSize(new Dimension(24, 24));
+            newTransB.setFocusable(false);
+            newTransB.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("[DEBUG] Clicked on \"New Transition\" from Sprint page");
+                    //TODO
+                    //newTransB_actionPerformed(e);
+                }
+            });
+            newTransB.setBorderPainted(false);
         
 //        subTaskB.setIcon( Ovadia Shalom US32
 //            new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/todo_new_sub.png")));
@@ -323,6 +345,9 @@ public class TaskPanel extends JPanel {
         tasksToolBar.addSeparator(new Dimension(8, 24));
         tasksToolBar.add(editTaskB, null);
         tasksToolBar.add(completeTaskB, null);
+        
+        // US43 - New transition button on Sprint page, add to toolbar. 
+        tasksToolBar.add(newTransB, null);  
 
 		//tasksToolBar.add(showActiveOnly, null);
         
