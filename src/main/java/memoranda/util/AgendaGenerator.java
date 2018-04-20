@@ -461,6 +461,14 @@ public class AgendaGenerator {
 		//Util.debug(s);
 		return s;
 	}
+    
+    public static String getSingleProject(Project prj, CalendarDate date, Collection expandedTasks) {
+        String s = HEADER;
+        s += generateProjectInfo(prj, date, expandedTasks);
+        s += FOOTER;
+        //Util.debug(s);
+        return s;
+    }
 	/*    
     we do not need this. Tasks are sorted using the Comparable interface
     public static class TaskSorter {
