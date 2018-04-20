@@ -26,6 +26,8 @@ import javax.swing.JToolBar;
 import javax.swing.UIManager;
 import javax.swing.text.html.HTMLDocument;
 
+import com.sun.glass.ui.Menu;
+
 import main.java.memoranda.CurrentNote;
 import main.java.memoranda.History;
 import main.java.memoranda.Note;
@@ -80,7 +82,8 @@ public class EditorPanel extends JPanel {
 
 	public JTextField titleField = new JTextField();
 
-	JButton newB = new JButton();
+	//US101 - Remove note from "File" Menu
+	//JButton newB = new JButton();
 
 	JButton previewB = new JButton();
 
@@ -119,6 +122,9 @@ public class EditorPanel extends JPanel {
 	 * public void actionPerformed(ActionEvent e) { doPrint(); } };
 	 */
 
+	/*
+	 * US101 - Remove Note from "File" menu. 
+	 *
 	public Action newAction = new AbstractAction(Local.getString("New note"),
 			new ImageIcon(main.java.memoranda.ui.AppFrame.class
 					.getResource("/ui/icons/filenew.png"))) {
@@ -126,7 +132,8 @@ public class EditorPanel extends JPanel {
 			newB_actionPerformed(e);
 		}
 	};
-
+    */
+	
 	public Action exportAction = new AbstractAction(Local
 			.getString("Export note to file"), new ImageIcon(
 			main.java.memoranda.ui.AppFrame.class
@@ -164,6 +171,9 @@ public class EditorPanel extends JPanel {
 
 		this.setLayout(borderLayout1);
 
+		/*
+		 * US101 - Remove Note from "File" menu. 
+		 *
 		newB.setAction(newAction);
 		newB.setMaximumSize(new Dimension(24, 24));
 		newB.setMinimumSize(new Dimension(24, 24));
@@ -173,7 +183,8 @@ public class EditorPanel extends JPanel {
 		newB.setBorderPainted(false);
 		newB.setFocusable(false);
 		newB.setText("");
-
+        */
+		
 		importB.setAction(importAction);
 		importB.setBorderPainted(false);
 		importB.setFocusable(false);
@@ -312,7 +323,8 @@ public class EditorPanel extends JPanel {
 		editor.editToolbar.setFloatable(false);
 		titleBar.setFloatable(false);
 		this.add(jPanel1, BorderLayout.CENTER);
-		editorToolBar.add(newB, null);
+		// US101 - Remove note from "File" menu. 
+		//editorToolBar.add(newB, null);
 		editorToolBar.addSeparator(new Dimension(8, 24));
 		editorToolBar.add(historyBackB, null);
 		editorToolBar.add(historyForwardB, null);
