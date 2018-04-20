@@ -39,7 +39,8 @@ public class WorkPanel extends JPanel {
 	public ResourcesPanel filesPanel = new ResourcesPanel();
 	public JButton agendaB = new JButton();
 	public JButton tasksB = new JButton();
-	public JButton eventsB = new JButton();
+	// US101 - Remove Events button on main page. 
+	//public JButton eventsB = new JButton();
 	// US101 - Remove Resources button on main page.
 	//public JButton filesB = new JButton();
 	public JButton btnCommits = new JButton();
@@ -99,6 +100,9 @@ public class WorkPanel extends JPanel {
 		agendaB.setMargin(new Insets(0, 0, 0, 0));
 		agendaB.setSelected(true);
 
+		/*
+		 * US101 - Remove Events button on main page. 
+		 *
 		eventsB.setBackground(Color.white);
 		eventsB.setMaximumSize(new Dimension(60, 80));
 		eventsB.setMinimumSize(new Dimension(30, 30));
@@ -124,7 +128,8 @@ public class WorkPanel extends JPanel {
 		eventsB.setOpaque(false);
 		eventsB.setMargin(new Insets(0, 0, 0, 0));
 		//eventsB.setSelected(true);
-
+        */
+		
 		tasksB.setSelected(true);
 		tasksB.setFont(new java.awt.Font("Dialog", 1, 10));
 		tasksB.setMargin(new Insets(0, 0, 0, 0));
@@ -247,7 +252,8 @@ public class WorkPanel extends JPanel {
 		panel.add(dailyItemsPanel, "DAILYITEMS");
 		panel.add(filesPanel, "FILES");
 		toolBar.add(agendaB, null);
-		toolBar.add(eventsB, null);
+		// US101 - Remove Events button on main page. 
+		//toolBar.add(eventsB, null);
 		toolBar.add(tasksB, null);
 		toolBar.add(btnCommits, null);
 		btnCommits.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -337,7 +343,8 @@ public class WorkPanel extends JPanel {
 	public void eventsB_actionPerformed(ActionEvent e) {
 		cardLayout1.show(panel, "DAILYITEMS");
 		dailyItemsPanel.selectPanel("EVENTS");
-		setCurrentButton(eventsB);
+		// US101 - Remove Events button on main page. 
+		//setCurrentButton(eventsB);
 		Context.put("CURRENT_PANEL", "EVENTS");
 	}
 
