@@ -141,14 +141,18 @@ public class TeamMemberGraph extends JPanel {
     
     public void displayGraph() {
         
-        TeamMemberGraph mainPanel = new TeamMemberGraph(scores);
-        mainPanel.setPreferredSize(new Dimension(800, 600));
+        TeamMemberGraph mainPanel = this; //new TeamMemberGraph(scores);
+        mainPanel.setPreferredSize(new Dimension(400, 300));
         JFrame frame = new JFrame("DrawGraph");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //need this removed
         frame.getContentPane().add(mainPanel);
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+        Point loc = App.getFrame().getLocation();
+        Dimension frmSize = App.getFrame().getSize();
+        Dimension dlgSize = frame.getSize();
+        frame.setLocation((frmSize.width - dlgSize.width) / 2 + loc.x, (frmSize.height - dlgSize.height) / 2 + loc.y);
     }
     
     public static void main(String[] args) {
