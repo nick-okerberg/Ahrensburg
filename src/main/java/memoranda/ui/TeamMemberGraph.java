@@ -32,6 +32,7 @@ public class TeamMemberGraph extends JPanel {
     private int pointWidth = 4;
     private int numberYDivisions = 10;
     private List<Integer> scores;
+    public static int delta = 1000;
     public TeamMemberGraph(List<Integer> scores) {
         this.scores = scores;
         int colorR = Math.abs((int) r.nextInt() % 255);
@@ -149,10 +150,8 @@ public class TeamMemberGraph extends JPanel {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-        Point loc = App.getFrame().getLocation();
-        Dimension frmSize = App.getFrame().getSize();
-        Dimension dlgSize = frame.getSize();
-        frame.setLocation((frmSize.width - dlgSize.width) / 2 + loc.x, (frmSize.height - dlgSize.height) / 2 + loc.y);
+        Random random = new Random();
+        frame.setLocation(random.nextInt(500), random.nextInt(500));
     }
     
     public static void main(String[] args) {
