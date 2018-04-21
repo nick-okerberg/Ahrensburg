@@ -21,6 +21,8 @@ import javax.swing.text.html.HTMLEditorKit;
 
 import main.java.memoranda.CommitList;
 import main.java.memoranda.CommitListImpl;
+import main.java.memoranda.ContributorList;
+import main.java.memoranda.ContributorListImpl;
 import main.java.memoranda.EventsManager;
 import main.java.memoranda.Note;
 import main.java.memoranda.NoteList;
@@ -509,6 +511,39 @@ public class FileStorage implements Storage {
     }
     
     /**
+     * @see main.java.memoranda.util.Storage#openPullRequestListList(main.java.memoranda.Project)
+     */
+    public ContributorList openContributorList(Project prj) {
+        String fn = JN_DOCPATH + prj.getID() + File.separator + ".contributors";
+        if (documentExists(fn)) {
+            /*DEBUG*/
+            System.out.println("[DEBUG] Open pull request list: " + fn);
+            return new ContributorListImpl(fn);
+        } else {
+            /*DEBUG*/
+            System.out.println("[DEBUG] New pull request list created");
+            return new ContributorListImpl(fn, true);
+        }
+    }
+    
+    /**
+     * @see main.java.memoranda.util.Storage#storePullRequestList
+     */
+    public void storeContributorList(ContributorList contriblist, Project prj) {
+        /*DEBUG*/
+        System.out.println(
+            "[DEBUG] Save pull request list: "
+                + JN_DOCPATH
+                + prj.getID()
+                + File.separator
+                + ".contributors");
+        saveDocument(
+                contriblist.getXmlContent(),
+            JN_DOCPATH + prj.getID() + File.separator + ".contributors");
+        Util.debug("saved prl: " + contriblist);
+    }
+    
+    /**
      * @see main.java.memoranda.util.Storage#restoreContext()
      */
     public void restoreContext() {
@@ -523,6 +558,7 @@ public class FileStorage implements Storage {
             System.out.println("Context created.");
         }
     }
+    
     /**
      * @see main.java.memoranda.util.Storage#storeContext()
      */
