@@ -86,6 +86,8 @@ public class SelectSprint extends JDialog {
         for (int i = 0; i < taskVector.size(); i++) {
             sprintTitles.add(taskVector.get(i).getText());
         }
+        // Also add entire project
+        sprintTitles.add("EntireProject");
         JComboBox sprintCmbBox = new JComboBox(sprintTitles);
         
         // Build comparison combobox
@@ -97,12 +99,19 @@ public class SelectSprint extends JDialog {
         Button button = new Button("Select");
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                boolean selectedProject = false;
                 int selectedIndex = sprintCmbBox.getSelectedIndex();
+                if (selectedIndex >= taskVector.size()) {
+                    selectedProject = true;
+                }
                 // 0 for compare commits, 1 for LOC
                 int selectedCompare = comparisonCmbBox.getSelectedIndex();
                 /* Because the list and taskVector were built the same their
                 indices match. */
-                Task sprint = taskVector.get(selectedIndex);
+                Task sprint = null;
+                if (! selectedProject) {
+                    sprint = taskVector.get(selectedIndex);
+                }
                 
                 // First iterate over each team member
                 String[] gitNames = CurrentProject.get().getGitNames().split(",");
@@ -113,8 +122,17 @@ public class SelectSprint extends JDialog {
                     // Get just the commits for this team member
                     List<Commit> commitsForName = 
                             CurrentProject.getCommitList().getAllCommitsByAuthor(name);
-                    Date start = sprint.getStartDate().getDate();
-                    Date end = sprint.getEndDate().getDate();
+                    
+                    Date start;
+                    Date end;
+                    if (selectedProject) {
+                        start = CurrentProject.get().getStartDate().getDate();
+                        end = CurrentProject.get().getEndDate().getDate();
+                        
+                    } else {
+                        start = sprint.getStartDate().getDate();
+                        end = sprint.getEndDate().getDate();
+                    }
                     // get days between start and end
                     long diff = end.getTime() - start.getTime();
                     long dayCount = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
@@ -146,7 +164,12 @@ public class SelectSprint extends JDialog {
                     
                     // Now put this on a graph
                     TeamMemberGraph graph = new TeamMemberGraph(scores, start);
-                    graph.displayGraph(name + " - Commit Count (" + sprint.getText() + ")");
+                    graph.displayGraph(name 
+                            + " - " 
+                            + comparisonsOptions[comparisonCmbBox.getSelectedIndex()] 
+                            +  " ("
+                            + sprintTitles.get(sprintCmbBox.getSelectedIndex())
+                            + ")");
                 }
             }
         });
