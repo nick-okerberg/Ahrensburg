@@ -90,6 +90,11 @@ public class CurrentProject {
         // Reopen in case it's been saved since we last got it.
         return CurrentStorage.get().openPullRequestList(_project);
     }
+    
+    public static ContributorList getContributorList() {
+        // Reopen in case it's been saved since we last got it.
+        return CurrentStorage.get().openContributorList(_project);
+    }
 
     public static void set(Project project) {
         if (project.getID().equals(_project.getID())) return;

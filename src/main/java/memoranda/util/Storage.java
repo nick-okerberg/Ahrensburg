@@ -9,6 +9,7 @@
 package main.java.memoranda.util;
 
 import main.java.memoranda.CommitList;
+import main.java.memoranda.ContributorList;
 import main.java.memoranda.Note;
 import main.java.memoranda.NoteList;
 import main.java.memoranda.Project;
@@ -53,6 +54,9 @@ public interface Storage {
     
     PullRequestList openPullRequestList(Project prj);
     void storePullRequestList(PullRequestList prl, Project prj);
+    
+    ContributorList openContributorList(Project prj);
+    void storeContributorList(ContributorList contribList, Project prj);
     
     void restoreContext();
     void storeContext(); 

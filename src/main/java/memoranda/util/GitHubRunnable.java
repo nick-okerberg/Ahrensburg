@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.List;
 
 import main.java.memoranda.CommitList;
+import main.java.memoranda.ContributorList;
 import main.java.memoranda.CurrentProject;
 import main.java.memoranda.Project;
 import main.java.memoranda.PullRequestList;
@@ -52,5 +53,13 @@ public class GitHubRunnable implements Runnable {
             prl.addPullRequest(pullRequests.get(i));
         }
         storage.storePullRequestList(prl, project);
+        
+        // Build Contributors
+        List<Contributor> contributors = jac.getContributors();
+        ContributorList contribList = storage.openContributorList(project);
+        for (int i = 0; i < contributors.size(); i++) {
+            contribList.addContributor(contributors.get(i));
+        }
+        storage.storeContributorList(contribList, project);
     }
 }
