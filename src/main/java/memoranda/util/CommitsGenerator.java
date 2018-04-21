@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
@@ -509,24 +510,14 @@ String footer = "</table></body></html>";
 	    //el.addAttribute(new Attribute("names", ""));
 	    //el.addAttribute(new Attribute("gitnames", ""));
 		//Project y = new ProjectImpl(el);
-		Project y = CurrentProject.get();
+		//Project y = CurrentProject.get();
 		//System.out.println("[Debug] Current project: " + y.getTitle());
-		JsonApiClass currentProjectJSON = y.getProjectJsonApiClass();
+		//JsonApiClass currentProjectJSON = y.getProjectJsonApiClass();
 		//System.out.println("[Debug] Current project json: " + currentProjectJSON);
 		
     	// Get all commits from the current project's JsonApiClass. 
 		//ArrayList<Commit> listOfAllCommits = currentProjectJSON.getCommitsArrLst();	// old commented out.
-    	Vector<Commit> listOfAllCommits = new Vector<>();
-    	try {
-        	listOfAllCommits = currentProjectJSON.getCommitsArrLst();
-        }
-        catch (NullPointerException e) {
-        	System.out.println("[DEBUG] No commits for selected project.");
-        }
-        // If there are no commits, just return. 
-        if (listOfAllCommits == null) {
-        	return "";
-        }
+    	List<Commit> listOfAllCommits = CurrentProject.getCommitList().getAllCommits();
         // If the Array List is empty, just return.
         if (listOfAllCommits.isEmpty()) {
         	return "";
