@@ -22,6 +22,8 @@ import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.date.CurrentDate;
 import main.java.memoranda.util.Commit;
 import main.java.memoranda.util.Contributor;
+import main.java.memoranda.util.CurrentStorage;
+import main.java.memoranda.util.GitHubRunnable;
 import main.java.memoranda.util.JsonApiClass;
 import main.java.memoranda.util.PullRequest;
 import main.java.memoranda.util.Util;
@@ -282,26 +284,8 @@ public class ProjectImpl implements Project {
      */
     public void addCommitData(String repo) {
         try {
-            int code = 0;
-        	URL url = new URL("https://github.com/"+ repo);
-            HttpURLConnection huc = (HttpURLConnection) url.openConnection();
-            huc.setRequestMethod("GET");
-            huc.connect();
-            code = huc.getResponseCode();
-            JAC = new JsonApiClass(new URL("https://api.github.com/repos/" + repo), true);
-            List<Commit> commits = JAC.getCommitsArrLst();
-            CommitList cl = CurrentProject.getCommitList();
-            for (int i = 0; i < commits.size(); i++) {
-                cl.addCommit(commits.get(i));
-            }
-            
-            // TODO probably need to move this to addPullRequest or something like that
-            List<PullRequest> pullRequests = JAC.getPullRequests();
-            PullRequestList prl = CurrentProject.getPullRequestList();
-            for (int i = 0; i < pullRequests.size(); i++) {
-                prl.addPullRequest(pullRequests.get(i));
-            }
-            
+            (new Thread(new GitHubRunnable(
+                    repo, CurrentStorage.get(), CurrentProject.get()))).start();
         }
         catch (Exception ex) {
             Util.debug(ex.getMessage());

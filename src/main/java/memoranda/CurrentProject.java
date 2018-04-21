@@ -82,11 +82,13 @@ public class CurrentProject {
     }
     
     public static CommitList getCommitList() {
-            return _commits;
+        // Reopen in case it's been saved since we last got it.
+        return CurrentStorage.get().openCommitList(_project);
     }
     
     public static PullRequestList getPullRequestList() {
-            return _pullRequests;
+        // Reopen in case it's been saved since we last got it.
+        return CurrentStorage.get().openPullRequestList(_project);
     }
 
     public static void set(Project project) {
@@ -136,8 +138,12 @@ public class CurrentProject {
         storage.storeNoteList(_notelist, _project);
         storage.storeTaskList(_tasklist, _project); 
         storage.storeResourcesList(_resources, _project);
+        /* Storage will be handle by the GitHubRunnable thread that pulls the 
+         * data so it doesn't get overwritten. This class can read, just never
+         * write this data.
         storage.storeCommitList(_commits, _project);
         storage.storePullRequestList(_pullRequests, _project);
+        */
         storage.storeProjectManager();
     }
     
