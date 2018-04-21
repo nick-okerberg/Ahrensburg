@@ -11,12 +11,16 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+
+import main.java.memoranda.date.CalendarDate;
 /**
  *
  * @author Rodrigo, Sean Rogers
@@ -32,9 +36,14 @@ public class TeamMemberGraph extends JPanel {
     private int pointWidth = 4;
     private int numberYDivisions = 10;
     private List<Integer> scores;
+    private Date startDate;
     public static int delta = 1000;
-    public TeamMemberGraph(List<Integer> scores) {
+    
+    SimpleDateFormat sdfr = new SimpleDateFormat("MM/dd");
+    
+    public TeamMemberGraph(List<Integer> scores, Date startDate) {
         this.scores = scores;
+        this.startDate = startDate;
         int colorR = Math.abs((int) r.nextInt() % 255);
         int colorG = Math.abs((int) r.nextInt() % 255);
         int colorB = Math.abs((int) r.nextInt() % 255);
@@ -86,7 +95,7 @@ public class TeamMemberGraph extends JPanel {
                     g2.setColor(gridColor);
                     g2.drawLine(x0, getHeight() - padding - labelPadding - 1 - pointWidth, x1, padding);
                     g2.setColor(Color.BLACK);
-                    String xLabel = i + "";
+                    String xLabel = sdfr.format(CalendarDate.addDays(startDate, i)) + "";
                     FontMetrics metrics = g2.getFontMetrics();
                     int labelWidth = metrics.stringWidth(xLabel);
                     g2.drawString(xLabel, x0 - labelWidth / 2, y0 + metrics.getHeight() + 3);
@@ -143,7 +152,7 @@ public class TeamMemberGraph extends JPanel {
     public void displayGraph(String title) {
         
         TeamMemberGraph mainPanel = this; //new TeamMemberGraph(scores);
-        mainPanel.setPreferredSize(new Dimension(400, 300));
+        mainPanel.setPreferredSize(new Dimension(40 * scores.size(), 300));
         JFrame frame = new JFrame(title);
 //        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //need this removed
         frame.getContentPane().add(mainPanel);
@@ -157,15 +166,15 @@ public class TeamMemberGraph extends JPanel {
     public static void main(String[] args) {
         List<Integer> scores = new ArrayList<>();
         Random random = new Random();
-        int maxDataPoints = 40;
-        int maxScore = 10;
+        int maxDataPoints = 2;
+        int maxScore = 15;
         for (int i = 0; i < maxDataPoints; i++) {
             scores.add((int) random.nextInt() % maxScore);
         }
         if (args.length == 0) {
             scores = new ArrayList<>();
             random = new Random();
-            maxDataPoints = 40;
+            maxDataPoints = 15;
             maxScore = 10;
             for (int i = 0; i < maxDataPoints; i++) {
                 scores.add((int) random.nextInt() % maxScore);
@@ -174,7 +183,7 @@ public class TeamMemberGraph extends JPanel {
             //to do
         }
         
-        TeamMemberGraph tmg1 = new TeamMemberGraph(scores);
+        TeamMemberGraph tmg1 = new TeamMemberGraph(scores, (new Date()));
         tmg1.displayGraph("Display Graph");
    }
 }

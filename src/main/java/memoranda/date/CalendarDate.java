@@ -175,5 +175,18 @@ public class CalendarDate {
         return Local.getDateString(this, DateFormat.SHORT);
     }
     
+    /**
+     * Adds a specified number of days to a Date object. Subtracts if a negative
+     * value is specified.
+     * @param date the Date to add to
+     * @param days The number of days to add
+     * @return The modified date object
+     */
+    public static Date addDays(Date date, int days) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.DATE, days); //minus number would decrement the days
+        return cal.getTime();
+    }
 
 }
