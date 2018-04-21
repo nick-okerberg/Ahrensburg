@@ -140,11 +140,11 @@ public class TeamMemberGraph extends JPanel {
         return scores;
     }
     
-    public void displayGraph() {
+    public void displayGraph(String title) {
         
         TeamMemberGraph mainPanel = this; //new TeamMemberGraph(scores);
         mainPanel.setPreferredSize(new Dimension(400, 300));
-        JFrame frame = new JFrame("DrawGraph");
+        JFrame frame = new JFrame(title);
 //        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //need this removed
         frame.getContentPane().add(mainPanel);
         frame.pack();
@@ -175,6 +175,6 @@ public class TeamMemberGraph extends JPanel {
         }
         
         TeamMemberGraph tmg1 = new TeamMemberGraph(scores);
-        tmg1.displayGraph();
+        tmg1.displayGraph("Display Graph");
    }
 }
