@@ -3,7 +3,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.util.Collection;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -18,6 +18,9 @@ import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
+
+import main.java.memoranda.CurrentProject;
+import main.java.memoranda.Task;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -78,6 +81,10 @@ public class SelectTeamMemberAndSprintDialog extends JDialog {
         {
             
             _teamMember = new JComboBox();
+            String[] arr = CurrentProject.get().getGitNames().split(",");
+            for(int i = 0; i < arr.length; i++) {
+                _teamMember.addItem((String) arr[i]);
+            }
             getContentPane().add(_teamMember, "2, 4, 5, 1, fill, default");
             //_teamMember.setColumns(10);
         }
@@ -88,6 +95,10 @@ public class SelectTeamMemberAndSprintDialog extends JDialog {
         {
             
             _sprint = new JComboBox();
+            Collection<Task> test = CurrentProject.getTaskList().getTopLevelTasks();
+            for(Task t : test) {
+                _sprint.addItem((String) t.getText());
+            }
             getContentPane().add(_sprint, "2, 8, 5, 1, fill, default");
         }
         {
