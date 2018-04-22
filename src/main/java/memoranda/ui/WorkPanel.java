@@ -44,6 +44,8 @@ public class WorkPanel extends JPanel {
 	// US101 - Remove Resources button on main page.
 	//public JButton filesB = new JButton();
 	public JButton btnCommits = new JButton();
+	public JButton pullReqBtn = new JButton();
+	        
 	JButton currentB = null;
 	Border border1;
 
@@ -186,6 +188,38 @@ public class WorkPanel extends JPanel {
 		btnCommits.setMargin(new Insets(0, 0, 0, 0));
 		btnCommits.setSelected(true);
 
+		
+		
+		
+		
+		
+
+        pullReqBtn.setBackground(Color.white);
+        pullReqBtn.setMaximumSize(new Dimension(60, 80));
+        pullReqBtn.setMinimumSize(new Dimension(30, 30));
+
+        pullReqBtn.setFont(new java.awt.Font("Dialog", 1, 10));
+        pullReqBtn.setPreferredSize(new Dimension(50, 50));
+        pullReqBtn.setBorderPainted(false);
+        pullReqBtn.setContentAreaFilled(false);
+        pullReqBtn.setFocusPainted(false);
+        pullReqBtn.setHorizontalTextPosition(SwingConstants.CENTER);
+        pullReqBtn.setText(Local.getString("PullRequests"));
+        pullReqBtn.setVerticalAlignment(SwingConstants.TOP);
+        pullReqBtn.setVerticalTextPosition(SwingConstants.BOTTOM);
+        pullReqBtn.addActionListener(new java.awt.event.ActionListener() {
+         
+            public void actionPerformed(ActionEvent e) {
+                pullReqBtn_actionPerformed(e);
+            }
+        });
+        pullReqBtn.setIcon(
+            new ImageIcon(
+                main.java.memoranda.ui.AppFrame.class.getResource(
+                    "/ui/icons/gitPull.png")));
+        pullReqBtn.setOpaque(false);
+        pullReqBtn.setMargin(new Insets(0, 0, 0, 0));
+        pullReqBtn.setSelected(true);
 		/*
 		 * US101 - removing Notes button. 
 		 * 
@@ -256,6 +290,7 @@ public class WorkPanel extends JPanel {
 		//toolBar.add(eventsB, null);
 		toolBar.add(tasksB, null);
 		toolBar.add(btnCommits, null);
+		toolBar.add(pullReqBtn, null);
 		btnCommits.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnCommits.setVerticalAlignment(SwingConstants.TOP);
 		btnCommits.setText("Commits");
@@ -272,7 +307,16 @@ public class WorkPanel extends JPanel {
 		btnCommits.setBorderPainted(false);
 		btnCommits.setBackground(Color.WHITE);
 		
+		
+		pullReqBtn.setOpaque(false);
+		pullReqBtn.setFocusPainted(false);
+		pullReqBtn.setContentAreaFilled(false);
+        pullReqBtn.setBorderPainted(false);
+		pullReqBtn.setSelected(true);
+		pullReqBtn.setText("PullReq");
+		
 		toolBar.add(btnCommits);
+		toolBar.add(pullReqBtn);
 		
 		// US101 - removing notes button
 		//toolBar.add(notesB, null);
@@ -354,6 +398,13 @@ public class WorkPanel extends JPanel {
 		//setCurrentButton(filesB);
 		Context.put("CURRENT_PANEL", "FILES");
 	}
+	
+	public void pullReqBtn_actionPerformed(ActionEvent e) {
+	        cardLayout1.show(panel, "DAILYITEMS");
+	        dailyItemsPanel.selectPanel("PULLREQUEST");
+	        setCurrentButton(pullReqBtn);
+	        Context.put("CURRENT_PANEL", "PULLREQUEST");
+	    }
 	
 	void setCurrentButton(JButton cb) {
 		currentB.setBackground(Color.white);
