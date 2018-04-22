@@ -76,8 +76,6 @@ public class AgendaPanel extends JPanel {
     // US35 - New JButton for setting a GitHub Repo.
     private final JButton _btnNewButtonRepo = new JButton("Set GitHub Repo");
     private final JButton _btnNewButtonUpdate = new JButton("Import Team");
-    // US37 - New JButton for refreshing commit data by calling GitHub API.
-    private final JButton _btnRefreshCommits = new JButton("RefreshCommits");
 
     // US47 Separate each project into its own tab
     JTabbedPane tabbedPane = new JTabbedPane();
@@ -202,30 +200,6 @@ public class AgendaPanel extends JPanel {
             }
         });
 
-        // US37 - Add a button to the toolbar for refreshing commit data from
-        // GitHub API.
-        toolBar.add(_btnRefreshCommits);
-
-        // US37 - Add an action listener for this new button, calling GitHub API
-        // to update commit data.
-        _btnRefreshCommits.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // Print the debug statement indicating button pressed.
-                System.out.println("[DEBUG] RefreshCommits button pressed!");
-
-                // Try to add the commit data.
-                try {
-                    // JOptionPane.showMessageDialog(null, "Note: GitHub API
-                    // Calls for commits may take a few minutes");
-                    CurrentProject.get().addCommitData(
-                            CurrentProject.get().getGitHubRepoName());
-                } catch (RuntimeException e1) {
-                    e1.printStackTrace();
-                }
-                App.getFrame().refreshAgenda();
-            }
-        });
-
         /* We don't care what date is selected
         CurrentDate.addDateListener(new DateListener() {
             public void dateChange(CalendarDate d) {
@@ -287,7 +261,7 @@ public class AgendaPanel extends JPanel {
         localViewer.setText(AgendaGenerator.getSingleProject(p, date, expandedTasks));
         JScrollPane sp = (JScrollPane) tabbedPane.getComponent(index);
         sp.getViewport().setBackground(Color.white);
-        sp.getViewport().add(localViewer, null);
+        sp.setViewportView(localViewer);
         sp.getViewport().setBackground(Color.white);
         sp.setViewportView(localViewer);
  
