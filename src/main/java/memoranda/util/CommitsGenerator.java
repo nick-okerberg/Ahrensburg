@@ -26,7 +26,7 @@ public class CommitsGenerator {
 		//generateCommitDetails();
 		String header = "<html><body><h2>All Commits in Scrum Project</h2><table style=\"width:100%\">";
 
-		String headerOfTable = "<th>Aurthor</th><th>Commit Message</th> <th>Date</th><th>url</th><th>username</th><th>Addtions</th><th>Deletions</th><th>TotalLOC</th>";
+		String headerOfTable = "<th>Author</th><th>Commit Message</th> <th>Date</th><th>URL</th><th>Username</th><th>Addtions</th><th>Deletions</th><th>TotalLOC</th>";
 		String hardcodedDataTable = "<tr><td>Ovadia Shalom</td> <td>Added 4 lines of nothing</td> <td>5/1/2019</td> <td>https://test.com</td> <td>ovidubs</td> <td>4</td> <td>0</td> <td>4</td> </tr> <tr> <td>Sean Rogers</td> <td>Added 4 lines of nothing</td> <td>5/1/2019</td> <td>https://test.com</td> <td>smrogers</td> <td>4</td> <td>0</td> <td>4</td> </tr>";
 		
 		String footer = "</table></body></html>";
@@ -75,10 +75,12 @@ public class CommitsGenerator {
 			result = result + "<td>" + c.getMessage() + "</td> ";
 			
 			// Get Commit Date String.
-			result = result + "<td>" + c.getDateString() + "</td> ";
+			result = result + "<td>" + c.getDateString().substring(0, Math.min(c.getDateString().length(), 10)) + "</td> ";
 			
 			// Get Commit URL String.
-			result = result + "<td>" + c.getHtmlUrl() + "</td> ";
+			String urlString=c.getHtmlUrl();
+			String shaTrunc = c.getSha().substring(0, Math.min(c.getSha().length(), 7));
+			result = result + "<td><a id=\"a_ext\" href=\""+ urlString+"\">" + shaTrunc + "</a></td> ";
 			
 			// Get GitHub username.
 			result = result + "<td>" + c.getAuthorLogin() + "</td> ";
