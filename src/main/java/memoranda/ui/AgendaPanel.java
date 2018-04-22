@@ -217,11 +217,15 @@ public class AgendaPanel extends JPanel {
                 try {
                     // JOptionPane.showMessageDialog(null, "Note: GitHub API
                     // Calls for commits may take a few minutes");
+                	Loading.display();
+                	
                     CurrentProject.get().addCommitData(
                             CurrentProject.get().getGitHubRepoName());
+                    
                 } catch (RuntimeException e1) {
                     e1.printStackTrace();
                 }
+                System.out.println("about to destroy");
                 App.getFrame().refreshAgenda();
             }
         });
