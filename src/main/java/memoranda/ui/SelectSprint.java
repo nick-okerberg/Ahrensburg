@@ -39,6 +39,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 import java.awt.Button;
 import java.awt.Component;
+import java.awt.Dimension;
 
 public class SelectSprint extends JDialog {
 
@@ -49,6 +50,8 @@ public class SelectSprint extends JDialog {
         try {
             SelectSprint dialog = new SelectSprint();
             dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            dialog.setPreferredSize(new Dimension(500, 200));
+            dialog.pack();
             dialog.setVisible(true);
         } catch (Exception e) {
             e.printStackTrace();
@@ -89,14 +92,16 @@ public class SelectSprint extends JDialog {
         // Also add entire project
         sprintTitles.add("EntireProject");
         JComboBox sprintCmbBox = new JComboBox(sprintTitles);
-        
+        sprintCmbBox.setPreferredSize(new Dimension(50, 5));
         // Build comparison combobox
         String[] comparisonsOptions = {"Commits", "LOC"};
         JComboBox comparisonCmbBox = new JComboBox(comparisonsOptions);
+        comparisonCmbBox.setPreferredSize(new Dimension(50, 5));
         getContentPane().add(sprintCmbBox, Component.LEFT_ALIGNMENT);
         getContentPane().add(comparisonCmbBox, Component.LEFT_ALIGNMENT);
-
+        
         Button button = new Button("Select");
+        button.setPreferredSize(new Dimension(25, 5));
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 boolean selectedProject = false;
