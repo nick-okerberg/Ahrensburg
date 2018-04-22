@@ -4,11 +4,14 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import main.java.memoranda.CommitList;
 import main.java.memoranda.ContributorList;
 import main.java.memoranda.CurrentProject;
 import main.java.memoranda.Project;
 import main.java.memoranda.PullRequestList;
+import main.java.memoranda.ui.Loading;
 
 import org.json.JSONException;
 
@@ -35,6 +38,8 @@ public class GitHubRunnable implements Runnable {
         } catch (JSONException | IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error downloading Github Repo Info");
+            Loading.destroy();
         }
         
         // Build commits
