@@ -3,6 +3,7 @@ package main.java.memoranda.ui;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
+import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -16,17 +17,22 @@ import main.java.memoranda.Task;
 import main.java.memoranda.TaskList;
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.util.Commit;
+import main.java.memoranda.util.Contributor;
 import main.java.memoranda.util.Util;
 
 import javax.swing.JList;
 import javax.swing.JLabel;
 import java.awt.GridBagLayout;
+import java.awt.Image;
+
 import javax.swing.JTextField;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.Font;
 import javax.swing.JRadioButton;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -115,13 +121,14 @@ public class SelectSprint extends JDialog {
                 
                 // First iterate over each team member
                 String[] gitNames = CurrentProject.get().getGitNames().split(",");
-                for (int i = 0; i < gitNames.length; i++) {
-                    String name = gitNames[i];
+                Vector<Contributor> team = CurrentProject.getContributorList().getAllContributors();
+                for (int i = 0; i < team.size(); i++) {
+                    String login = team.get(i).getLogin();
                     List<Integer> scores = new ArrayList<>();
                     
                     // Get just the commits for this team member
                     List<Commit> commitsForName = 
-                            CurrentProject.getCommitList().getAllCommitsByAuthor(name);
+                            CurrentProject.getCommitList().getAllCommitsByAuthor(login);
                     
                     Date start;
                     Date end;
@@ -164,12 +171,22 @@ public class SelectSprint extends JDialog {
                     
                     // Now put this on a graph
                     TeamMemberGraph graph = new TeamMemberGraph(scores, start);
-                    graph.displayGraph(name 
+
+                    // Get the avatar for this team member
+                    Image image = null;
+                    try {
+                        URL url = new URL(team.get(i).getAvatarUrl());
+                        image = graph.getScaledImage(ImageIO.read(url), 32, 32);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                    
+                    graph.displayGraph(login 
                             + " - " 
                             + comparisonsOptions[comparisonCmbBox.getSelectedIndex()] 
                             +  " ("
                             + sprintTitles.get(sprintCmbBox.getSelectedIndex())
-                            + ")");
+                            + ")", image);
                 }
             }
         });
