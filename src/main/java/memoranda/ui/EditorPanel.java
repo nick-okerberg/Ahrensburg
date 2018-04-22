@@ -26,8 +26,6 @@ import javax.swing.JToolBar;
 import javax.swing.UIManager;
 import javax.swing.text.html.HTMLDocument;
 
-import com.sun.glass.ui.Menu;
-
 import main.java.memoranda.CurrentNote;
 import main.java.memoranda.History;
 import main.java.memoranda.Note;
