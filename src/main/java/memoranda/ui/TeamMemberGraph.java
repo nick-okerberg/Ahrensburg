@@ -8,9 +8,11 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
+import java.awt.image.BufferedImage;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,6 +40,8 @@ public class TeamMemberGraph extends JPanel {
     private List<Integer> scores;
     private Date startDate;
     public static int delta = 1000;
+    
+    private JFrame frame = new JFrame();
     
     SimpleDateFormat sdfr = new SimpleDateFormat("MM/dd");
     
@@ -153,7 +157,7 @@ public class TeamMemberGraph extends JPanel {
         
         TeamMemberGraph mainPanel = this; //new TeamMemberGraph(scores);
         mainPanel.setPreferredSize(new Dimension(40 * scores.size(), 300));
-        JFrame frame = new JFrame(title);
+        frame.setTitle(title);
 //        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //need this removed
         frame.getContentPane().add(mainPanel);
         frame.pack();
@@ -161,6 +165,22 @@ public class TeamMemberGraph extends JPanel {
         frame.setVisible(true);
         Random random = new Random();
         frame.setLocation(random.nextInt(500), random.nextInt(500));
+    }
+    
+    public void displayGraph(String title, Image image) {
+        displayGraph(title);
+        frame.setIconImage(image);
+    }
+    
+    public Image getScaledImage(Image srcImg, int w, int h){
+        BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = resizedImg.createGraphics();
+
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2.drawImage(srcImg, 0, 0, w, h, null);
+        g2.dispose();
+
+        return resizedImg;
     }
     
     public static void main(String[] args) {
