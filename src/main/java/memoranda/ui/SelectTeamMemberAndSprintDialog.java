@@ -9,6 +9,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -28,8 +29,8 @@ import java.awt.GridBagConstraints;
 * @author Sean Rogers
 */
 public class SelectTeamMemberAndSprintDialog extends JDialog {
-    private JTextField _teamMember;
-    private JTextField _sprint;
+    private JComboBox _teamMember;
+    private JComboBox _sprint;
     
     public static void main(String[] args) {
         try {
@@ -75,31 +76,28 @@ public class SelectTeamMemberAndSprintDialog extends JDialog {
             getContentPane().add(lblTeamMember, "2, 2, 5, 1, left, default");
         }
         {
-            _teamMember = new JTextField();
+            
+            _teamMember = new JComboBox();
             getContentPane().add(_teamMember, "2, 4, 5, 1, fill, default");
-            _teamMember.setColumns(10);
+            //_teamMember.setColumns(10);
         }
         {
             JLabel lblSprint = new JLabel("Sprint");
             getContentPane().add(lblSprint, "2, 6, 5, 1, left, default");
         }
         {
+            
+            _sprint = new JComboBox();
+            getContentPane().add(_sprint, "2, 8, 5, 1, fill, default");
+        }
+        {
             JButton btnNewButton = new JButton("Ok");
+            getContentPane().add(btnNewButton, "1, 12, 6, 1, fill, default");
             btnNewButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     System.out.println("Not implemented yet");
                 }
             });
-            {
-                _sprint = new JTextField();
-                _sprint.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        System.out.println("Not implemented yet");
-                    }
-                });
-                getContentPane().add(_sprint, "2, 8, 5, 1, fill, default");
-            }
-            getContentPane().add(btnNewButton, "1, 10, 6, 1");
         }
         {
             JButton btnCancel = new JButton("Cancel");
@@ -108,7 +106,7 @@ public class SelectTeamMemberAndSprintDialog extends JDialog {
                     dispose();
                 }
             });
-            getContentPane().add(btnCancel, "1, 12, 6, 1");
+            getContentPane().add(btnCancel, "1, 14, 6, 1, fill, default");
         }
     }
 }
