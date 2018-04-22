@@ -78,9 +78,9 @@ public class CommitsPanel extends JPanel {
 	String gotoTask = null;
 
 	boolean isActive = true;
-	private final JButton btnNewButtonUpdate = new JButton("Update");
+	private final JButton btnNewButtonUpdate = new JButton("RefreshView");
 	// US37 - New JButton for refreshing commit data by calling GitHub API. 
-	private final JButton btnRefreshcommits = new JButton("RefreshCommits");
+	private final JButton btnRefreshcommits = new JButton("Download Data");
 	private final JButton btnNewButton = new JButton("Compare TeamMembers");
 	private final JButton btnTeamMemberCommits = new JButton("TeamMember Commits");
 	
@@ -327,6 +327,7 @@ public class CommitsPanel extends JPanel {
 				
 				// Try to add the commit data. 
 				try {
+					Loading.display();
 					//JOptionPane.showMessageDialog(null, "Note: GitHub API Calls for commits may take a few minutes");
 					CurrentProject.get().addCommitData(CurrentProject.get().getGitHubRepoName());
 				} 
