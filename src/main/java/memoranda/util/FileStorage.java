@@ -37,6 +37,7 @@ import main.java.memoranda.TaskList;
 import main.java.memoranda.TaskListImpl;
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.ui.ExceptionDialog;
+import main.java.memoranda.ui.Loading;
 import main.java.memoranda.ui.htmleditor.AltHTMLWriter;
 import nu.xom.Builder;
 import nu.xom.Document;
@@ -475,6 +476,7 @@ public class FileStorage implements Storage {
                 cl.getXmlContent(),
             JN_DOCPATH + prj.getID() + File.separator + ".commits");
         Util.debug("saved cl: " + cl);
+        Loading.destroy();
     }
     
     /**
@@ -508,6 +510,7 @@ public class FileStorage implements Storage {
                 prl.getXmlContent(),
             JN_DOCPATH + prj.getID() + File.separator + ".pullrequests");
         Util.debug("saved prl: " + prl);
+        Loading.destroy();
     }
     
     /**
@@ -541,6 +544,7 @@ public class FileStorage implements Storage {
                 contriblist.getXmlContent(),
             JN_DOCPATH + prj.getID() + File.separator + ".contributors");
         Util.debug("saved prl: " + contriblist);
+        Loading.destroy();
     }
     
     /**
