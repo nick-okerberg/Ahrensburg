@@ -292,7 +292,10 @@ public class AgendaGenerator {
     s += "<br><table id=\"table3\" >";
     s += "<tr id=\"tr2\"><td id=\"td2\"><b>Team Member</b></td><td id=\"td2\"><b>GitHub Username</b></td></tr>";
     for (int i=0; i < names.length; i++) {
-      s += "<tr id=\"tr2\"><td id=\"td2\">" + names[i] + "</td><td id=\"td2\">" + gitNames[i] +"</td></tr>";
+        
+        String  name = names[i].toString().equals("null")? "n/a" : names[i];
+
+      s += "<tr id=\"tr2\"><td id=\"td2\">" + name + "</td><td id=\"td2\">" + gitNames[i] +"</td></tr>";
     }
 		s += "</table>";
 		

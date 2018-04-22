@@ -68,6 +68,7 @@ public class DailyItemsPanel extends JPanel {
     EventsPanel eventsPanel = new EventsPanel(this);
     AgendaPanel agendaPanel = new AgendaPanel(this);
     CommitsPanel commitsPanel = new CommitsPanel(this);
+    PullRequestPanel PullReqPanel = new PullRequestPanel(this);
     ImageIcon expIcon = new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/exp_right.png"));
     ImageIcon collIcon = new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/exp_left.png"));
     ImageIcon bookmarkIcon = new ImageIcon(main.java.memoranda.ui.AppFrame.class.getResource("/ui/icons/star8.png"));
@@ -205,7 +206,8 @@ public class DailyItemsPanel extends JPanel {
         statusPanel.add(indicatorsPanel, BorderLayout.EAST);
 
         mainPanel.add(editorsPanel, BorderLayout.CENTER);
-        
+       
+        editorsPanel.add(PullReqPanel, "PULLREQUEST");
         editorsPanel.add(commitsPanel, "COMMITS");
         editorsPanel.add(agendaPanel, "AGENDA");
         editorsPanel.add(eventsPanel, "EVENTS");
@@ -468,12 +470,16 @@ public class DailyItemsPanel extends JPanel {
         }
         boolean isAg = pan.equals("AGENDA");
         boolean isCmt = pan.equals("COMMITS");
+        boolean isPull = pan.equals("PULLREQUEST");
         agendaPanel.setActive(isAg);
         if (isAg) {
         	agendaPanel.refresh(CurrentDate.get());
         }
         if(isCmt) {
         	commitsPanel.refresh(CurrentDate.get());
+        }
+        if(isPull) {
+            PullReqPanel.refresh(CurrentDate.get());
         }
         
         cardLayout1.show(editorsPanel, pan);
