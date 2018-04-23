@@ -1,6 +1,6 @@
 // Include the plugin for Spotbugs. 
 plugins {
-  id  'com.github.spotbugs' version '1.6.0'
+  id  'com.github.spotbugs' version '1.6.1'
 }
 
 apply plugin: 'application'
@@ -25,7 +25,7 @@ checkstyle {
 
 // Spotbugs configuration. 
 spotbugs {
-  toolVersion = '3.1.1'
+  toolVersion = '3.1.2'
   ignoreFailures = true		// Complete even if there are failures, since it's pre-existing code. 
 }
 tasks.withType(com.github.spotbugs.SpotBugsTask) {
