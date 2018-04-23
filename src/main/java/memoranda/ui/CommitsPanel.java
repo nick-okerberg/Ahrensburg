@@ -61,9 +61,7 @@ import java.awt.event.ActionEvent;
 /*$Id: AgendaPanel.java,v 1.11 2005/02/15 16:58:02 rawsushi Exp $*/
 public class CommitsPanel extends JPanel {
 	BorderLayout borderLayout1 = new BorderLayout();
-	JButton historyBackB = new JButton();
 	JToolBar toolBar = new JToolBar();
-	JButton historyForwardB = new JButton();
 	JButton export = new JButton();
 	JEditorPane viewer = new JEditorPane("text/html", "");
 	String[] priorities = {"Muy Alta","Alta","Media","Baja","Muy Baja"};
@@ -83,6 +81,7 @@ public class CommitsPanel extends JPanel {
 	private final JButton btnRefreshcommits = new JButton("Download Data");
 	private final JButton btnNewButton = new JButton("Compare TeamMembers");
 	private final JButton btnTeamMemberCommits = new JButton("TeamMember Commits");
+	private final JButton btnViewSprint = new JButton("Total Sprint Commits");
 	
 
 	public CommitsPanel(DailyItemsPanel _parentPanel) {
@@ -248,33 +247,12 @@ public class CommitsPanel extends JPanel {
 				}
 			}
 		});
-		historyBackB.setAction(History.historyBackAction);
-		historyBackB.setFocusable(false);
-		historyBackB.setBorderPainted(false);
-		historyBackB.setToolTipText(Local.getString("History back"));
-		historyBackB.setRequestFocusEnabled(false);
-		historyBackB.setPreferredSize(new Dimension(24, 24));
-		historyBackB.setMinimumSize(new Dimension(24, 24));
-		historyBackB.setMaximumSize(new Dimension(24, 24));
-		historyBackB.setText("");
-
-		historyForwardB.setAction(History.historyForwardAction);
-		historyForwardB.setBorderPainted(false);
-		historyForwardB.setFocusable(false);
-		historyForwardB.setPreferredSize(new Dimension(24, 24));
-		historyForwardB.setRequestFocusEnabled(false);
-		historyForwardB.setToolTipText(Local.getString("History forward"));
-		historyForwardB.setMinimumSize(new Dimension(24, 24));
-		historyForwardB.setMaximumSize(new Dimension(24, 24));
-		historyForwardB.setText("");
 		
 		this.setLayout(borderLayout1);
 		
 		scrollPane.getViewport().setBackground(Color.white);
 		scrollPane.setViewportView(viewer);
 		this.add(scrollPane, BorderLayout.CENTER);
-		toolBar.add(historyBackB, null);
-		toolBar.add(historyForwardB, null);
 		toolBar.addSeparator(new Dimension(8, 24));
 
 		this.add(toolBar, BorderLayout.NORTH);
@@ -340,6 +318,13 @@ public class CommitsPanel extends JPanel {
 		
 	      // US40 - Add a button to the toolbar to select team member and sprint
         toolBar.add(btnTeamMemberCommits);
+        btnViewSprint.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent arg0) {
+        		TotalCommitsPrompt.main(null);
+        	}
+        });
+        
+        toolBar.add(btnViewSprint);
         
         // US40 - Add an action listener for this button
         btnTeamMemberCommits.addActionListener(new ActionListener() {
