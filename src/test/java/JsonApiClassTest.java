@@ -1,9 +1,12 @@
 package test.java;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 
 import main.java.memoranda.util.JsonApiClass;
+import main.java.memoranda.util.Util;
 
 import org.json.JSONException;
 import org.junit.Before;
@@ -26,6 +29,13 @@ public class JsonApiClassTest {
     public static void setup() {
         URL url;
         try {
+            new File(Util.getEnvDir()).mkdirs();
+            File file = new File(Util.getEnvDir()+"authencoded.txt");
+            FileWriter writer = new FileWriter(file);
+            String userCredentials = "api-test-user-123:test123";
+            String basicAuth = "Basic " + java.util.Base64.getEncoder().encodeToString(userCredentials.getBytes());
+            writer.write(basicAuth);
+            writer.close();
             url = new URL("https://api.github.com/repos/DrChunks/jwine2_review");
             jac = new JsonApiClass(url,true);
         } catch (JSONException | IOException e) {

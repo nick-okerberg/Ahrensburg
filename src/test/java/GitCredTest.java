@@ -26,17 +26,10 @@ public class GitCredTest {
 	public void CheckGitCredentials() throws IOException {
     	URL url = new URL("https://api.github.com/repos/ser316asu-2018/Ahrensburg");
     	HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        String content = new String(Files.readAllBytes(Paths.get(Util.getEnvDir()+"authencoded.txt")));
+        String userCredentials = "api-test-user-123:test123";
+    	String content = "Basic " + java.util.Base64.getEncoder().encodeToString(userCredentials.getBytes());
         con.setRequestProperty ("Authorization", content);
         assertEquals(con.getHeaderField("x-ratelimit-limit"), "5000");
-	}
-	/**
-	 * Checks to see if file exists
-	 * @throws IOException
-	 */
-	@Test
-	public void CheckAuthFile() throws IOException {
-		String fileInfo = new String(Files.readAllBytes(Paths.get(Util.getEnvDir()+"authencoded.txt")));
 	}
 
 }
