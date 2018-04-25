@@ -142,7 +142,7 @@ public class WorkPanel extends JPanel {
 		btnCommits.setContentAreaFilled(false);
 		btnCommits.setFocusPainted(false);
 		btnCommits.setHorizontalTextPosition(SwingConstants.CENTER);
-		btnCommits.setText(Local.getString("Projects"));
+		btnCommits.setText(Local.getString("Commits"));
 		btnCommits.setVerticalAlignment(SwingConstants.TOP);
 		btnCommits.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnCommits.addActionListener(new java.awt.event.ActionListener() {
