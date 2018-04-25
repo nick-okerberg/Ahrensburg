@@ -4,8 +4,12 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
+<<<<<<< Updated upstream
 import javax.swing.JOptionPane;
 
+=======
+import main.java.memoranda.BranchList;
+>>>>>>> Stashed changes
 import main.java.memoranda.CommitList;
 import main.java.memoranda.ContributorList;
 import main.java.memoranda.CurrentProject;
@@ -66,5 +70,13 @@ public class GitHubRunnable implements Runnable {
             contribList.addContributor(contributors.get(i));
         }
         storage.storeContributorList(contribList, project);
+        
+        // Build Branches
+        List<Branch> branches = jac.getBranches();
+        BranchList branchList = storage.openBranchList(project);
+        for (int i = 0; i < branches.size(); i++) {
+            branchList.addBranch(branches.get(i));
+        }
+        storage.storeBranchList(branchList, project);
     }
 }

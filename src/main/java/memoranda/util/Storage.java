@@ -8,6 +8,7 @@
  */
 package main.java.memoranda.util;
 
+import main.java.memoranda.BranchList;
 import main.java.memoranda.CommitList;
 import main.java.memoranda.ContributorList;
 import main.java.memoranda.Note;
@@ -57,6 +58,9 @@ public interface Storage {
     
     ContributorList openContributorList(Project prj);
     void storeContributorList(ContributorList contribList, Project prj);
+    
+    BranchList openBranchList(Project prj);
+    void storeBranchList(BranchList branchList, Project prj);
     
     void restoreContext();
     void storeContext(); 

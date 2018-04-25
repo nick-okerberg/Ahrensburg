@@ -19,6 +19,8 @@ import java.net.URL;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
+import main.java.memoranda.BranchList;
+import main.java.memoranda.BranchListImpl;
 import main.java.memoranda.CommitList;
 import main.java.memoranda.CommitListImpl;
 import main.java.memoranda.ContributorList;
@@ -545,6 +547,39 @@ public class FileStorage implements Storage {
             JN_DOCPATH + prj.getID() + File.separator + ".contributors");
         Util.debug("saved prl: " + contriblist);
         Loading.destroy();
+    }
+    
+    /**
+     * @see main.java.memoranda.util.Storage#openPullRequestListList(main.java.memoranda.Project)
+     */
+    public BranchList openBranchList(Project prj) {
+        String fn = JN_DOCPATH + prj.getID() + File.separator + ".branches";
+        if (documentExists(fn)) {
+            /*DEBUG*/
+            System.out.println("[DEBUG] Open pull request list: " + fn);
+            return new BranchListImpl(fn);
+        } else {
+            /*DEBUG*/
+            System.out.println("[DEBUG] New pull request list created");
+            return new BranchListImpl(fn, true);
+        }
+    }
+    
+    /**
+     * @see main.java.memoranda.util.Storage#storePullRequestList
+     */
+    public void storeBranchList(BranchList branchList, Project prj) {
+        /*DEBUG*/
+        System.out.println(
+            "[DEBUG] Save pull request list: "
+                + JN_DOCPATH
+                + prj.getID()
+                + File.separator
+                + ".branches");
+        saveDocument(
+                branchList.getXmlContent(),
+            JN_DOCPATH + prj.getID() + File.separator + ".branches");
+        Util.debug("saved prl: " + branchList);
     }
     
     /**
