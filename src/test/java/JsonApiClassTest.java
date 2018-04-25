@@ -53,6 +53,14 @@ public class JsonApiClassTest {
     }
     
     /**
+     * Simple happy case test for getting branches.
+     */
+    @Test
+    public void testGetPullBranches() {
+        assertFalse(jac.getBranches().isEmpty());
+    }
+    
+    /**
      * Tests the number of commits returned based on a known repo.
      */
     @Test
