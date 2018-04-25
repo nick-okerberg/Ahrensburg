@@ -30,6 +30,8 @@ public class CurrentProject {
     private static ResourcesList _resources = null;
     private static CommitList _commits = null;
     private static PullRequestList _pullRequests = null;
+    private static ContributorList _contributors = null;
+    private static BranchList _branches = null;
     private static Vector projectListeners = new Vector();
 
         
@@ -57,6 +59,8 @@ public class CurrentProject {
         _resources = CurrentStorage.get().openResourcesList(_project);
         _commits = CurrentStorage.get().openCommitList(_project);
         _pullRequests = CurrentStorage.get().openPullRequestList(_project);
+        _contributors = CurrentStorage.get().openContributorList(_project);
+        _branches = CurrentStorage.get().openBranchList(_project);
         AppFrame.addExitListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 save();                                               
@@ -95,6 +99,11 @@ public class CurrentProject {
         // Reopen in case it's been saved since we last got it.
         return CurrentStorage.get().openContributorList(_project);
     }
+    
+    public static BranchList getBranchList() {
+        // Reopen in case it's been saved since we last got it.
+        return CurrentStorage.get().openBranchList(_project);
+    }
 
     public static void set(Project project) {
         if (project.getID().equals(_project.getID())) return;
@@ -103,6 +112,8 @@ public class CurrentProject {
         ResourcesList newresources = CurrentStorage.get().openResourcesList(project);
         CommitList newcommits = CurrentStorage.get().openCommitList(project);
         PullRequestList newpullrequests = CurrentStorage.get().openPullRequestList(project);
+        ContributorList newcontributors = CurrentStorage.get().openContributorList(project);
+        BranchList newbranches = CurrentStorage.get().openBranchList(project);
         notifyListenersBefore(project, newnotelist, newtasklist, 
                 newresources, newcommits, newpullrequests);
         _project = project;
@@ -111,6 +122,8 @@ public class CurrentProject {
         _resources = newresources;
         _commits = newcommits;
         _pullRequests = newpullrequests;
+        _contributors = newcontributors;
+        _branches = newbranches;
         notifyListenersAfter();
         Context.put("LAST_OPENED_PROJECT_ID", project.getID());
     }
@@ -159,5 +172,7 @@ public class CurrentProject {
         _resources = null;
         _commits = null;
         _pullRequests = null;
+        _contributors = null;
+        _branches = null;
     }
 }

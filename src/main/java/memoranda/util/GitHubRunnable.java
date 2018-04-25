@@ -4,12 +4,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
-<<<<<<< Updated upstream
 import javax.swing.JOptionPane;
-
-=======
 import main.java.memoranda.BranchList;
->>>>>>> Stashed changes
 import main.java.memoranda.CommitList;
 import main.java.memoranda.ContributorList;
 import main.java.memoranda.CurrentProject;
