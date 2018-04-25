@@ -93,6 +93,8 @@ public class TaskDialog extends JDialog {
     JButton setEndDateB = new JButton();
     JLabel jLabelDescription = new JLabel();
 	
+    String todoFieldText = "Enter Sprint Name!";
+    
 	//Forbid to set dates outside the bounds
 	CalendarDate startDateMin = CurrentProject.get().getStartDate();
 	CalendarDate startDateMax = CurrentProject.get().getEndDate();
@@ -167,6 +169,7 @@ public class TaskDialog extends JDialog {
 				
         todoField.setBorder(border8);
         todoField.setPreferredSize(new Dimension(375, 24));
+        todoField.setText(todoFieldText);
         GridBagConstraints gbCon = new GridBagConstraints();
         gbCon.gridwidth = GridBagConstraints.REMAINDER;
         gbCon.weighty = 1;
@@ -367,6 +370,19 @@ public class TaskDialog extends JDialog {
 	 */
     void okB_actionPerformed(ActionEvent e) {
     	
+        /*
+         * Sprint name validation.
+         * Ensure the user enters a name for the sprint. 
+         * It cannot be the default name, or "null". 
+         */
+        if ( todoField.getText().equals(todoFieldText) 
+                || todoField.getText().equals(null) 
+                || todoField.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Enter a valid Sprint Name!");
+            return;
+        }
+        
+        
     	/* 
     	 * US33 task 72 feature. nick-okerberg.
     	 * Prevent sprint start/end date overlapping between multiple sprints within a project. 
