@@ -298,6 +298,12 @@ public class AgendaGenerator {
       s += "<tr id=\"tr2\"><td id=\"td2\">" + name + "</td><td id=\"td2\">" + gitNames[i] +"</td></tr>";
     }
 		s += "</table>";
+		s += "<br><table id=\"table4\" >";
+		s += "<tr id=\"tr2\"><td id=\"td2\"><b>Branches</b></td></tr>";
+		s += "<tr id=\"tr2\"><td id=\"td2\">" + "hardcoded1" + "</td></tr>";
+		s += "<tr id=\"tr2\"><td id=\"td2\">" + "hardcoded2" + "</td></tr>";
+		s += "<tr id=\"tr2\"><td id=\"td2\">" + "hardcoded3" + "</td></tr>";
+		s += "</table></div>";
 		
 		s += "</a>\n"
 				+ "<table border=\"1\" width=\"100%\" cellpadding=\"2\" bgcolor=\"#EFEFEF\"><tr><td>" 
