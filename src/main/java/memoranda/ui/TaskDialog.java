@@ -65,7 +65,11 @@ public class TaskDialog extends JDialog {
 //    Border border5;
 //    Border border6;
     JPanel jPanel2 = new JPanel(new GridLayout(3, 2));
-    JTextField todoField = new JTextField();
+    
+    JTextField todoField = new JTextField();    // For the "Name" of the sprint. 
+    //US48 - Add gitmaster to sprint dialog. 
+    JComboBox gitmasterField = new JComboBox();
+    
     JTextArea descriptionField = new JTextArea();
     JScrollPane descriptionScrollPane = new JScrollPane(descriptionField);
     
@@ -167,6 +171,19 @@ public class TaskDialog extends JDialog {
         gbCon.gridwidth = GridBagConstraints.REMAINDER;
         gbCon.weighty = 1;
         gbLayout.setConstraints(todoField,gbCon);
+        
+        //US48 JComboBox.
+        String jcomboboxString = "Select GitMaster for this Sprint";
+        gitmasterField.addItem(jcomboboxString);
+        gitmasterField.setSelectedItem(jcomboboxString);
+        gitmasterField.setBorder(border8);
+        gitmasterField.setPreferredSize(new Dimension(375, 24));
+        gitmasterField.setBackground(Color.WHITE);
+        gbCon = new GridBagConstraints();
+        gbCon.gridwidth = GridBagConstraints.REMAINDER;
+        gbCon.weighty = 1;
+        gbLayout.setConstraints(gitmasterField,gbCon);
+        // End of US48 update
         
         jLabelDescription.setMaximumSize(new Dimension(100, 16));
         jLabelDescription.setMinimumSize(new Dimension(60, 16));
@@ -292,6 +309,7 @@ public class TaskDialog extends JDialog {
         dialogTitlePanel.add(header, null);
         areaPanel.add(jPanel8, BorderLayout.NORTH);
         jPanel8.add(todoField, null);
+        jPanel8.add(gitmasterField, null);  // US48
         jPanel8.add(jLabelDescription);
         jPanel8.add(descriptionScrollPane, null);
         areaPanel.add(jPanel2, BorderLayout.CENTER);
