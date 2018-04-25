@@ -300,9 +300,13 @@ public class AgendaGenerator {
 		s += "</table>";
 		s += "<br><table id=\"table4\" >";
 		s += "<tr id=\"tr2\"><td id=\"td2\"><b>Branches</b></td></tr>";
-		s += "<tr id=\"tr2\"><td id=\"td2\">" + "hardcoded1" + "</td></tr>";
-		s += "<tr id=\"tr2\"><td id=\"td2\">" + "hardcoded2" + "</td></tr>";
-		s += "<tr id=\"tr2\"><td id=\"td2\">" + "hardcoded3" + "</td></tr>";
+		
+		Vector<Branch> branches = CurrentProject.getBranchList().getAllBranches();
+		Iterator<Branch> iterator = branches.iterator();
+		while (iterator.hasNext()) {
+		    String branchName = iterator.next().getName();
+	        s += "<tr id=\"tr2\"><td id=\"td2\">" + branchName + "</td></tr>";
+		}
 		s += "</table></div>";
 		
 		s += "</a>\n"
