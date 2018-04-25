@@ -30,6 +30,7 @@ public class JsonApiClass {
     private Vector<Contributor> contributors;
     private Vector<Commit> commitsArrLst;
     private Vector<PullRequest> pullRequests;
+    private Vector<Branch> branches;
 
     private URL url; // Base URL of API for GitHub repo
     private int ignoredCommitCount;
@@ -52,9 +53,9 @@ public class JsonApiClass {
         this.url = url;
         if (autoImport) {
             contributors = importContributors();
-            // commits = importCommits(); // US37
-            commitsArrLst = importCommitsArrLst(); // US37
+            commitsArrLst = importCommitsArrLst(); 
             pullRequests = importPullRequests();
+            branches = importBranches();
         }
     }
 
@@ -101,6 +102,17 @@ public class JsonApiClass {
             throw new NullPointerException("No pull requests added yet");
         }
         return pullRequests;
+    }
+
+    /**
+     * Gets the current list of branches.
+     * @return An Vector of pull requests.
+     */
+    public Vector<Branch> getBranches() {
+        if (branches.isEmpty()) {
+            throw new NullPointerException("No branches added yet");
+        }
+        return branches;
     }
 
     public void setContributors(Vector<Contributor> newContributors) {
@@ -357,5 +369,35 @@ public class JsonApiClass {
         }
         
         return tempPrList;
+    }
+    
+    /**
+     * Imports a list of Pull Requests from GitHub via the GitHub API specified
+     * by the saved URL.
+     * 
+     * @return a Vector of Pull Requests
+     * @throws IOException When unable to read input stream
+     * @throws JSONException When JSON object read does not parse correctly
+     */
+    private Vector<Branch> importBranches()
+            throws IOException, JSONException {
+        JSONObject baseJson = getJsonFromUrl(this.url);
+        Vector<Branch> tempBranchList = new Vector<>();
+        
+        // Get the pull request URL
+        String branchUrlStr = baseJson.getString("branches_url");
+        // Get rid of the number reference
+        branchUrlStr = branchUrlStr.replaceAll("\\{/branch\\}", "");
+        String branchUrlAll = branchUrlStr + "?per_page=100";
+        URL branchUrl = new URL(branchUrlAll);
+        JSONArray prArray = getJsonArrayFromUrl(branchUrl);
+        
+        // Build each branch from array
+        for (int i = 0; i < prArray.length(); i++) {
+            Branch branch = new Branch(prArray.getJSONObject(i));
+            tempBranchList.add(branch);
+        }
+        
+        return tempBranchList;
     }
 }
