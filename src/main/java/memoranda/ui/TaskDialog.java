@@ -39,10 +39,12 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import main.java.memoranda.ContributorList;
 import main.java.memoranda.CurrentProject;
 import main.java.memoranda.Task;
 import main.java.memoranda.TaskList;
 import main.java.memoranda.date.CalendarDate;
+import main.java.memoranda.util.Contributor;
 import main.java.memoranda.util.Local;
 
 import javax.swing.JCheckBox;
@@ -186,7 +188,13 @@ public class TaskDialog extends JDialog {
         gbCon.gridwidth = GridBagConstraints.REMAINDER;
         gbCon.weighty = 1;
         gbLayout.setConstraints(gitmasterField,gbCon);
-        // End of US48 update
+        // Populate the JComboBox with all of the contributors on the current project. 
+        ContributorList teamMembers = CurrentProject.getContributorList();
+        Vector<Contributor> teamMember = teamMembers.getAllContributors();
+        for (int i = 0; i < teamMember.size(); i++) {
+            gitmasterField.addItem(teamMember.get(i).getLogin());
+        }
+        // End of US48 updates
         
         jLabelDescription.setMaximumSize(new Dimension(100, 16));
         jLabelDescription.setMinimumSize(new Dimension(60, 16));
