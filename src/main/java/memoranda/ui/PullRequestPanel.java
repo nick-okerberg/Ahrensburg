@@ -7,15 +7,15 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
-import javax.swing.BorderFactory;
+import java.util.Map;
+import java.util.Vector;
+
+
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JEditorPane;
-import javax.swing.JFileChooser;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -23,8 +23,9 @@ import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
+import javax.swing.event.PopupMenuListener;
 
-import org.json.JSONException;
+import com.sun.glass.ui.TouchInputSupport;
 
 import main.java.memoranda.CommitList;
 import main.java.memoranda.CurrentProject;
@@ -38,18 +39,17 @@ import main.java.memoranda.ProjectListener;
 import main.java.memoranda.ProjectManager;
 import main.java.memoranda.PullRequestList;
 import main.java.memoranda.ResourcesList;
-import main.java.memoranda.Task;
+
 import main.java.memoranda.TaskList;
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.date.CurrentDate;
 import main.java.memoranda.date.DateListener;
-import main.java.memoranda.util.AgendaGenerator;
-import main.java.memoranda.util.Commit;
-import main.java.memoranda.util.CommitsGenerator;
+
 import main.java.memoranda.util.CurrentStorage;
 import main.java.memoranda.util.Local;
 import main.java.memoranda.util.PullRequestGenerator;
 import main.java.memoranda.util.Util;
+import main.java.memoranda.util.PullRequestGenerator.PullRequestsClass;
 
 import javax.swing.JOptionPane;
 
@@ -81,7 +81,7 @@ public class PullRequestPanel extends JPanel {
 
     boolean isActive = true;
     //US173
-    private final JComboBox JboxButton;
+    private static JComboBox<String> JboxButton;
     private final JButton goButton = new JButton("Go");
   
     
@@ -92,6 +92,7 @@ public class PullRequestPanel extends JPanel {
         JboxButton.setSize(5, 5);
         JboxButton.setEditable(false);
         JboxButton.addItem("Sprint Not Selected");
+      
         try {
             parentPanel = _parentPanel;
             jbInit();
@@ -99,6 +100,20 @@ public class PullRequestPanel extends JPanel {
             new ExceptionDialog(ex);
             ex.printStackTrace();
         }
+    }
+    public static void loadJcomoBox(TaskList tl) {
+        Collection coll = tl.getAllSubTasks(null);
+        Object[] obj = coll.toArray();
+        for(int i = 0; i < coll.size(); i++) {
+             JboxButton.addItem( obj[i].toString());
+        }
+       
+                  
+    }
+    public static void loadJcomoBox(PullRequestsClass prc) {
+        JboxButton.addItem(prc.getTask() + "  " +
+                  "   Start Date: " +  prc.getCdStart() +
+                  "   End Date: " +  prc.getCdEnd() );
     }
     void jbInit() throws Exception {
         expandedTasks = new ArrayList();
@@ -289,20 +304,23 @@ public class PullRequestPanel extends JPanel {
         //US173
         toolBar.add(JboxButton);
         JboxButton.setSize(10,10);
+        
         JboxButton.addActionListener(new ActionListener() {
-            
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO Auto-generated method stub
-                
+  
+            
+           
             }
         });
+        
+        
 
         toolBar.add(goButton);
-      
        
         goButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+               
                 try {
                     CurrentProject.get().addRepoName(CurrentProject.get().getGitHubRepoName());
                 } catch (RuntimeException e1) {
@@ -312,6 +330,8 @@ public class PullRequestPanel extends JPanel {
                 App.getFrame().refreshAgenda();
             }
         });
+        
+        
         //END of US173
       
       
@@ -369,6 +389,9 @@ public class PullRequestPanel extends JPanel {
 
     public void setActive(boolean isa) {
         isActive = isa;
+    }
+    public static void JcomboBox(){
+        
     }
 
     
