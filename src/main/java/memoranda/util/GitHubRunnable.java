@@ -11,7 +11,9 @@ import main.java.memoranda.IContributorList;
 import main.java.memoranda.CurrentProject;
 import main.java.memoranda.IProject;
 import main.java.memoranda.IPullRequestList;
+import main.java.memoranda.ui.App;
 import main.java.memoranda.ui.Loading;
+import main.java.memoranda.ui.WorkPanel;
 
 import org.json.JSONException;
 
@@ -40,6 +42,7 @@ public class GitHubRunnable implements Runnable {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Error downloading Github Repo Info");
             Loading.destroy();
+            App.getFrame().refreshCommits();
         }
         
         // Build commits
