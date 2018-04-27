@@ -9,12 +9,15 @@
 package main.java.memoranda;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Vector;
 
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.date.CurrentDate;
 import main.java.memoranda.util.Commit;
 import main.java.memoranda.util.JsonApiClass;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import nu.xom.Attribute;
@@ -25,7 +28,7 @@ import nu.xom.Node;
 /**
  *
  */
-/*$Id: TaskImpl.java,v 1.15 2005/12/01 08:12:26 alexeya Exp $*/
+/* $Id: TaskImpl.java,v 1.15 2005/12/01 08:12:26 alexeya Exp $ */
 public class TaskImpl implements ITask, Comparable {
 
     private Element _element = null;
@@ -42,99 +45,175 @@ public class TaskImpl implements ITask, Comparable {
     /**
      * getNumberSprintTests
      * 
-     * Added as part of US37.  Iterates through commit objects and counts
-     * the number of tests from the commit messages. 
+     * Added as part of US37. Iterates through commit objects and counts the
+     * number of tests from the commit messages.
      * 
-     * @return The number of tests in the sprint task, in String form. 
+     * @return The number of tests in the sprint task, in String form.
      */
     public String getNumberSprintTests() {
-    	
-    	JsonApiClass JAC;			// For Json API call, when the button was pressed. 
-    	
-    	String resultStr = "None";	// Initialize String result to return. 
-    	int resultInt = 0;			// Initialize integer result to 0. 
-    	
-    	// Get the project for this sprint. 
-    	IProject p = this._tl.getProject();
-    	//System.out.println("Project Title: " + p.getTitle());
-    	
-    	// Get the Project's JsonApiClass object, which should contain commit objects. 
-    	JAC = p.getProjectJsonApiClass();
-    	
-    	// Get all commits from the current project's JsonApiClass. 
-    	Vector<Commit> myCommits = new Vector<>();
-    	try {
-        	myCommits = JAC.getCommitsArrLst();
-        }
-        catch (NullPointerException e) {
-        	//System.out.println("No commits for selected sprint.");
-        }
-    	
-    	//System.out.println("myCommits size: " + myCommits.size());
-    	
-        // If there are no commits, just return. 
+
+        String resultStr = "None"; // Initialize String result to return.
+        int resultInt = 0; // Initialize integer result to 0.
+
+        // Get all commits from the current project
+        List<Commit> myCommits = CurrentProject.getCommitList().getAllCommits();
+
+        // System.out.println("myCommits size: " + myCommits.size());
+
+        // If there are no commits, just return.
         if (myCommits == null) {
-        	return resultStr;
+            return resultStr;
         }
-        
+
         // If the Array List is empty, just return.
         if (myCommits.isEmpty()) {
-        	return resultStr;
+            return resultStr;
         }
-        
-        // Iterate through the ArrayList of commits. 
+
+        // Iterate through the ArrayList of commits.
         for (int i = 0; i < myCommits.size(); i++) {
-            
-        	//System.out.println("Iterating through commits... index = " + i);
-        	
-        	// Boolean is true when a commit is detected within this Sprint. 
-        	boolean isWithinSprint = false;
-        	
-        	// A single commit object from the ArrayList. 
-        	Commit myCommit = myCommits.get(i);
-            
-        	// Commit date is the same as the start date of the current sprint. 
-        	if (myCommit.getDate().equals(this.getStartDate().getDate())) {
-        		isWithinSprint = true;
-        	}
-        	
-        	// Commit date is the same as the end date of the current sprint. 
-        	else if (myCommit.getDate().equals(this.getEndDate().getDate())) {
-        		isWithinSprint = true;
-        	}
-        	
-        	// Commit date is within the start-date and end-date of the current sprint.
-        	else if (myCommit.getDate().after(this.getStartDate().getDate()) &&	
-        			(myCommit.getDate().before(this.getEndDate().getDate())) ) {
-        		isWithinSprint = true;
-        	}
-        	
-        	// Otherwise, leave boolean false.
-        	else {
-        		isWithinSprint = false;
-        	}
-        		
-        	//System.out.println("... Commit #" + i + ": isWithinSprint? " + isWithinSprint);
-        	
-        	// If this commit is within this Sprint, then increment the number of tests. 
-        	if (isWithinSprint) {
-        		resultInt = resultInt + myCommit.getNumTests();
-        	}
-        	//System.out.println("Iteration " + i + " result counter = " + resultInt);
-        		
+
+            // System.out.println("Iterating through commits... index = " + i);
+
+            // Boolean is true when a commit is detected within this Sprint.
+            boolean isWithinSprint = false;
+
+            // A single commit object from the ArrayList.
+            Commit myCommit = myCommits.get(i);
+
+            // Commit date is the same as the start date of the current sprint.
+            if (myCommit.getDate().equals(this.getStartDate().getDate())) {
+                isWithinSprint = true;
+            }
+
+            // Commit date is the same as the end date of the current sprint.
+            else if (myCommit.getDate().equals(this.getEndDate().getDate())) {
+                isWithinSprint = true;
+            }
+
+            // Commit date is within the start-date and end-date of the current
+            // sprint.
+            else if (myCommit.getDate().after(this.getStartDate().getDate())
+                    && (myCommit.getDate()
+                            .before(this.getEndDate().getDate()))) {
+                isWithinSprint = true;
+            }
+
+            // Otherwise, leave boolean false.
+            else {
+                isWithinSprint = false;
+            }
+
+            // System.out.println("... Commit #" + i + ": isWithinSprint? " +
+            // isWithinSprint);
+
+            // If this commit is within this Sprint, then increment the number
+            // of tests.
+            if (isWithinSprint) {
+                resultInt = resultInt + myCommit.getNumTests();
+            }
+            // System.out.println("Iteration " + i + " result counter = " +
+            // resultInt);
+
         } // End for loop.
-        
-        // Convert the integer result to string. 
-       	if (resultInt > 0) {
-       		resultStr = Integer.toString(resultInt);
-       	}
-                
-       	// Return the result back, as a string. 
-       	//System.out.println("Returning back: " + resultStr);
-       	return resultStr;
-        
-   	} // End of US37 addition. 
-    
+
+        // Convert the integer result to string.
+        if (resultInt > 0) {
+            resultStr = Integer.toString(resultInt);
+        }
+
+        // Return the result back, as a string.
+        // System.out.println("Returning back: " + resultStr);
+        return resultStr;
+
+    } // End of US37 addition.
+
+    /**
+     * getNumberCommits.
+     * 
+     * Added as part of US43. Iterates through commit objects and counts the
+     * number of commits.
+     * 
+     * @return The number of commits in the sprint task, in String form.
+     */
+    public String getNumberCommits() {
+
+        String resultStr = "None"; // Initialize String result to return.
+        int resultInt = 0; // Initialize integer result to 0.
+
+        // Get all commits from the current project
+        List<Commit> myCommits = CurrentProject.getCommitList().getAllCommits();
+
+        // System.out.println("myCommits size: " + myCommits.size());
+
+        // If there are no commits, just return.
+        if (myCommits == null) {
+            return resultStr;
+        }
+
+        // If the Array List is empty, just return.
+        if (myCommits.isEmpty()) {
+            return resultStr;
+        }
+
+        // Iterate through the ArrayList of commits.
+        for (int i = 0; i < myCommits.size(); i++) {
+
+            // System.out.println("Iterating through commits... index = " + i);
+
+            // Boolean is true when a commit is detected within this Sprint.
+            boolean isWithinSprint = false;
+
+            // A single commit object from the ArrayList.
+            Commit myCommit = myCommits.get(i);
+
+            // Commit date is the same as the start date of the current sprint.
+            if (myCommit.getDate().equals(this.getStartDate().getDate())) {
+                isWithinSprint = true;
+            }
+
+            // Commit date is the same as the end date of the current sprint.
+            else if (myCommit.getDate().equals(this.getEndDate().getDate())) {
+                isWithinSprint = true;
+            }
+
+            // Commit date is within the start-date and end-date of the current
+            // sprint.
+            else if (myCommit.getDate().after(this.getStartDate().getDate())
+                    && (myCommit.getDate()
+                            .before(this.getEndDate().getDate()))) {
+                isWithinSprint = true;
+            }
+
+            // Otherwise, leave boolean false.
+            else {
+                isWithinSprint = false;
+            }
+
+            // System.out.println("... Commit #" + i + ": isWithinSprint? " +
+            // isWithinSprint);
+
+            // If this commit is within this Sprint, then increment the number
+            // of tests.
+            if (isWithinSprint) {
+                resultInt++;
+            }
+            // System.out.println("Iteration " + i + " result counter = " +
+            // resultInt);
+
+        } // End for loop.
+
+        // Convert the integer result to string.
+        if (resultInt > 0) {
+            resultStr = Integer.toString(resultInt);
+        }
+
+        // Return the result back, as a string.
+        // System.out.println("Returning back: " + resultStr);
+        return resultStr;
+
+    } // End of US37 addition.
+
     public Element getContent() {
         return _element;
     }
@@ -144,95 +223,93 @@ public class TaskImpl implements ITask, Comparable {
     }
 
     public void setStartDate(CalendarDate date) {
-           setAttr("startDate", date.toString());
+        setAttr("startDate", date.toString());
     }
 
     public CalendarDate getEndDate() {
-		String ed = _element.getAttribute("endDate").getValue();
-		if (ed != "")
-			return new CalendarDate(_element.getAttribute("endDate").getValue());
-		ITask parent = this.getParentTask();
-		if (parent != null)
-			return parent.getEndDate();
-		IProject pr = this._tl.getProject();
-		if (pr.getEndDate() != null)
-			return pr.getEndDate();
-		return this.getStartDate();
-        
+        String ed = _element.getAttribute("endDate").getValue();
+        if (ed != "")
+            return new CalendarDate(
+                    _element.getAttribute("endDate").getValue());
+        ITask parent = this.getParentTask();
+        if (parent != null)
+            return parent.getEndDate();
+        IProject pr = this._tl.getProject();
+        if (pr.getEndDate() != null)
+            return pr.getEndDate();
+        return this.getStartDate();
+
     }
 
     public void setEndDate(CalendarDate date) {
-		if (date == null) {
-			setAttr("endDate", "");
-		}
-		else {
-			setAttr("endDate", date.toString());
-		}
+        if (date == null) {
+            setAttr("endDate", "");
+        } else {
+            setAttr("endDate", date.toString());
+        }
     }
 
     public long getEffort() {
-    	Attribute attr = _element.getAttribute("effort");
-    	if (attr == null) {
-    		return 0;
-    	}
-    	else {
-    		try {
-        		return Long.parseLong(attr.getValue());
-    		}
-    		catch (NumberFormatException e) {
-    			return 0;
-    		}
-    	}
+        Attribute attr = _element.getAttribute("effort");
+        if (attr == null) {
+            return 0;
+        } else {
+            try {
+                return Long.parseLong(attr.getValue());
+            } catch (NumberFormatException e) {
+                return 0;
+            }
+        }
     }
 
     public void setEffort(long effort) {
         setAttr("effort", String.valueOf(effort));
     }
-	
-	/* 
-	 * @see net.sf.memoranda.Task#getParentTask()
-	 */
-	public ITask getParentTask() {
-		Node parentNode = _element.getParent();
-    	if (parentNode instanceof Element) {
-    	    Element parent = (Element) parentNode;
-        	if (parent.getLocalName().equalsIgnoreCase("task")) 
-        	    return new TaskImpl(parent, _tl);
-    	}
-    	return null;
-	}
-	
-	public String getParentId() {
-		ITask parent = this.getParentTask();
-		if (parent != null)
-			return parent.getID();
-		return null;
-	}
+
+    /*
+     * @see net.sf.memoranda.Task#getParentTask()
+     */
+    public ITask getParentTask() {
+        Node parentNode = _element.getParent();
+        if (parentNode instanceof Element) {
+            Element parent = (Element) parentNode;
+            if (parent.getLocalName().equalsIgnoreCase("task"))
+                return new TaskImpl(parent, _tl);
+        }
+        return null;
+    }
+
+    public String getParentId() {
+        ITask parent = this.getParentTask();
+        if (parent != null)
+            return parent.getID();
+        return null;
+    }
 
     public String getDescription() {
-    	Element thisElement = _element.getFirstChildElement("description");
-    	if (thisElement == null) {
-    		return null;
-    	}
-    	else {
-       		return thisElement.getValue();
-    	}
+        Element thisElement = _element.getFirstChildElement("description");
+        if (thisElement == null) {
+            return null;
+        } else {
+            return thisElement.getValue();
+        }
     }
 
     public void setDescription(String s) {
-    	Element desc = _element.getFirstChildElement("description");
-    	if (desc == null) {
-        	desc = new Element("description");
+        Element desc = _element.getFirstChildElement("description");
+        if (desc == null) {
+            desc = new Element("description");
             desc.appendChild(s);
-            _element.appendChild(desc);    	
-    	}
-    	else {
+            _element.appendChild(desc);
+        } else {
             desc.removeChildren();
-            desc.appendChild(s);    	
-    	}
+            desc.appendChild(s);
+        }
     }
 
-    /**s
+    /**
+     * s
+     * 
      * @see main.java.memoranda.ITask#getStatus()
      */
     public int getStatus(CalendarDate date) {
@@ -241,40 +318,35 @@ public class TaskImpl implements ITask, Comparable {
         if (isFrozen())
             return ITask.FROZEN;
         if (isCompleted())
-                return ITask.COMPLETED;
-        
-		if (date.inPeriod(start, end)) {
+            return ITask.COMPLETED;
+
+        if (date.inPeriod(start, end)) {
             if (date.equals(end))
                 return ITask.DEADLINE;
             else
                 return ITask.ACTIVE;
+        } else if (date.before(start)) {
+            return ITask.SCHEDULED;
         }
-		else if(date.before(start)) {
-				return ITask.SCHEDULED;
-		}
-		
-		if(start.after(end)) {
-			return ITask.ACTIVE;
-		}
+
+        if (start.after(end)) {
+            return ITask.ACTIVE;
+        }
 
         return ITask.FAILED;
     }
+
     /**
      * Method isDependsCompleted.
+     * 
      * @return boolean
      */
-/*
-    private boolean isDependsCompleted() {
-        Vector v = (Vector) getDependsFrom();
-        boolean check = true;
-        for (Enumeration en = v.elements(); en.hasMoreElements();) {
-            Task t = (Task) en.nextElement();
-            if (t.getStatus() != Task.COMPLETED)
-                check = false;
-        }
-        return check;
-    }
-*/
+    /*
+     * private boolean isDependsCompleted() { Vector v = (Vector)
+     * getDependsFrom(); boolean check = true; for (Enumeration en =
+     * v.elements(); en.hasMoreElements();) { Task t = (Task) en.nextElement();
+     * if (t.getStatus() != Task.COMPLETED) check = false; } return check; }
+     */
     private boolean isFrozen() {
         return _element.getAttribute("frozen") != null;
     }
@@ -300,7 +372,7 @@ public class TaskImpl implements ITask, Comparable {
     public String toString() {
         return getText();
     }
-    
+
     /**
      * @see main.java.memoranda.ITask#setText()
      */
@@ -338,6 +410,7 @@ public class TaskImpl implements ITask, Comparable {
         }
         return v;
     }
+
     /**
      * @see main.java.memoranda.ITask#addDependsFrom(main.java.memoranda.ITask)
      */
@@ -346,6 +419,7 @@ public class TaskImpl implements ITask, Comparable {
         dep.addAttribute(new Attribute("idRef", task.getID()));
         _element.appendChild(dep);
     }
+
     /**
      * @see main.java.memoranda.ITask#removeDependsFrom(main.java.memoranda.ITask)
      */
@@ -359,12 +433,15 @@ public class TaskImpl implements ITask, Comparable {
             }
         }
     }
+
     /**
      * @see main.java.memoranda.ITask#getProgress()
      */
     public int getProgress() {
-        return new Integer(_element.getAttribute("progress").getValue()).intValue();
+        return new Integer(_element.getAttribute("progress").getValue())
+                .intValue();
     }
+
     /**
      * @see main.java.memoranda.ITask#setProgress(int)
      */
@@ -372,6 +449,7 @@ public class TaskImpl implements ITask, Comparable {
         if ((p >= 0) && (p <= 100))
             setAttr("progress", new Integer(p).toString());
     }
+
     /**
      * @see main.java.memoranda.ITask#getPriority()
      */
@@ -381,6 +459,7 @@ public class TaskImpl implements ITask, Comparable {
             return ITask.PRIORITY_NORMAL;
         return new Integer(pa.getValue()).intValue();
     }
+
     /**
      * @see main.java.memoranda.ITask#setPriority(int)
      */
@@ -391,74 +470,76 @@ public class TaskImpl implements ITask, Comparable {
     private void setAttr(String a, String value) {
         Attribute attr = _element.getAttribute(a);
         if (attr == null)
-           _element.addAttribute(new Attribute(a, value));
+            _element.addAttribute(new Attribute(a, value));
         else
             attr.setValue(value);
     }
 
-	/**
-	 * A "Task rate" is an informal index of importance of the task
-	 * considering priority, number of days to deadline and current 
-	 * progress. 
-	 * 
-	 * rate = (100-progress) / (numOfDays+1) * (priority+1)
-	 * @param CalendarDate
-	 * @return long
-	 */
+    /**
+     * A "Task rate" is an informal index of importance of the task considering
+     * priority, number of days to deadline and current progress.
+     * 
+     * rate = (100-progress) / (numOfDays+1) * (priority+1)
+     * 
+     * @param CalendarDate
+     * @return long
+     */
 
-	private long calcTaskRate(CalendarDate d) {
-		Calendar endDateCal = getEndDate().getCalendar();
-		Calendar dateCal = d.getCalendar();
-		int numOfDays = (endDateCal.get(Calendar.YEAR)*365 + endDateCal.get(Calendar.DAY_OF_YEAR)) - 
-						(dateCal.get(Calendar.YEAR)*365 + dateCal.get(Calendar.DAY_OF_YEAR));
-		if (numOfDays < 0) return -1; //Something wrong ?
-		return (100-getProgress()) / (numOfDays+1) * (getPriority()+1);
-	}
+    private long calcTaskRate(CalendarDate d) {
+        Calendar endDateCal = getEndDate().getCalendar();
+        Calendar dateCal = d.getCalendar();
+        int numOfDays = (endDateCal.get(Calendar.YEAR) * 365
+                + endDateCal.get(Calendar.DAY_OF_YEAR))
+                - (dateCal.get(Calendar.YEAR) * 365
+                        + dateCal.get(Calendar.DAY_OF_YEAR));
+        if (numOfDays < 0)
+            return -1; // Something wrong ?
+        return (100 - getProgress()) / (numOfDays + 1) * (getPriority() + 1);
+    }
 
     /**
      * @see main.java.memoranda.ITask#getRate()
      */
-	 
-     public long getRate() {
-/*	   Task t = (Task)task;
-	   switch (mode) {
-		   case BY_IMP_RATE: return -1*calcTaskRate(t, date);
-		   case BY_END_DATE: return t.getEndDate().getDate().getTime();
-		   case BY_PRIORITY: return 5-t.getPriority();
-		   case BY_COMPLETION: return 100-t.getProgress();
-	   }
-       return -1;
-*/
-		return -1*calcTaskRate(CurrentDate.get());
-	 }
-	   
-	 /*
-	  * Comparable interface
-	  */
-	  
-	 public int compareTo(Object o) {
-		 ITask task = (ITask) o;
-		 	if(getRate() > task.getRate())
-				return 1;
-			else if(getRate() < task.getRate())
-				return -1;
-			else 
-				return 0;
-	 }
-	 
-	 public boolean equals(Object o) {
-	     return ((o instanceof ITask) && (((ITask)o).getID().equals(this.getID())));
-	 }
 
-	/* 
-	 * @see net.sf.memoranda.Task#getSubTasks()
-	 */
-	public Collection getSubTasks() {
-		Elements subTasks = _element.getChildElements("task");
-            return convertToTaskObjects(subTasks);
-	}
+    public long getRate() {
+        /*
+         * Task t = (Task)task; switch (mode) { case BY_IMP_RATE: return
+         * -1*calcTaskRate(t, date); case BY_END_DATE: return
+         * t.getEndDate().getDate().getTime(); case BY_PRIORITY: return
+         * 5-t.getPriority(); case BY_COMPLETION: return 100-t.getProgress(); }
+         * return -1;
+         */
+        return -1 * calcTaskRate(CurrentDate.get());
+    }
 
-	private Collection convertToTaskObjects(Elements tasks) {
+    /*
+     * Comparable interface
+     */
+
+    public int compareTo(Object o) {
+        ITask task = (ITask) o;
+        if (getRate() > task.getRate())
+            return 1;
+        else if (getRate() < task.getRate())
+            return -1;
+        else
+            return 0;
+    }
+
+    public boolean equals(Object o) {
+        return ((o instanceof ITask)
+                && (((ITask) o).getID().equals(this.getID())));
+    }
+
+    /*
+     * @see net.sf.memoranda.Task#getSubTasks()
+     */
+    public Collection getSubTasks() {
+        Elements subTasks = _element.getChildElements("task");
+        return convertToTaskObjects(subTasks);
+    }
+
+    private Collection convertToTaskObjects(Elements tasks) {
         Vector v = new Vector();
         for (int i = 0; i < tasks.size(); i++) {
             ITask t = new TaskImpl(tasks.get(i), _tl);
@@ -466,29 +547,28 @@ public class TaskImpl implements ITask, Comparable {
         }
         return v;
     }
-	
-	/* 
-	 * @see net.sf.memoranda.Task#getSubTask(java.lang.String)
-	 */
-	public ITask getSubTask(String id) {
-		Elements subTasks = _element.getChildElements("task");
-		for (int i = 0; i < subTasks.size(); i++) {
-			if (subTasks.get(i).getAttribute("id").getValue().equals(id))
-				return new TaskImpl(subTasks.get(i), _tl);
-		}
-		return null;
-	}
 
-	/* 
-	 * @see net.sf.memoranda.Task#hasSubTasks()
-	 */
-	public boolean hasSubTasks(String id) {
-		Elements subTasks = _element.getChildElements("task");
-		for (int i = 0; i < subTasks.size(); i++) 
-			if (subTasks.get(i).getAttribute("id").getValue().equals(id))
-				return true;
-		return false;
-	}
+    /*
+     * @see net.sf.memoranda.Task#getSubTask(java.lang.String)
+     */
+    public ITask getSubTask(String id) {
+        Elements subTasks = _element.getChildElements("task");
+        for (int i = 0; i < subTasks.size(); i++) {
+            if (subTasks.get(i).getAttribute("id").getValue().equals(id))
+                return new TaskImpl(subTasks.get(i), _tl);
+        }
+        return null;
+    }
 
-	
+    /*
+     * @see net.sf.memoranda.Task#hasSubTasks()
+     */
+    public boolean hasSubTasks(String id) {
+        Elements subTasks = _element.getChildElements("task");
+        for (int i = 0; i < subTasks.size(); i++)
+            if (subTasks.get(i).getAttribute("id").getValue().equals(id))
+                return true;
+        return false;
+    }
+
 }
