@@ -14,7 +14,7 @@ import nu.xom.Document;
  * Defines a list of GitHub branches.
  */
 
-public interface BranchList {
+public interface IBranchList {
     
     Vector<Branch> getAllBranches();
     

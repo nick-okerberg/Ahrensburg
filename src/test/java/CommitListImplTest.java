@@ -14,13 +14,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import main.java.memoranda.CommitList;
+import main.java.memoranda.ICommitList;
 import main.java.memoranda.CommitListImpl;
 import main.java.memoranda.util.Commit;
 
 public class CommitListImplTest {
-    CommitList commitListFromFile;
-    CommitList commitListNew;
+    ICommitList commitListFromFile;
+    ICommitList commitListNew;
     Commit cmt; 
     Commit cmt2;
     String filePathFull;

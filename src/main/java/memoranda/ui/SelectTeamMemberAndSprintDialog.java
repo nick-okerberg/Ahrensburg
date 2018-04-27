@@ -29,7 +29,7 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 
 import main.java.memoranda.CurrentProject;
-import main.java.memoranda.Task;
+import main.java.memoranda.ITask;
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.util.Commit;
 import main.java.memoranda.util.Contributor;
@@ -107,19 +107,19 @@ public class SelectTeamMemberAndSprintDialog extends JDialog {
         {
 
             _sprint = new JComboBox();
-            Collection<Task> test = CurrentProject.getTaskList().getTopLevelTasks();
-            for(Task t : test) {
+            Collection<ITask> test = CurrentProject.getTaskList().getTopLevelTasks();
+            for(ITask t : test) {
                 _sprint.addItem((String) t.getText());
             }
             getContentPane().add(_sprint, "2, 8, 5, 1, fill, default");
         }
 
         DefaultListModel<String> listModel = new DefaultListModel<String>();
-        Collection<Task> listOfSprints = CurrentProject.getTaskList()
+        Collection<ITask> listOfSprints = CurrentProject.getTaskList()
                 .getTopLevelTasks();
         // A helper vector to store sprints. better than a collection.
-        Vector<Task> taskVector = new Vector<>();
-        for (Task task : listOfSprints) {
+        Vector<ITask> taskVector = new Vector<>();
+        for (ITask task : listOfSprints) {
             listModel.addElement(task.getText());
             taskVector.add(task);
         }
@@ -144,7 +144,7 @@ public class SelectTeamMemberAndSprintDialog extends JDialog {
             int selectedCompare = _teamMember.getSelectedIndex();
             /* Because the list and taskVector were built the same their
                 indices match. */
-            Task sprint = null;
+            ITask sprint = null;
             if (! selectedProject) {
                 sprint = taskVector.get(selectedIndex);
             }

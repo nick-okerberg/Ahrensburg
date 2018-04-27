@@ -23,7 +23,7 @@ import nu.xom.ParsingException;
  * Implements a list of Branchs as XON Elements.
  */
 
-public class BranchListImpl implements BranchList {
+public class BranchListImpl implements IBranchList {
     
     
     private String filePath = null;

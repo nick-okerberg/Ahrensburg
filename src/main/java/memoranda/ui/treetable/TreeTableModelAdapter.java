@@ -36,9 +36,9 @@ import javax.swing.event.TreeModelListener;
 public class TreeTableModelAdapter extends AbstractTableModel
 {
     JTree tree;
-    TreeTableModel treeTableModel;
+    ITreeTableModel treeTableModel;
 
-    public TreeTableModelAdapter(TreeTableModel treeTableModel, JTree tree) {
+    public TreeTableModelAdapter(ITreeTableModel treeTableModel, JTree tree) {
         this.tree = tree;
         this.treeTableModel = treeTableModel;
 

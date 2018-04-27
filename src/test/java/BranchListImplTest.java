@@ -23,7 +23,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.UIManager;
 
-import main.java.memoranda.BranchList;
+import main.java.memoranda.IBranchList;
 import main.java.memoranda.BranchListImpl;
 import main.java.memoranda.util.Branch;
 
@@ -33,8 +33,8 @@ import org.junit.Test;
 
 
 public class BranchListImplTest {
-    BranchList branchListFromFile;
-    BranchList branchListNew;
+    IBranchList branchListFromFile;
+    IBranchList branchListNew;
     Branch branch; 
     Branch branch2;
     String filePathFull;

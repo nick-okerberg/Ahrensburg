@@ -14,7 +14,7 @@ import nu.xom.Document;
  * Defines a list of GitHub Commits.
  */
 
-public interface CommitList {
+public interface ICommitList {
     
     List<Commit> getAllCommits();
     

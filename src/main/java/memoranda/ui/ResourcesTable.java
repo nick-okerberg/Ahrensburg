@@ -13,15 +13,15 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
-import main.java.memoranda.CommitList;
+import main.java.memoranda.ICommitList;
 import main.java.memoranda.CurrentProject;
-import main.java.memoranda.NoteList;
-import main.java.memoranda.Project;
-import main.java.memoranda.ProjectListener;
-import main.java.memoranda.PullRequestList;
+import main.java.memoranda.INoteList;
+import main.java.memoranda.IProject;
+import main.java.memoranda.IProjectListener;
+import main.java.memoranda.IPullRequestList;
 import main.java.memoranda.Resource;
-import main.java.memoranda.ResourcesList;
-import main.java.memoranda.TaskList;
+import main.java.memoranda.IResourcesList;
+import main.java.memoranda.ITaskList;
 import main.java.memoranda.ui.table.TableSorter;
 import main.java.memoranda.util.Local;
 import main.java.memoranda.util.MimeType;
@@ -45,9 +45,9 @@ public class ResourcesTable extends JTable {
         this.setFont(new Font("Dialog",0,11));
         initColumsWidth();
         //this.setModel(new ResourcesTableModel());
-        CurrentProject.addProjectListener(new ProjectListener() {
-            public void projectChange(Project p, NoteList nl, TaskList tl, 
-                    ResourcesList rl, CommitList cl, PullRequestList prl) {                
+        CurrentProject.addProjectListener(new IProjectListener() {
+            public void projectChange(IProject p, INoteList nl, ITaskList tl, 
+                    IResourcesList rl, ICommitList cl, IPullRequestList prl) {                
                
             }
             public void projectWasChanged() {

@@ -5,12 +5,12 @@ import java.net.URL;
 import java.util.List;
 
 import javax.swing.JOptionPane;
-import main.java.memoranda.BranchList;
-import main.java.memoranda.CommitList;
-import main.java.memoranda.ContributorList;
+import main.java.memoranda.IBranchList;
+import main.java.memoranda.ICommitList;
+import main.java.memoranda.IContributorList;
 import main.java.memoranda.CurrentProject;
-import main.java.memoranda.Project;
-import main.java.memoranda.PullRequestList;
+import main.java.memoranda.IProject;
+import main.java.memoranda.IPullRequestList;
 import main.java.memoranda.ui.Loading;
 
 import org.json.JSONException;
@@ -18,10 +18,10 @@ import org.json.JSONException;
 
 public class GitHubRunnable implements Runnable {
     String repo;
-    Storage storage;
-    Project project;
+    IStorage storage;
+    IProject project;
     
-    public GitHubRunnable(String gitHubRepo, Storage store, Project prj) {
+    public GitHubRunnable(String gitHubRepo, IStorage store, IProject prj) {
         repo = gitHubRepo;
         storage = store;
         project = prj;
@@ -45,7 +45,7 @@ public class GitHubRunnable implements Runnable {
         // Build commits
         List<Commit> commits = jac.getCommitsArrLst();
         
-        CommitList cl = storage.openCommitList(project);
+        ICommitList cl = storage.openCommitList(project);
         for (int i = 0; i < commits.size(); i++) {
             cl.addCommit(commits.get(i));
         }
@@ -53,7 +53,7 @@ public class GitHubRunnable implements Runnable {
         
         // Build pull requests
         List<PullRequest> pullRequests = jac.getPullRequests();
-        PullRequestList prl = storage.openPullRequestList(project);
+        IPullRequestList prl = storage.openPullRequestList(project);
         for (int i = 0; i < pullRequests.size(); i++) {
             prl.addPullRequest(pullRequests.get(i));
         }
@@ -61,7 +61,7 @@ public class GitHubRunnable implements Runnable {
         
         // Build Contributors
         List<Contributor> contributors = jac.getContributors();
-        ContributorList contribList = storage.openContributorList(project);
+        IContributorList contribList = storage.openContributorList(project);
         for (int i = 0; i < contributors.size(); i++) {
             contribList.addContributor(contributors.get(i));
         }
@@ -69,7 +69,7 @@ public class GitHubRunnable implements Runnable {
         
         // Build Branches
         List<Branch> branches = jac.getBranches();
-        BranchList branchList = storage.openBranchList(project);
+        IBranchList branchList = storage.openBranchList(project);
         for (int i = 0; i < branches.size(); i++) {
             branchList.addBranch(branches.get(i));
         }

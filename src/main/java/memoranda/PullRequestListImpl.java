@@ -23,7 +23,7 @@ import nu.xom.ParsingException;
  * Implements a list of PullRequests as XON Elements.
  */
 
-public class PullRequestListImpl implements PullRequestList {
+public class PullRequestListImpl implements IPullRequestList {
     
     
     private String filePath = null;

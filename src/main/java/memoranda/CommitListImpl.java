@@ -24,7 +24,7 @@ import nu.xom.ParsingException;
  * Implements a list of Commits as XON Elements.
  */
 
-public class CommitListImpl implements CommitList {
+public class CommitListImpl implements ICommitList {
     
     
     private String filePath = null;
