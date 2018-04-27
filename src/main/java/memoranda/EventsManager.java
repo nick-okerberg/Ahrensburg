@@ -7,7 +7,6 @@
  */
 package main.java.memoranda;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
