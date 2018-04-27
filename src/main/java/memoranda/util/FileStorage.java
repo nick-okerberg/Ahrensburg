@@ -51,7 +51,7 @@ import nu.xom.Document;
  *
  */
 /*$Id: FileStorage.java,v 1.15 2006/10/09 23:31:58 alexeya Exp $*/
-public class FileStorage implements Storage {
+public class FileStorage implements IStorage {
 
     public static String JN_DOCPATH = Util.getEnvDir();
     private HTMLEditorKit editorKit = new HTMLEditorKit();
@@ -113,7 +113,7 @@ public class FileStorage implements Storage {
     }
 
     /**
-     * @see main.java.memoranda.util.Storage#storeNote(main.java.memoranda.INote)
+     * @see main.java.memoranda.util.IStorage#storeNote(main.java.memoranda.INote)
      */
     public void storeNote(INote note, javax.swing.text.Document doc) {
         String filename =
@@ -165,7 +165,7 @@ public class FileStorage implements Storage {
 
     }
     /**
-     * @see main.java.memoranda.util.Storage#openNote(main.java.memoranda.INote)
+     * @see main.java.memoranda.util.IStorage#openNote(main.java.memoranda.INote)
      */
     public javax.swing.text.Document openNote(INote note) {
 
@@ -237,7 +237,7 @@ public class FileStorage implements Storage {
     }
 
     /**
-     * @see main.java.memoranda.util.Storage#openProjectManager()
+     * @see main.java.memoranda.util.IStorage#openProjectManager()
      */
     public void openProjectManager() {
         if (!new File(JN_DOCPATH + ".projects").exists()) {
@@ -250,7 +250,7 @@ public class FileStorage implements Storage {
         ProjectManager._doc = openDocument(JN_DOCPATH + ".projects");
     }
     /**
-     * @see main.java.memoranda.util.Storage#storeProjectManager(nu.xom.Document)
+     * @see main.java.memoranda.util.IStorage#storeProjectManager(nu.xom.Document)
      */
     public void storeProjectManager() {
         /*DEBUG*/
@@ -259,7 +259,7 @@ public class FileStorage implements Storage {
         saveDocument(ProjectManager._doc, JN_DOCPATH + ".projects");
     }
     /**
-     * @see main.java.memoranda.util.Storage#removeProject(main.java.memoranda.IProject)
+     * @see main.java.memoranda.util.IStorage#removeProject(main.java.memoranda.IProject)
      */
     public void removeProjectStorage(IProject prj) {
         String id = prj.getID();
@@ -315,7 +315,7 @@ public class FileStorage implements Storage {
         saveDocument(tasklistDoc,JN_DOCPATH + prj.getID() + File.separator + ".tasklist");
     }
     /**
-     * @see main.java.memoranda.util.Storage#createProjectStorage(main.java.memoranda.IProject)
+     * @see main.java.memoranda.util.IStorage#createProjectStorage(main.java.memoranda.IProject)
      */
     public void createProjectStorage(IProject prj) {
         /*DEBUG*/
@@ -325,7 +325,7 @@ public class FileStorage implements Storage {
         dir.mkdirs();
     }
     /**
-     * @see main.java.memoranda.util.Storage#openNoteList(main.java.memoranda.IProject)
+     * @see main.java.memoranda.util.IStorage#openNoteList(main.java.memoranda.IProject)
      */
     public INoteList openNoteList(IProject prj) {
         String fn = JN_DOCPATH + prj.getID() + File.separator + ".notes";
@@ -347,7 +347,7 @@ public class FileStorage implements Storage {
         }
     }
     /**
-     * @see main.java.memoranda.util.Storage#storeNoteList(main.java.memoranda.INoteList, main.java.memoranda.IProject)
+     * @see main.java.memoranda.util.IStorage#storeNoteList(main.java.memoranda.INoteList, main.java.memoranda.IProject)
      */
     public void storeNoteList(INoteList nl, IProject prj) {
         /*DEBUG*/
@@ -368,7 +368,7 @@ public class FileStorage implements Storage {
 
     }
     /**
-     * @see main.java.memoranda.util.Storage#openEventsList()
+     * @see main.java.memoranda.util.IStorage#openEventsList()
      */
     public void openEventsManager() {
         if (!new File(JN_DOCPATH + ".events").exists()) {
@@ -381,7 +381,7 @@ public class FileStorage implements Storage {
         EventsManager._doc = openDocument(JN_DOCPATH + ".events");
     }
     /**
-     * @see main.java.memoranda.util.Storage#storeEventsList()
+     * @see main.java.memoranda.util.IStorage#storeEventsList()
      */
     public void storeEventsManager() {
         /*DEBUG*/
@@ -390,7 +390,7 @@ public class FileStorage implements Storage {
         saveDocument(EventsManager._doc, JN_DOCPATH + ".events");
     }
     /**
-     * @see main.java.memoranda.util.Storage#openMimeTypesList()
+     * @see main.java.memoranda.util.IStorage#openMimeTypesList()
      */
     public void openMimeTypesList() {
         if (!new File(JN_DOCPATH + ".mimetypes").exists()) {
@@ -414,7 +414,7 @@ public class FileStorage implements Storage {
         MimeTypesList._doc = openDocument(JN_DOCPATH + ".mimetypes");
     }
     /**
-     * @see main.java.memoranda.util.Storage#storeMimeTypesList()
+     * @see main.java.memoranda.util.IStorage#storeMimeTypesList()
      */
     public void storeMimeTypesList() {
         /*DEBUG*/
@@ -423,7 +423,7 @@ public class FileStorage implements Storage {
         saveDocument(MimeTypesList._doc, JN_DOCPATH + ".mimetypes");
     }
     /**
-     * @see main.java.memoranda.util.Storage#openResourcesList(main.java.memoranda.IProject)
+     * @see main.java.memoranda.util.IStorage#openResourcesList(main.java.memoranda.IProject)
      */
     public IResourcesList openResourcesList(IProject prj) {
         String fn = JN_DOCPATH + prj.getID() + File.separator + ".resources";
@@ -439,7 +439,7 @@ public class FileStorage implements Storage {
         }
     }
     /**
-     * @see main.java.memoranda.util.Storage#storeResourcesList(main.java.memoranda.IResourcesList, main.java.memoranda.IProject)
+     * @see main.java.memoranda.util.IStorage#storeResourcesList(main.java.memoranda.IResourcesList, main.java.memoranda.IProject)
      */
     public void storeResourcesList(IResourcesList rl, IProject prj) {
         /*DEBUG*/
@@ -455,7 +455,7 @@ public class FileStorage implements Storage {
     }
     
     /**
-     * @see main.java.memoranda.util.Storage#openCommitList(main.java.memoranda.IProject)
+     * @see main.java.memoranda.util.IStorage#openCommitList(main.java.memoranda.IProject)
      */
     public ICommitList openCommitList(IProject prj) {
         String fn = JN_DOCPATH + prj.getID() + File.separator + ".commits";
@@ -470,7 +470,7 @@ public class FileStorage implements Storage {
         }
     }
     /**
-     * @see main.java.memoranda.util.Storage#storeResourcesList(main.java.memoranda.IResourcesList, main.java.memoranda.IProject)
+     * @see main.java.memoranda.util.IStorage#storeResourcesList(main.java.memoranda.IResourcesList, main.java.memoranda.IProject)
      */
     public void storeCommitList(ICommitList cl, IProject prj) {
         /*DEBUG*/
@@ -488,7 +488,7 @@ public class FileStorage implements Storage {
     }
     
     /**
-     * @see main.java.memoranda.util.Storage#openPullRequestListList(main.java.memoranda.IProject)
+     * @see main.java.memoranda.util.IStorage#openPullRequestListList(main.java.memoranda.IProject)
      */
     public IPullRequestList openPullRequestList(IProject prj) {
         String fn = JN_DOCPATH + prj.getID() + File.separator + ".pullrequests";
@@ -504,7 +504,7 @@ public class FileStorage implements Storage {
     }
     
     /**
-     * @see main.java.memoranda.util.Storage#storePullRequestList
+     * @see main.java.memoranda.util.IStorage#storePullRequestList
      */
     public void storePullRequestList(IPullRequestList prl, IProject prj) {
         /*DEBUG*/
@@ -522,7 +522,7 @@ public class FileStorage implements Storage {
     }
     
     /**
-     * @see main.java.memoranda.util.Storage#openPullRequestListList(main.java.memoranda.IProject)
+     * @see main.java.memoranda.util.IStorage#openPullRequestListList(main.java.memoranda.IProject)
      */
     public IContributorList openContributorList(IProject prj) {
         String fn = JN_DOCPATH + prj.getID() + File.separator + ".contributors";
@@ -538,7 +538,7 @@ public class FileStorage implements Storage {
     }
     
     /**
-     * @see main.java.memoranda.util.Storage#storePullRequestList
+     * @see main.java.memoranda.util.IStorage#storePullRequestList
      */
     public void storeContributorList(IContributorList contriblist, IProject prj) {
         /*DEBUG*/
@@ -556,7 +556,7 @@ public class FileStorage implements Storage {
     }
     
     /**
-     * @see main.java.memoranda.util.Storage#openPullRequestListList(main.java.memoranda.IProject)
+     * @see main.java.memoranda.util.IStorage#openPullRequestListList(main.java.memoranda.IProject)
      */
     public IBranchList openBranchList(IProject prj) {
         String fn = JN_DOCPATH + prj.getID() + File.separator + ".branches";
@@ -573,7 +573,7 @@ public class FileStorage implements Storage {
     }
     
     /**
-     * @see main.java.memoranda.util.Storage#storePullRequestList
+     * @see main.java.memoranda.util.IStorage#storePullRequestList
      */
     public void storeBranchList(IBranchList branchList, IProject prj) {
         /*DEBUG*/
@@ -590,7 +590,7 @@ public class FileStorage implements Storage {
     }
     
     /**
-     * @see main.java.memoranda.util.Storage#restoreContext()
+     * @see main.java.memoranda.util.IStorage#restoreContext()
      */
     public void restoreContext() {
         try {
@@ -606,7 +606,7 @@ public class FileStorage implements Storage {
     }
     
     /**
-     * @see main.java.memoranda.util.Storage#storeContext()
+     * @see main.java.memoranda.util.IStorage#storeContext()
      */
     public void storeContext() {
         try {

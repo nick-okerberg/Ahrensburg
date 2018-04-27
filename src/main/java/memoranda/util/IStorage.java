@@ -21,7 +21,7 @@ import main.java.memoranda.ITaskList;
  * 
  */
 /*$Id: Storage.java,v 1.4 2004/01/30 12:17:42 alexeya Exp $*/
-public interface Storage {
+public interface IStorage {
             
     ITaskList openTaskList(IProject prj);    
     void storeTaskList(ITaskList tl, IProject prj);

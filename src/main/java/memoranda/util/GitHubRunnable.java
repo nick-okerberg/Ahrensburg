@@ -18,10 +18,10 @@ import org.json.JSONException;
 
 public class GitHubRunnable implements Runnable {
     String repo;
-    Storage storage;
+    IStorage storage;
     IProject project;
     
-    public GitHubRunnable(String gitHubRepo, Storage store, IProject prj) {
+    public GitHubRunnable(String gitHubRepo, IStorage store, IProject prj) {
         repo = gitHubRepo;
         storage = store;
         project = prj;
