@@ -5,14 +5,14 @@ import java.util.Vector;
 
 public class CurrentNote {
 
-	private static Note currentNote = null;
+	private static INote currentNote = null;
     private static Vector noteListeners = new Vector();
 
-    public static Note get() {
+    public static INote get() {
         return currentNote;
     }
 
-    public static void set(Note note, boolean toSaveCurrentNote) {
+    public static void set(INote note, boolean toSaveCurrentNote) {
         noteChanged(note, toSaveCurrentNote);
         currentNote = note;
     }
@@ -22,7 +22,7 @@ public class CurrentNote {
         set(null, true);
     }
 
-    public static void addNoteListener(NoteListener nl) {
+    public static void addNoteListener(INoteListener nl) {
         noteListeners.add(nl);
     }
 
@@ -30,9 +30,9 @@ public class CurrentNote {
         return noteListeners;
     }
 
-    private static void noteChanged(Note note, boolean toSaveCurrentNote) {
+    private static void noteChanged(INote note, boolean toSaveCurrentNote) {
         for (int i = 0; i < noteListeners.size(); i++) {
-            ((NoteListener)noteListeners.get(i)).noteChange(note,toSaveCurrentNote);
+            ((INoteListener)noteListeners.get(i)).noteChange(note,toSaveCurrentNote);
 		}
     }
 }

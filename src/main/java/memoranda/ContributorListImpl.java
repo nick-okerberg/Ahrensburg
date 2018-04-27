@@ -23,7 +23,7 @@ import nu.xom.ParsingException;
  * Implements a list of Contributors as XON Elements.
  */
 
-public class ContributorListImpl implements ContributorList {
+public class ContributorListImpl implements IContributorList {
     
     
     private String filePath = null;

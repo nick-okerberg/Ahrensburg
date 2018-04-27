@@ -3,7 +3,7 @@ package main.java.memoranda.util;
 
 import java.util.Vector;
 import main.java.memoranda.CurrentProject;
-import main.java.memoranda.Task;
+import main.java.memoranda.ITask;
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.ui.PullRequestPanel;
 /**
@@ -18,7 +18,7 @@ public class PullRequestGenerator {
     protected static Vector<PullRequest> allPulls = null;
     private static Vector<PullRequestsClass> sprints = new Vector<>();
   
-  public PullRequestGenerator(Task newTask, CalendarDate cdStart,CalendarDate cdEnd){
+  public PullRequestGenerator(ITask newTask, CalendarDate cdStart,CalendarDate cdEnd){
      prc =  new PullRequestsClass( newTask,  cdStart, cdEnd);
      sprints.add(prc);
      
@@ -53,17 +53,17 @@ public class PullRequestGenerator {
     //Inner class which describes every input in JComboBox
     public class PullRequestsClass{
         
-        Task newTask;
+        ITask newTask;
         CalendarDate cdStart;
         CalendarDate cdEnd;
         
-        public PullRequestsClass(Task newTask,
+        public PullRequestsClass(ITask newTask,
                  CalendarDate cdStart,CalendarDate cdEnd) {
             this.newTask = newTask;
             this.cdStart = cdStart;
             this.cdEnd = cdEnd;
         }
-        public Task getTask() {
+        public ITask getTask() {
             return newTask;
         }
         public CalendarDate getCdStart() {

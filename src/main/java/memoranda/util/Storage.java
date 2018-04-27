@@ -8,32 +8,32 @@
  */
 package main.java.memoranda.util;
 
-import main.java.memoranda.BranchList;
-import main.java.memoranda.CommitList;
-import main.java.memoranda.ContributorList;
-import main.java.memoranda.Note;
-import main.java.memoranda.NoteList;
-import main.java.memoranda.Project;
-import main.java.memoranda.PullRequestList;
-import main.java.memoranda.ResourcesList;
-import main.java.memoranda.TaskList;
+import main.java.memoranda.IBranchList;
+import main.java.memoranda.ICommitList;
+import main.java.memoranda.IContributorList;
+import main.java.memoranda.INote;
+import main.java.memoranda.INoteList;
+import main.java.memoranda.IProject;
+import main.java.memoranda.IPullRequestList;
+import main.java.memoranda.IResourcesList;
+import main.java.memoranda.ITaskList;
 /**
  * 
  */
 /*$Id: Storage.java,v 1.4 2004/01/30 12:17:42 alexeya Exp $*/
 public interface Storage {
             
-    TaskList openTaskList(Project prj);    
-    void storeTaskList(TaskList tl, Project prj);
+    ITaskList openTaskList(IProject prj);    
+    void storeTaskList(ITaskList tl, IProject prj);
     
-    NoteList openNoteList(Project prj);
-    void storeNoteList(NoteList nl, Project prj);
+    INoteList openNoteList(IProject prj);
+    void storeNoteList(INoteList nl, IProject prj);
     
-    void storeNote(Note note, javax.swing.text.Document doc);    
-    javax.swing.text.Document openNote(Note note);
-    void removeNote(Note note);
+    void storeNote(INote note, javax.swing.text.Document doc);    
+    javax.swing.text.Document openNote(INote note);
+    void removeNote(INote note);
     
-    String getNoteURL(Note note);
+    String getNoteURL(INote note);
     
     void openProjectManager();    
     void storeProjectManager();
@@ -44,23 +44,23 @@ public interface Storage {
     void openMimeTypesList();
     void storeMimeTypesList();
     
-    void createProjectStorage(Project prj);
-    void removeProjectStorage(Project prj);
+    void createProjectStorage(IProject prj);
+    void removeProjectStorage(IProject prj);
    
-    ResourcesList openResourcesList(Project prj);
-    void storeResourcesList(ResourcesList rl, Project prj);
+    IResourcesList openResourcesList(IProject prj);
+    void storeResourcesList(IResourcesList rl, IProject prj);
     
-    CommitList openCommitList(Project prj);
-    void storeCommitList(CommitList cl, Project prj);
+    ICommitList openCommitList(IProject prj);
+    void storeCommitList(ICommitList cl, IProject prj);
     
-    PullRequestList openPullRequestList(Project prj);
-    void storePullRequestList(PullRequestList prl, Project prj);
+    IPullRequestList openPullRequestList(IProject prj);
+    void storePullRequestList(IPullRequestList prl, IProject prj);
     
-    ContributorList openContributorList(Project prj);
-    void storeContributorList(ContributorList contribList, Project prj);
+    IContributorList openContributorList(IProject prj);
+    void storeContributorList(IContributorList contribList, IProject prj);
     
-    BranchList openBranchList(Project prj);
-    void storeBranchList(BranchList branchList, Project prj);
+    IBranchList openBranchList(IProject prj);
+    void storeBranchList(IBranchList branchList, IProject prj);
     
     void restoreContext();
     void storeContext(); 

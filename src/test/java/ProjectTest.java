@@ -12,7 +12,7 @@ import org.junit.Test;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
-import main.java.memoranda.Project;
+import main.java.memoranda.IProject;
 import main.java.memoranda.ProjectImpl;
 import main.java.memoranda.util.JsonApiClass;
 import main.java.memoranda.util.Util;
@@ -20,7 +20,7 @@ import nu.xom.Attribute;
 import nu.xom.Element;
 
 public class ProjectTest {
-  Project prj;
+  IProject prj;
   
   /**
    * Builds a JsonApiClass based on Jordan Wine's SER316 repo to use to test.

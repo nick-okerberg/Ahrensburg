@@ -23,7 +23,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.UIManager;
 
-import main.java.memoranda.ContributorList;
+import main.java.memoranda.IContributorList;
 import main.java.memoranda.ContributorListImpl;
 import main.java.memoranda.util.Contributor;
 
@@ -33,8 +33,8 @@ import org.junit.Test;
 
 
 public class ContributorListImplTest {
-    ContributorList contributorListFromFile;
-    ContributorList contributorListNew;
+    IContributorList contributorListFromFile;
+    IContributorList contributorListNew;
     Contributor contrib; 
     Contributor contrib2;
     String filePathFull;

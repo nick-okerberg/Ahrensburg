@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import main.java.memoranda.PullRequestList;
+import main.java.memoranda.IPullRequestList;
 import main.java.memoranda.PullRequestListImpl;
 import main.java.memoranda.util.FileStorage;
 import main.java.memoranda.util.PullRequest;
@@ -26,8 +26,8 @@ import org.junit.Test;
 
 
 public class PullRequestListImplTest {
-    PullRequestList pullRequestListFromFile;
-    PullRequestList pullRequestListNew;
+    IPullRequestList pullRequestListFromFile;
+    IPullRequestList pullRequestListNew;
     PullRequest pr; 
     PullRequest pr2;
     String filePathFull;

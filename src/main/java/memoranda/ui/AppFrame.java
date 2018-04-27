@@ -34,16 +34,16 @@ import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.text.html.HTMLDocument;
 
-import main.java.memoranda.CommitList;
+import main.java.memoranda.ICommitList;
 import main.java.memoranda.CurrentProject;
 import main.java.memoranda.History;
-import main.java.memoranda.Note;
-import main.java.memoranda.NoteList;
-import main.java.memoranda.Project;
-import main.java.memoranda.ProjectListener;
-import main.java.memoranda.PullRequestList;
-import main.java.memoranda.ResourcesList;
-import main.java.memoranda.TaskList;
+import main.java.memoranda.INote;
+import main.java.memoranda.INoteList;
+import main.java.memoranda.IProject;
+import main.java.memoranda.IProjectListener;
+import main.java.memoranda.IPullRequestList;
+import main.java.memoranda.IResourcesList;
+import main.java.memoranda.ITaskList;
 import main.java.memoranda.date.CurrentDate;
 import main.java.memoranda.ui.htmleditor.HTMLEditor;
 import main.java.memoranda.util.Configuration;
@@ -653,10 +653,10 @@ public class AppFrame extends JFrame {
             setEnabledEditorMenus(pan.equalsIgnoreCase("NOTES"));
         }
 
-        CurrentProject.addProjectListener(new ProjectListener() {
+        CurrentProject.addProjectListener(new IProjectListener() {
 
-            public void projectChange(Project prj, NoteList nl, TaskList tl,
-                    ResourcesList rl, CommitList cl, PullRequestList prl) {
+            public void projectChange(IProject prj, INoteList nl, ITaskList tl,
+                    IResourcesList rl, ICommitList cl, IPullRequestList prl) {
             }
 
             public void projectWasChanged() {
@@ -1060,7 +1060,7 @@ public class AppFrame extends JFrame {
                             content = notesContent.get(id);
                             p.setText(content);
                             HTMLDocument doc = (HTMLDocument)p.getDocument();
-                            Note note = CurrentProject.getNoteList().createNoteForDate(CurrentDate.get());
+                            INote note = CurrentProject.getNoteList().createNoteForDate(CurrentDate.get());
                     note.setTitle(name);
                             note.setId(Util.generateId());
                     CurrentStorage.get().storeNote(note, doc);
@@ -1142,7 +1142,7 @@ public class AppFrame extends JFrame {
                             System.out.println(id+" "+name+" "+content);
                             p.setText(content);
                             HTMLDocument doc = (HTMLDocument)p.getDocument();
-                            Note note = CurrentProject.getNoteList().createNoteForDate(CurrentDate.get());
+                            INote note = CurrentProject.getNoteList().createNoteForDate(CurrentDate.get());
                     note.setTitle(name);
                             note.setId(Util.generateId());
                     CurrentStorage.get().storeNote(note, doc);

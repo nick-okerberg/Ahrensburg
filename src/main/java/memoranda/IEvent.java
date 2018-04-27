@@ -16,7 +16,7 @@ import main.java.memoranda.date.CalendarDate;
  * 
  */
 /*$Id: Event.java,v 1.4 2004/07/21 17:51:25 ivanrise Exp $*/
-public interface Event {
+public interface IEvent {
     
     String getId();
     

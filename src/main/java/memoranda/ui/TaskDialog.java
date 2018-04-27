@@ -41,10 +41,10 @@ import javax.swing.event.ChangeListener;
 
 import com.sun.jmx.snmp.internal.SnmpSecuritySubSystem;
 
-import main.java.memoranda.ContributorList;
+import main.java.memoranda.IContributorList;
 import main.java.memoranda.CurrentProject;
-import main.java.memoranda.Task;
-import main.java.memoranda.TaskList;
+import main.java.memoranda.ITask;
+import main.java.memoranda.ITaskList;
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.util.Contributor;
 import main.java.memoranda.util.Local;
@@ -193,7 +193,7 @@ public class TaskDialog extends JDialog {
         gbCon.weighty = 1;
         gbLayout.setConstraints(gitmasterField,gbCon);
         // Populate the JComboBox with all of the contributors on the current project. 
-        ContributorList teamMembers = CurrentProject.getContributorList();
+        IContributorList teamMembers = CurrentProject.getContributorList();
         Vector<Contributor> teamMember = teamMembers.getAllContributors();
         for (int i = 0; i < teamMember.size(); i++) {
             gitmasterField.addItem(teamMember.get(i).getLogin());
@@ -401,7 +401,7 @@ public class TaskDialog extends JDialog {
     	 */
 
     	// Get all tasks (Sprints) within the current project. 
-    	TaskList tl = CurrentProject.getTaskList(); 
+    	ITaskList tl = CurrentProject.getTaskList(); 
     	Vector sprints = (Vector) tl.getAllSubTasks(null); 
     	
     	
@@ -430,7 +430,7 @@ public class TaskDialog extends JDialog {
     		for (Iterator i = sprints.iterator(); i.hasNext();) {
     			
     			// A single task at a time. 
-    			Task t = (Task) i.next();
+    			ITask t = (ITask) i.next();
     			
     			// The name of the local task being added/modified, from the "Name" field of the JTextField. 
     			String localTaskName = todoField.getText();

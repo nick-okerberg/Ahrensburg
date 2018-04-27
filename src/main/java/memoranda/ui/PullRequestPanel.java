@@ -21,19 +21,19 @@ import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
-import main.java.memoranda.CommitList;
+import main.java.memoranda.ICommitList;
 import main.java.memoranda.CurrentProject;
-import main.java.memoranda.EventNotificationListener;
+import main.java.memoranda.IEventNotificationListener;
 import main.java.memoranda.EventsManager;
 import main.java.memoranda.EventsScheduler;
 import main.java.memoranda.History;
-import main.java.memoranda.NoteList;
-import main.java.memoranda.Project;
-import main.java.memoranda.ProjectListener;
+import main.java.memoranda.INoteList;
+import main.java.memoranda.IProject;
+import main.java.memoranda.IProjectListener;
 import main.java.memoranda.ProjectManager;
-import main.java.memoranda.PullRequestList;
-import main.java.memoranda.ResourcesList;
-import main.java.memoranda.TaskList;
+import main.java.memoranda.IPullRequestList;
+import main.java.memoranda.IResourcesList;
+import main.java.memoranda.ITaskList;
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.date.CurrentDate;
 import main.java.memoranda.date.DateListener;
@@ -336,22 +336,22 @@ public class PullRequestPanel extends JPanel {
                     refresh(d);
             }
         });
-        CurrentProject.addProjectListener(new ProjectListener() {
+        CurrentProject.addProjectListener(new IProjectListener() {
 
             public void projectChange(
-                    Project prj,
-                    NoteList nl,
-                    TaskList tl,
-                    ResourcesList rl,
-                    CommitList cl, PullRequestList prl) {
+                    IProject prj,
+                    INoteList nl,
+                    ITaskList tl,
+                    IResourcesList rl,
+                    ICommitList cl, IPullRequestList prl) {
             }
 
             public void projectWasChanged() {
                 if (isActive)
                     refresh(CurrentDate.get());
             }});
-        EventsScheduler.addListener(new EventNotificationListener() {
-            public void eventIsOccured(main.java.memoranda.Event ev) {
+        EventsScheduler.addListener(new IEventNotificationListener() {
+            public void eventIsOccured(main.java.memoranda.IEvent ev) {
                 if (isActive)
                     refresh(CurrentDate.get());
             }
@@ -391,7 +391,7 @@ public class PullRequestPanel extends JPanel {
     public static void refreshJcomboBox() {
         JboxButton.removeAllItems();
         JboxButton.addItem("Sprint Not Selected");
-        TaskList tl = CurrentProject.getTaskList();
+        ITaskList tl = CurrentProject.getTaskList();
         Collection coll = tl.getAllSubTasks(null);
         Object[] obj = coll.toArray();
          for(int i = 0; i < coll.size(); i++) {

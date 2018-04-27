@@ -13,8 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import main.java.memoranda.CurrentProject;
-import main.java.memoranda.Task;
-import main.java.memoranda.TaskList;
+import main.java.memoranda.ITask;
+import main.java.memoranda.ITaskList;
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.util.Commit;
 import main.java.memoranda.util.Contributor;
@@ -80,12 +80,12 @@ public class SelectSprint extends JDialog {
         
         DefaultListModel<String> listModel = new DefaultListModel<String>();
         DefaultListModel<String> typeListModel = new DefaultListModel<String>();
-        Collection<Task> listOfSprints = CurrentProject.getTaskList()
+        Collection<ITask> listOfSprints = CurrentProject.getTaskList()
                 .getTopLevelTasks();
         
         // A helper vector to store sprints. better than a collection.
-        Vector<Task> taskVector = new Vector<>();
-        for (Task task : listOfSprints) {
+        Vector<ITask> taskVector = new Vector<>();
+        for (ITask task : listOfSprints) {
             listModel.addElement(task.getText());
             taskVector.add(task);
         }
@@ -120,7 +120,7 @@ public class SelectSprint extends JDialog {
                 int selectedCompare = comparisonCmbBox.getSelectedIndex();
                 /* Because the list and taskVector were built the same their
                 indices match. */
-                Task sprint = null;
+                ITask sprint = null;
                 if (! selectedProject) {
                     sprint = taskVector.get(selectedIndex);
                 }

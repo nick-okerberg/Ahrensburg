@@ -14,14 +14,14 @@ import main.java.memoranda.date.CalendarDate;
  * 
  */
 /*$Id: TaskList.java,v 1.8 2005/12/01 08:12:26 alexeya Exp $*/
-public interface TaskList {
+public interface ITaskList {
 
-	Project getProject();
-    Task getTask(String id);
+	IProject getProject();
+    ITask getTask(String id);
 
-    Task createTask(CalendarDate startDate, CalendarDate endDate, String text, String description, String parentTaskId);
+    ITask createTask(CalendarDate startDate, CalendarDate endDate, String text, String description, String parentTaskId);
 
-    void removeTask(Task task);
+    void removeTask(ITask task);
 
     public boolean hasSubTasks(String id);
     
@@ -34,10 +34,10 @@ public interface TaskList {
     
 //    public void adjustParentTasks(Task t);
     
-    public long calculateTotalEffortFromSubTasks(Task t);
-    public CalendarDate getLatestEndDateFromSubTasks(Task t);
-    public CalendarDate getEarliestStartDateFromSubTasks(Task t);
-    public long[] calculateCompletionFromSubTasks(Task t);
+    public long calculateTotalEffortFromSubTasks(ITask t);
+    public CalendarDate getLatestEndDateFromSubTasks(ITask t);
+    public CalendarDate getEarliestStartDateFromSubTasks(ITask t);
+    public long[] calculateCompletionFromSubTasks(ITask t);
 
     nu.xom.Document getXMLContent();
 

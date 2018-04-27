@@ -21,15 +21,15 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.CaretEvent;
 import javax.swing.text.Document;
 
-import main.java.memoranda.CommitList;
+import main.java.memoranda.ICommitList;
 import main.java.memoranda.CurrentProject;
-import main.java.memoranda.Note;
-import main.java.memoranda.NoteList;
-import main.java.memoranda.Project;
-import main.java.memoranda.ProjectListener;
-import main.java.memoranda.PullRequestList;
-import main.java.memoranda.ResourcesList;
-import main.java.memoranda.TaskList;
+import main.java.memoranda.INote;
+import main.java.memoranda.INoteList;
+import main.java.memoranda.IProject;
+import main.java.memoranda.IProjectListener;
+import main.java.memoranda.IPullRequestList;
+import main.java.memoranda.IResourcesList;
+import main.java.memoranda.ITaskList;
 import main.java.memoranda.util.CurrentStorage;
 import main.java.memoranda.util.Local;
 
@@ -115,9 +115,9 @@ public class SearchPanel extends JPanel {
         jPanel4.add(wholeWCB, BorderLayout.NORTH);
         jPanel4.add(regexpCB, BorderLayout.CENTER);
         jPanel3.add(searchB, BorderLayout.SOUTH);
-        CurrentProject.addProjectListener(new ProjectListener() {
-            public void projectChange(Project p, NoteList nl, TaskList tl, 
-                    ResourcesList rl, CommitList cl, PullRequestList prl) {
+        CurrentProject.addProjectListener(new IProjectListener() {
+            public void projectChange(IProject p, INoteList nl, ITaskList tl, 
+                    IResourcesList rl, ICommitList cl, IPullRequestList prl) {
                 notesList.update(new Vector());
             }
             public void projectWasChanged() {}
@@ -167,7 +167,7 @@ public class SearchPanel extends JPanel {
         this.add(progressBar, BorderLayout.SOUTH);*/
         for (int i = 0; i < notes.size(); i++) {
             //progressBar.setValue(i);
-            Note note = (Note) notes.get(i);
+            INote note = (INote) notes.get(i);
             Document doc = CurrentStorage.get().openNote(note);
             try {
                 String txt = doc.getText(0, doc.getLength());

@@ -14,7 +14,7 @@ import nu.xom.Document;
  * Defines a list of GitHub Pull Requests.
  */
 
-public interface PullRequestList {
+public interface IPullRequestList {
     
     Vector<PullRequest> getAllPullRequests();
     

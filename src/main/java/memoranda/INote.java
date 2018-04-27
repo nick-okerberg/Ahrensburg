@@ -13,7 +13,7 @@ import main.java.memoranda.date.CalendarDate;
  * 
  */
 /*$Id: Note.java,v 1.4 2004/09/30 17:19:52 ivanrise Exp $*/
-public interface Note {
+public interface INote {
     
     CalendarDate getDate();
     
@@ -26,5 +26,5 @@ public interface Note {
     boolean isMarked();
     void setMark(boolean mark);
         
-    Project getProject();
+    IProject getProject();
 }

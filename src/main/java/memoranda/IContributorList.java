@@ -14,7 +14,7 @@ import nu.xom.Document;
  * Defines a list of GitHub Contributors.
  */
 
-public interface ContributorList {
+public interface IContributorList {
     
     Vector<Contributor> getAllContributors();
     
