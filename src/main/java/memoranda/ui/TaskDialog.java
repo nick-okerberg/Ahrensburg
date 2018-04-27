@@ -394,6 +394,13 @@ public class TaskDialog extends JDialog {
             return;
         }
         
+        /*
+         * US48 GitMaster attribute
+         */
+        String gitMaster = gitmasterField.toString();
+        if (gitMaster.equals("Select GitMaster for this Sprint")) {
+        	gitMaster = "";
+        }
         
     	/* 
     	 * US33 task 72 feature. nick-okerberg.
@@ -404,7 +411,7 @@ public class TaskDialog extends JDialog {
     	ITaskList tl = CurrentProject.getTaskList(); 
     	Vector sprints = (Vector) tl.getAllSubTasks(null); 
     	
-    	
+
     	
     	// Enable for debugging. Prints the current sprint startDate and endDate in the current Sprint being added/modified. 
     	//System.out.println("[DEBUG] Sprint: Currently being modified: begin date = "
