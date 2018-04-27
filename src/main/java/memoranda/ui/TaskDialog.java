@@ -39,8 +39,6 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import com.sun.jmx.snmp.internal.SnmpSecuritySubSystem;
-
 import main.java.memoranda.IContributorList;
 import main.java.memoranda.CurrentProject;
 import main.java.memoranda.ITask;
@@ -49,8 +47,6 @@ import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.util.Contributor;
 import main.java.memoranda.util.Local;
 import main.java.memoranda.util.PullRequestGenerator;
-import sun.util.resources.cldr.es.TimeZoneNames_es_419;
-
 import javax.swing.JCheckBox;
 
 /*$Id: TaskDialog.java,v 1.25 2005/12/01 08:12:26 alexeya Exp $*/

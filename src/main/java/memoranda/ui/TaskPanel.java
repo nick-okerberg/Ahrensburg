@@ -635,7 +635,7 @@ public class TaskPanel extends JPanel {
          
         //long effort = Util.getMillisFromHours(dlg.effortField.getText());
 		//XXX Task newTask = CurrentProject.getTaskList().createTask(sd, ed, dlg.todoField.getText(), dlg.priorityCB.getSelectedIndex(),effort, dlg.descriptionField.getText(),parentTaskId);
-         ITask newTask = CurrentProject.getTaskList().createTask(sd, ed, dlg.todoField.getText(), dlg.descriptionField.getText(),null);
+         ITask newTask = CurrentProject.getTaskList().createTask(sd, ed, dlg.todoField.getText(), dlg.descriptionField.getText(),null, "");
          //Task createTask(CalendarDate startDate, CalendarDate endDate, String text, String description, String parentTaskId); Ovadia Shalom US32
 //		CurrentProject.getTaskList().adjustParentTasks(newTask);
 		//newTask.setProgress(new Integer(3)); ovadia
@@ -682,7 +682,7 @@ public class TaskPanel extends JPanel {
           ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());;   // Addition for US33. 
      
         //long effort = Util.getMillisFromHours(dlg.effortField.getText());
-		ITask newTask = CurrentProject.getTaskList().createTask(sd, ed, dlg.todoField.getText(), dlg.descriptionField.getText(),parentTaskId);
+		ITask newTask = CurrentProject.getTaskList().createTask(sd, ed, dlg.todoField.getText(), dlg.descriptionField.getText(),parentTaskId, "");
 //        newTask.setProgress(new Integer(3)); ovadia
 //		CurrentProject.getTaskList().adjustParentTasks(newTask);
 
