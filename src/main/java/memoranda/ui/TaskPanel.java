@@ -561,6 +561,7 @@ public class TaskPanel extends JPanel {
         dlg.descriptionField.setText(t.getDescription());
         dlg.startDate.getModel().setValue(t.getStartDate().getDate());
         dlg.endDate.getModel().setValue(t.getEndDate().getDate());
+        
         //Ovadia ShalomUS32
 //        dlg.priorityCB.setSelectedIndex(t.getPriority());                
 //        dlg.effortField.setText(Util.getHoursFromMillis(t.getEffort()));
@@ -605,6 +606,7 @@ public class TaskPanel extends JPanel {
         taskTable.tableChanged();
         parentPanel.updateIndicators();
         //taskTable.updateUI();
+        t.setGitMaster(dlg.gitMaster);
     }
 
     void newTaskB_actionPerformed(ActionEvent e) {
@@ -635,7 +637,7 @@ public class TaskPanel extends JPanel {
          
         //long effort = Util.getMillisFromHours(dlg.effortField.getText());
 		//XXX Task newTask = CurrentProject.getTaskList().createTask(sd, ed, dlg.todoField.getText(), dlg.priorityCB.getSelectedIndex(),effort, dlg.descriptionField.getText(),parentTaskId);
-         ITask newTask = CurrentProject.getTaskList().createTask(sd, ed, dlg.todoField.getText(), dlg.descriptionField.getText(),null, "");
+         ITask newTask = CurrentProject.getTaskList().createTask(sd, ed, dlg.todoField.getText(), dlg.descriptionField.getText(),null, dlg.gitMaster);
          //Task createTask(CalendarDate startDate, CalendarDate endDate, String text, String description, String parentTaskId); Ovadia Shalom US32
 //		CurrentProject.getTaskList().adjustParentTasks(newTask);
 		//newTask.setProgress(new Integer(3)); ovadia
@@ -682,7 +684,7 @@ public class TaskPanel extends JPanel {
           ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());;   // Addition for US33. 
      
         //long effort = Util.getMillisFromHours(dlg.effortField.getText());
-		ITask newTask = CurrentProject.getTaskList().createTask(sd, ed, dlg.todoField.getText(), dlg.descriptionField.getText(),parentTaskId, "");
+		ITask newTask = CurrentProject.getTaskList().createTask(sd, ed, dlg.todoField.getText(), dlg.descriptionField.getText(),parentTaskId, dlg.gitMaster);
 //        newTask.setProgress(new Integer(3)); ovadia
 //		CurrentProject.getTaskList().adjustParentTasks(newTask);
 

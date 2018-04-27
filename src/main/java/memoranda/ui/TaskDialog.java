@@ -102,7 +102,8 @@ public class TaskDialog extends JDialog {
 	CalendarDate startDateMax = CurrentProject.get().getEndDate();
 	CalendarDate endDateMin = startDateMin;
 	CalendarDate endDateMax = startDateMax;
-    
+	String gitMaster = "";
+	
     public TaskDialog(Frame frame, String title) {
         super(frame, title, true);
         try {
@@ -393,7 +394,7 @@ public class TaskDialog extends JDialog {
         /*
          * US48 GitMaster attribute
          */
-        String gitMaster = gitmasterField.toString();
+        gitMaster = gitmasterField.getSelectedItem().toString();
         if (gitMaster.equals("Select GitMaster for this Sprint")) {
         	gitMaster = "";
         }
