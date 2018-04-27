@@ -23,11 +23,11 @@ import javax.swing.event.*;
  * @author Philip Milne
  */
 
-public abstract class AbstractTreeTableModel implements ITreeTableModel {
+public abstract class AAbstractTreeTableModel implements ITreeTableModel {
     protected Object root;     
     protected EventListenerList listenerList = new EventListenerList();
   
-    public AbstractTreeTableModel(Object root) {
+    public AAbstractTreeTableModel(Object root) {
         this.root = root; 
     }
 

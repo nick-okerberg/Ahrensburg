@@ -25,7 +25,7 @@ import javax.swing.tree.TreePath;
 
 import main.java.memoranda.*;
 import main.java.memoranda.date.CurrentDate;
-import main.java.memoranda.ui.treetable.AbstractTreeTableModel;
+import main.java.memoranda.ui.treetable.AAbstractTreeTableModel;
 import main.java.memoranda.ui.treetable.ITreeTableModel;
 import main.java.memoranda.util.Context;
 import main.java.memoranda.util.Local;
@@ -39,7 +39,7 @@ import java.util.Hashtable;
  * @version $Id: TaskTableModel.java,v 1.7 2005/12/01 08:12:26 alexeya Exp $
  * @author $Author: alexeya $
  */
-public class TaskTableModel extends AbstractTreeTableModel implements ITreeTableModel {
+public class TaskTableModel extends AAbstractTreeTableModel implements ITreeTableModel {
 
 //    String[] columnNames = {"", Local.getString("To-do"), 
 //            Local.getString("Start date"), Local.getString("End date"),
