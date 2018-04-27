@@ -81,6 +81,10 @@ public interface ITask {
     void setDescription(String description);
     String getDescription();
 
+    String getGitMaster();
+    void setGitMaster(String newGitMaster);
+    
+    
     ITask getParentTask();
     String getParentId();
     

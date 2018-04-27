@@ -19,7 +19,7 @@ public interface ITaskList {
 	IProject getProject();
     ITask getTask(String id);
 
-    ITask createTask(CalendarDate startDate, CalendarDate endDate, String text, String description, String parentTaskId);
+    ITask createTask(CalendarDate startDate, CalendarDate endDate, String text, String description, String parentTaskId, String newGitMaster);
 
     void removeTask(ITask task);
 
