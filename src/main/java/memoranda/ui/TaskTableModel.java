@@ -48,7 +48,8 @@ public class TaskTableModel extends AAbstractTreeTableModel implements ITreeTabl
     String[] columnNames = {"", Local.getString("To-do"), //Ovadia Shalom US8
             Local.getString("Start date"), 
             Local.getString("End date"),
-    		Local.getString("Tests")}; 	// Nick Okerberg US37, number of JUnit tests per Sprint. 
+    		Local.getString("Tests"),  // Nick Okerberg US37, number of JUnit tests per Sprint. 
+    		Local.getString("Commits")}; 
     protected EventListenerList listenerList = new EventListenerList();
 
     private boolean activeOnly = check_activeOnly();
@@ -110,7 +111,7 @@ public class TaskTableModel extends AAbstractTreeTableModel implements ITreeTabl
         	//System.out.println("TaskTableModel: Triggered Getting Number Sprint Tests");
         	return t.getNumberSprintTests();
         case 5:
-            return getStatusString(t.getStatus(CurrentDate.get()));
+            return t.getNumberCommits();
         case 6:            
             //return new Integer(t.getProgress());
 			return t;
