@@ -39,6 +39,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import com.sun.jmx.snmp.internal.SnmpSecuritySubSystem;
+
 import main.java.memoranda.ContributorList;
 import main.java.memoranda.CurrentProject;
 import main.java.memoranda.Task;
@@ -46,6 +48,8 @@ import main.java.memoranda.TaskList;
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.util.Contributor;
 import main.java.memoranda.util.Local;
+import main.java.memoranda.util.PullRequestGenerator;
+import sun.util.resources.cldr.es.TimeZoneNames_es_419;
 
 import javax.swing.JCheckBox;
 
@@ -400,6 +404,8 @@ public class TaskDialog extends JDialog {
     	TaskList tl = CurrentProject.getTaskList(); 
     	Vector sprints = (Vector) tl.getAllSubTasks(null); 
     	
+    	
+    	
     	// Enable for debugging. Prints the current sprint startDate and endDate in the current Sprint being added/modified. 
     	//System.out.println("[DEBUG] Sprint: Currently being modified: begin date = "
     	//		+ startDate.getValue().toString());
@@ -498,10 +504,14 @@ public class TaskDialog extends JDialog {
     				return;
     			}
     			
+    			//Sending each sprint , start, and end date to PullrRequestGenerator to display the data
+    			PullRequestGenerator prg = new PullRequestGenerator(t, cdStart, cdEnd);
+    			
     			// Increment the loop iteration counter. 
     			x++;
     			
     		} // End of for loop. 
+    		
     	} // End outer if. 
     	
     	System.out.println("[DEBUT] OK Button pressed for Sprint task");

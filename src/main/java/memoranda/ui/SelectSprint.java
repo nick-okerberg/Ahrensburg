@@ -94,6 +94,7 @@ public class SelectSprint extends JDialog {
         Vector<String> sprintTitles = new Vector<>();
         for (int i = 0; i < taskVector.size(); i++) {
             sprintTitles.add(taskVector.get(i).getText());
+            System.out.println("--->>>" + taskVector.get(i).getText());
         }
         // Also add entire project
         sprintTitles.add("EntireProject");

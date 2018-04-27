@@ -609,7 +609,8 @@ public class TaskPanel extends JPanel {
 
     void newTaskB_actionPerformed(ActionEvent e) {
         TaskDialog dlg = new TaskDialog(App.getFrame(), Local.getString("New sprint"));
-        
+      
+              
         //XXX String parentTaskId = taskTable.getCurrentRootTask();
         
         Dimension frmSize = App.getFrame().getSize();

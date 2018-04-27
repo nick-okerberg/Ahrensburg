@@ -25,6 +25,7 @@ import main.java.memoranda.CommitList;
 import main.java.memoranda.CommitListImpl;
 import main.java.memoranda.ContributorList;
 import main.java.memoranda.ContributorListImpl;
+import main.java.memoranda.CurrentProject;
 import main.java.memoranda.EventsManager;
 import main.java.memoranda.Note;
 import main.java.memoranda.NoteList;
@@ -40,6 +41,7 @@ import main.java.memoranda.TaskListImpl;
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.ui.ExceptionDialog;
 import main.java.memoranda.ui.Loading;
+import main.java.memoranda.ui.PullRequestPanel;
 import main.java.memoranda.ui.htmleditor.AltHTMLWriter;
 import nu.xom.Builder;
 import nu.xom.Document;
@@ -565,6 +567,7 @@ public class FileStorage implements Storage {
         } else {
             /*DEBUG*/
             System.out.println("[DEBUG] New pull request list created");
+          
             return new BranchListImpl(fn, true);
         }
     }
