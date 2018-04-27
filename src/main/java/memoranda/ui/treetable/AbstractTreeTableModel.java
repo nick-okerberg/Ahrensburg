@@ -23,7 +23,7 @@ import javax.swing.event.*;
  * @author Philip Milne
  */
 
-public abstract class AbstractTreeTableModel implements TreeTableModel {
+public abstract class AbstractTreeTableModel implements ITreeTableModel {
     protected Object root;     
     protected EventListenerList listenerList = new EventListenerList();
   
@@ -178,7 +178,7 @@ public abstract class AbstractTreeTableModel implements TreeTableModel {
     *  and keyboard events in the Tree column to the underlying JTree. 
     */ 
     public boolean isCellEditable(Object node, int column) { 
-         return getColumnClass(column) == TreeTableModel.class; 
+         return getColumnClass(column) == ITreeTableModel.class; 
     }
 
     public void setValueAt(Object aValue, Object node, int column) {}

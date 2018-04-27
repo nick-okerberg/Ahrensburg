@@ -32,7 +32,7 @@ import javax.swing.tree.TreeModel;
  * @author Philip Milne 
  * @author Scott Violet
  */
-public interface TreeTableModel extends TreeModel
+public interface ITreeTableModel extends TreeModel
 {
     /**
      * Returns the number ofs availible column.

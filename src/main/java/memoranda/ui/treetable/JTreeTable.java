@@ -45,13 +45,13 @@ import java.util.EventObject;
 public class JTreeTable extends JTable {
 	/** A subclass of JTree. */
 	protected TreeTableCellRenderer tree;
-	protected TreeTableModel model;
+	protected ITreeTableModel model;
 
 	public JTreeTable() {
 		super();
 	}
 	
-	public JTreeTable(TreeTableModel treeTableModel) {
+	public JTreeTable(ITreeTableModel treeTableModel) {
 		super();
 		model = treeTableModel;
 		// Create the tree. It will be used as a renderer and editor.
@@ -66,8 +66,8 @@ public class JTreeTable extends JTable {
 		setSelectionModel(selectionWrapper.getListSelectionModel());
 
 		// Install the tree editor renderer and editor.
-		setDefaultRenderer(TreeTableModel.class, tree);
-		setDefaultEditor(TreeTableModel.class, new TreeTableCellEditor());
+		setDefaultRenderer(ITreeTableModel.class, tree);
+		setDefaultEditor(ITreeTableModel.class, new TreeTableCellEditor());
 
 		// No grid.
 		setShowGrid(false);
@@ -107,7 +107,7 @@ public class JTreeTable extends JTable {
 	 * ensures the editor is never painted.
 	 */
 	public int getEditingRow() {
-		return (getColumnClass(editingColumn) == TreeTableModel.class) ? -1
+		return (getColumnClass(editingColumn) == ITreeTableModel.class) ? -1
 				: editingRow;
 	}
 
@@ -250,7 +250,7 @@ public class JTreeTable extends JTable {
 		public boolean isCellEditable(EventObject e) {
 			if (e instanceof MouseEvent) {
 				for (int counter = getColumnCount() - 1; counter >= 0; counter--) {
-					if (getColumnClass(counter) == TreeTableModel.class) {
+					if (getColumnClass(counter) == ITreeTableModel.class) {
 						MouseEvent me = (MouseEvent) e;
 						MouseEvent newME = new MouseEvent(tree, me.getID(), me
 								.getWhen(), me.getModifiers(), me.getX()

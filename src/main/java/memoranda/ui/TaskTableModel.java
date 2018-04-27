@@ -26,7 +26,7 @@ import javax.swing.tree.TreePath;
 import main.java.memoranda.*;
 import main.java.memoranda.date.CurrentDate;
 import main.java.memoranda.ui.treetable.AbstractTreeTableModel;
-import main.java.memoranda.ui.treetable.TreeTableModel;
+import main.java.memoranda.ui.treetable.ITreeTableModel;
 import main.java.memoranda.util.Context;
 import main.java.memoranda.util.Local;
 
@@ -39,7 +39,7 @@ import java.util.Hashtable;
  * @version $Id: TaskTableModel.java,v 1.7 2005/12/01 08:12:26 alexeya Exp $
  * @author $Author: alexeya $
  */
-public class TaskTableModel extends AbstractTreeTableModel implements TreeTableModel {
+public class TaskTableModel extends AbstractTreeTableModel implements ITreeTableModel {
 
 //    String[] columnNames = {"", Local.getString("To-do"), 
 //            Local.getString("Start date"), Local.getString("End date"),
@@ -63,21 +63,21 @@ public class TaskTableModel extends AbstractTreeTableModel implements TreeTableM
     }
 
     /**
-     * @see main.java.memoranda.ui.treetable.TreeTableModel#getColumnCount()
+     * @see main.java.memoranda.ui.treetable.ITreeTableModel#getColumnCount()
      */
     public int getColumnCount() {
         return columnNames.length;
     }
 
     /**
-     * @see main.java.memoranda.ui.treetable.TreeTableModel#getColumnName(int)
+     * @see main.java.memoranda.ui.treetable.ITreeTableModel#getColumnName(int)
      */
     public String getColumnName(int column) {
         return columnNames[column];
     }
 
     /**
-     * @see main.java.memoranda.ui.treetable.TreeTableModel#getValueAt(java.lang.Object,
+     * @see main.java.memoranda.ui.treetable.ITreeTableModel#getValueAt(java.lang.Object,
      *      int)
      */
     public Object getValueAt(Object node, int column) {
@@ -186,13 +186,13 @@ public class TaskTableModel extends AbstractTreeTableModel implements TreeTableM
     }
 
     /**
-     * @see main.java.memoranda.ui.treetable.TreeTableModel#getColumnClass(int)
+     * @see main.java.memoranda.ui.treetable.ITreeTableModel#getColumnClass(int)
      */
     public Class getColumnClass(int column) {
         try {
             switch (column) {
             case 1:
-                return TreeTableModel.class;
+                return ITreeTableModel.class;
             case 0:
                 return TaskTable.class;
             case 4:
