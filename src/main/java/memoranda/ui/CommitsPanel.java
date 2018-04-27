@@ -344,6 +344,7 @@ public class CommitsPanel extends JPanel {
 						e1.printStackTrace();
 					}
 			        App.getFrame().refreshAgenda();
+			        
 				}
 
 			}

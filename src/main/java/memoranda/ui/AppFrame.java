@@ -877,6 +877,9 @@ public class AppFrame extends JFrame {
     public void refreshAgenda() {
       workPanel.dailyItemsPanel.agendaPanel.refresh(CurrentDate.get());
     }
+    public void refreshCommits() {
+        workPanel.dailyItemsPanel.commitsPanel.refresh(CurrentDate.get());
+    }
 
     public void showPreferences() {
     	

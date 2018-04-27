@@ -39,9 +39,11 @@ import main.java.memoranda.ResourcesListImpl;
 import main.java.memoranda.ITaskList;
 import main.java.memoranda.TaskListImpl;
 import main.java.memoranda.date.CalendarDate;
+import main.java.memoranda.ui.App;
 import main.java.memoranda.ui.ExceptionDialog;
 import main.java.memoranda.ui.Loading;
 import main.java.memoranda.ui.PullRequestPanel;
+import main.java.memoranda.ui.WorkPanel;
 import main.java.memoranda.ui.htmleditor.AltHTMLWriter;
 import nu.xom.Builder;
 import nu.xom.Document;
@@ -485,6 +487,7 @@ public class FileStorage implements IStorage {
             JN_DOCPATH + prj.getID() + File.separator + ".commits");
         Util.debug("saved cl: " + cl);
         Loading.destroy();
+        App.getFrame().refreshCommits();
     }
     
     /**
@@ -519,6 +522,7 @@ public class FileStorage implements IStorage {
             JN_DOCPATH + prj.getID() + File.separator + ".pullrequests");
         Util.debug("saved prl: " + prl);
         Loading.destroy();
+        App.getFrame().refreshCommits();
     }
     
     /**
@@ -553,6 +557,7 @@ public class FileStorage implements IStorage {
             JN_DOCPATH + prj.getID() + File.separator + ".contributors");
         Util.debug("saved prl: " + contriblist);
         Loading.destroy();
+        App.getFrame().refreshCommits();
     }
     
     /**
