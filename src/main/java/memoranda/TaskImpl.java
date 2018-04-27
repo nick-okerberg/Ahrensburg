@@ -37,6 +37,7 @@ public class TaskImpl implements Task, Comparable {
     public TaskImpl(Element taskElement, TaskList tl) {
         _element = taskElement;
         _tl = tl;
+        
     }
 
     /**

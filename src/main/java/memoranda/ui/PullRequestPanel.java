@@ -8,6 +8,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Vector;
 
 import javax.security.auth.Refreshable;
 import javax.swing.ImageIcon;
@@ -33,10 +34,12 @@ import main.java.memoranda.ProjectListener;
 import main.java.memoranda.ProjectManager;
 import main.java.memoranda.PullRequestList;
 import main.java.memoranda.ResourcesList;
+import main.java.memoranda.TaskImpl;
 import main.java.memoranda.TaskList;
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.date.CurrentDate;
 import main.java.memoranda.date.DateListener;
+import main.java.memoranda.util.Commit;
 import main.java.memoranda.util.CurrentStorage;
 import main.java.memoranda.util.Local;
 import main.java.memoranda.util.PullRequestGenerator;
@@ -45,6 +48,8 @@ import main.java.memoranda.util.PullRequestGenerator.PullRequestsClass;
 import javax.swing.JOptionPane;
 import nu.xom.Element;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -95,7 +100,7 @@ public class PullRequestPanel extends JPanel {
     }
     public static void loadJcomoBox(PullRequestsClass prc) {
         JboxButton.addItem(prc.getTask().toString());
-        refreshJcomboBox();
+        
         
                 //  "   Start Date: " +  prc.getCdStart() +
                 //  "   End Date: " +  prc.getCdEnd() );
@@ -298,23 +303,32 @@ public class PullRequestPanel extends JPanel {
            
             }
         });
-        
+       
         toolBar.add(refreshButton);
         refreshButton.addActionListener(new ActionListener() {
             
             @Override
             public void actionPerformed(ActionEvent e) {
-                refreshJcomboBox();
+                JboxButton.removeAllItems();
+                JboxButton.addItem("Sprint Not Selected");
                 
-                
-            }
+                Vector<PullRequestsClass> savedSprints =  PullRequestGenerator.getSavedSprints();
+                for(int i = 0; i < savedSprints.size(); i++) {
+                  JboxButton.addItem(savedSprints.elementAt(i).getSavedProject()+ "       "
+                            +savedSprints.elementAt(i).getSavedSprintName() + "       "
+                            + savedSprints.elementAt(i).getSavedStartDate() + "       " 
+                            + savedSprints.elementAt(i).getSavedEndDate()); 
+                }
+           }
         });
+        
 
         //Go button in Pull request pages
         toolBar.add(goButton);
         goButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                
+                displayPullRequests(e);
                 try {
                     CurrentProject.get().addRepoName(CurrentProject.get().getGitHubRepoName());
                 } catch (RuntimeException e1) {
@@ -322,6 +336,12 @@ public class PullRequestPanel extends JPanel {
                     e1.printStackTrace();
                 }
                 App.getFrame().refreshAgenda();
+            }
+
+            private void displayPullRequests(ActionEvent e) {
+                JboxButton.getSelectedItem();
+               
+                
             }
         });
         
@@ -385,10 +405,8 @@ public class PullRequestPanel extends JPanel {
     public void setActive(boolean isa) {
         isActive = isa;
     }
-    public static void JcomboBox(){
-        
-    }
-    public static void refreshJcomboBox() {
+    
+   /* public static void refreshJcomboBox() {
         JboxButton.removeAllItems();
         JboxButton.addItem("Sprint Not Selected");
         TaskList tl = CurrentProject.getTaskList();
@@ -397,7 +415,7 @@ public class PullRequestPanel extends JPanel {
          for(int i = 0; i < coll.size(); i++) {
               JboxButton.addItem( obj[i].toString());
            }
-    }
+    }*/
 
     
 }

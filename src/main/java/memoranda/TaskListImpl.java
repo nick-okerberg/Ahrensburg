@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import main.java.memoranda.date.CalendarDate;
+import main.java.memoranda.util.PullRequestGenerator;
 import main.java.memoranda.util.Util;
 import nu.xom.Attribute;
 import nu.xom.Document;
@@ -23,6 +24,7 @@ import nu.xom.Node;
 //import nu.xom.converters.*;
 //import org.apache.xerces.dom.*;
 //import nux.xom.xquery.XQueryUtil;
+import sun.launcher.resources.launcher;
 
 /**
  * 
@@ -48,6 +50,7 @@ public class TaskListImpl implements TaskList {
         _root = _doc.getRootElement();
         _project = prj;
 		buildElements(_root);
+		PullRequestGenerator.getSavedSprints(_root, prj);
     }
     
     public TaskListImpl(Project prj) {            
@@ -69,6 +72,7 @@ public class TaskListImpl implements TaskList {
 			Element el = els.get(i);
 			elements.put(el.getAttribute("id").getValue(), el);
 			buildElements(el);
+			
 		}
 	}
 	
