@@ -29,7 +29,7 @@ import main.java.memoranda.EventsScheduler;
 import main.java.memoranda.History;
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.date.CurrentDate;
-import main.java.memoranda.date.DateListener;
+import main.java.memoranda.date.IDateListener;
 import main.java.memoranda.util.Configuration;
 import main.java.memoranda.util.CurrentStorage;
 import main.java.memoranda.util.Local;
@@ -182,7 +182,7 @@ public class EventsPanel extends JPanel {
         scrollPane.addMouseListener(ppListener);
         eventsTable.addMouseListener(ppListener);
 
-        CurrentDate.addDateListener(new DateListener() {
+        CurrentDate.addDateListener(new IDateListener() {
             public void dateChange(CalendarDate d) {
                 eventsTable.initTable(d);     
                 boolean enbl = d.after(CalendarDate.today()) || d.equals(CalendarDate.today());

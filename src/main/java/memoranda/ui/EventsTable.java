@@ -21,7 +21,7 @@ import main.java.memoranda.IEvent;
 import main.java.memoranda.EventsManager;
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.date.CurrentDate;
-import main.java.memoranda.date.DateListener;
+import main.java.memoranda.date.IDateListener;
 import main.java.memoranda.util.Local;
 /**
  *
@@ -41,7 +41,7 @@ public class EventsTable extends JTable {
         setModel(new EventsTableModel());
         initTable(CurrentDate.get());
         this.setShowGrid(false);
-        CurrentDate.addDateListener(new DateListener() {
+        CurrentDate.addDateListener(new IDateListener() {
             public void dateChange(CalendarDate d) {
                 //updateUI();
                 initTable(d);

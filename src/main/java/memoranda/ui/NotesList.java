@@ -26,7 +26,7 @@ import main.java.memoranda.IResourcesList;
 import main.java.memoranda.ITaskList;
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.date.CurrentDate;
-import main.java.memoranda.date.DateListener;
+import main.java.memoranda.date.IDateListener;
 import main.java.memoranda.util.Configuration;
 
 /*$Id: NotesList.java,v 1.9 2005/05/05 16:19:16 ivanrise Exp $*/
@@ -49,7 +49,7 @@ public class NotesList extends JList {
         _type = type;
         this.setFont(new java.awt.Font("Dialog", 0, 11));
         this.setModel(new NotesListModel());
-        CurrentDate.addDateListener(new DateListener() {
+        CurrentDate.addDateListener(new IDateListener() {
             public void dateChange(CalendarDate d) {
                 updateUI();
             }

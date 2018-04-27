@@ -44,7 +44,7 @@ import main.java.memoranda.IResourcesList;
 import main.java.memoranda.ITaskList;
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.date.CurrentDate;
-import main.java.memoranda.date.DateListener;
+import main.java.memoranda.date.IDateListener;
 import main.java.memoranda.util.*;
 
 /*$Id: ProjectsPanel.java,v 1.14 2005/01/04 09:59:22 pbielen Exp $*/
@@ -250,7 +250,7 @@ public class ProjectsPanel extends JPanel implements ExpandablePanel {
 				prjTablePanel.updateUI();
 			}
 		});
-		CurrentDate.addDateListener(new DateListener() {
+		CurrentDate.addDateListener(new IDateListener() {
 			public void dateChange(CalendarDate d) {
 				prjTablePanel.updateUI();
 			}

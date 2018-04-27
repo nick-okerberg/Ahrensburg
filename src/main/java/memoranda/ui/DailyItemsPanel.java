@@ -41,7 +41,7 @@ import main.java.memoranda.ITask;
 import main.java.memoranda.ITaskList;
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.date.CurrentDate;
-import main.java.memoranda.date.DateListener;
+import main.java.memoranda.date.IDateListener;
 import main.java.memoranda.util.CurrentStorage;
 import main.java.memoranda.util.Local;
 import main.java.memoranda.util.Util;
@@ -222,7 +222,7 @@ public class DailyItemsPanel extends JPanel {
         splitPane.setDividerLocation((int) controlPanel.getPreferredSize().getWidth());
         //splitPane.setResizeWeight(0.0);
 
-        CurrentDate.addDateListener(new DateListener() {
+        CurrentDate.addDateListener(new IDateListener() {
             public void dateChange(CalendarDate d) {
                 currentDateChanged(d);
             }

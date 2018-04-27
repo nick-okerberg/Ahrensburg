@@ -55,7 +55,7 @@ import main.java.memoranda.IResourcesList;
 import main.java.memoranda.ITaskList;
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.date.CurrentDate;
-import main.java.memoranda.date.DateListener;
+import main.java.memoranda.date.IDateListener;
 import main.java.memoranda.ui.treetable.AbstractCellEditor;
 import main.java.memoranda.ui.treetable.TreeTableModel;
 import main.java.memoranda.ui.treetable.TreeTableModelAdapter;
@@ -108,7 +108,7 @@ public class TaskTable extends JTable {
         tree.setSelectionModel(selectionWrapper);
         setSelectionModel(selectionWrapper.getListSelectionModel());
 
-        CurrentDate.addDateListener(new DateListener() {
+        CurrentDate.addDateListener(new IDateListener() {
             public void dateChange(CalendarDate d) {
                 //updateUI();
                 tableChanged();

@@ -41,7 +41,7 @@ import main.java.memoranda.ITask;
 import main.java.memoranda.ITaskList;
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.date.CurrentDate;
-import main.java.memoranda.date.DateListener;
+import main.java.memoranda.date.IDateListener;
 import main.java.memoranda.util.AgendaGenerator;
 import main.java.memoranda.util.Commit;
 import main.java.memoranda.util.CommitsGenerator;
@@ -338,7 +338,7 @@ public class CommitsPanel extends JPanel {
             }
         });
 
-		CurrentDate.addDateListener(new DateListener() {
+		CurrentDate.addDateListener(new IDateListener() {
 			public void dateChange(CalendarDate d) {
 				if (isActive)
 					refresh(d);

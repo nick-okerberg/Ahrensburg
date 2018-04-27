@@ -36,7 +36,7 @@ import main.java.memoranda.IResourcesList;
 import main.java.memoranda.ITaskList;
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.date.CurrentDate;
-import main.java.memoranda.date.DateListener;
+import main.java.memoranda.date.IDateListener;
 import main.java.memoranda.util.CurrentStorage;
 import main.java.memoranda.util.Local;
 import main.java.memoranda.util.PullRequestGenerator;
@@ -330,7 +330,7 @@ public class PullRequestPanel extends JPanel {
         //END of US173
       
       
-        CurrentDate.addDateListener(new DateListener() {
+        CurrentDate.addDateListener(new IDateListener() {
             public void dateChange(CalendarDate d) {
                 if (isActive)
                     refresh(d);
