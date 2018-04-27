@@ -48,7 +48,7 @@ import main.java.memoranda.date.IDateListener;
 import main.java.memoranda.util.*;
 
 /*$Id: ProjectsPanel.java,v 1.14 2005/01/04 09:59:22 pbielen Exp $*/
-public class ProjectsPanel extends JPanel implements ExpandablePanel {
+public class ProjectsPanel extends JPanel implements IExpandablePanel {
 	BorderLayout borderLayout1 = new BorderLayout();
 	JToolBar topBar = new JToolBar();
 	JPanel toolbarPanel = new JPanel();
