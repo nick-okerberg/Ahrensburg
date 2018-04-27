@@ -45,6 +45,9 @@ public interface ITask {
     // Added as part of US37.  Nick Okerberg. 
     String getNumberSprintTests();
     
+    // Added as part of US43.  Jordan Wine.
+    String getNumberCommits();
+    
     CalendarDate getStartDate();
     void setStartDate(CalendarDate date);
 
