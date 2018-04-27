@@ -11,21 +11,16 @@ package main.java.memoranda;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.List;
 import java.util.Vector;
 
 import org.json.JSONException;
 
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.date.CurrentDate;
-import main.java.memoranda.util.Commit;
 import main.java.memoranda.util.Contributor;
 import main.java.memoranda.util.CurrentStorage;
 import main.java.memoranda.util.GitHubRunnable;
 import main.java.memoranda.util.JsonApiClass;
-import main.java.memoranda.util.PullRequest;
 import main.java.memoranda.util.Util;
 import nu.xom.Attribute;
 import nu.xom.Element;

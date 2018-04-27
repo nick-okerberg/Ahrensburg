@@ -7,7 +7,6 @@
 package main.java.memoranda;
 
 import java.util.List;
-import java.util.Vector;
 
 import main.java.memoranda.util.Commit;
 import nu.xom.Document;

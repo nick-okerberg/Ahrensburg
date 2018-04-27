@@ -8,7 +8,6 @@
  */
 package main.java.memoranda;
 
-import java.net.URL;
 
 import org.json.JSONException;
 

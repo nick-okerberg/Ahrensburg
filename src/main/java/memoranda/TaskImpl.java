@@ -9,20 +9,12 @@
 package main.java.memoranda;
 
 import java.util.Collection;
-import java.util.Deque;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.Vector;
 
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.date.CurrentDate;
 import main.java.memoranda.util.Commit;
 import main.java.memoranda.util.JsonApiClass;
-import main.java.memoranda.util.Util;
-
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.Calendar;
 
 import nu.xom.Attribute;
