@@ -1,7 +1,11 @@
 
 package main.java.memoranda.util;
 
+import java.util.Collection;
+import java.util.Date;
 import java.util.Vector;
+import java.util.concurrent.TimeUnit;
+
 import main.java.memoranda.CurrentProject;
 import main.java.memoranda.ITask;
 import main.java.memoranda.date.CalendarDate;
@@ -32,10 +36,11 @@ public class PullRequestGenerator {
         String header = "<html><body><h2>Pull Requests:</h2><table style=\"width:100%\">";
 
         String s = "<th>ID</th><th>TotalNumOfPull</th><th>GitHub UserName</th>" + 
-                                "<th>Branch</th><th>Base</th><th>Date</th>";
+                                "<th>Branch</th><th>Base</th><th>Date</th><th>Sprint</th>";
       
         for(int index = 0; index < allPulls.size(); index++ ) {
-            s += "<tr><td><center>"+ allPulls.elementAt(index).get_id() +"</center></td><td><center>" + allPulls.elementAt(index).get_number()+ 
+            s += "<tr>";
+            s += "<td><center>"+ allPulls.elementAt(index).get_id() +"</center></td><td><center>" + allPulls.elementAt(index).get_number()+ 
                  "</center></td><td><center>" + allPulls.elementAt(index).get_user()+ "</center></td>" +
                  "</center><td><center>" + allPulls.elementAt(index).get_head() + "</center></td>";
          if(allPulls.elementAt(index).get_base().contains("master")) {
@@ -44,7 +49,20 @@ public class PullRequestGenerator {
          else {
                 s +=  "<td><center>"+ allPulls.elementAt(index).get_base()+"</center></td>";
          }
-               s += "<td><center>"+ allPulls.elementAt(index).get_createdAt() + "</center></td></tr>"; 
+               s += "<td><center>"+ allPulls.elementAt(index).get_createdAt() + "</center></td>";
+               String withinSprint = "Not within sprint";
+               Date currentPullDate = allPulls.get(index).get_createdAt();
+               Collection<ITask> allSprints = CurrentProject.getTaskList().getTopLevelTasks();
+               for(ITask singleSprint : allSprints) {
+            	   Date start = singleSprint.getStartDate().getDate();
+            	   Date end = singleSprint.getEndDate().getDate();
+                   if(currentPullDate.after(start) && currentPullDate.before(end)) {
+                	   withinSprint = singleSprint.getText();
+                	   break;
+                   }
+               }
+               s += "<td><center>" + withinSprint + "</center></td>";
+               s += "</tr>"; 
        }
            
         String footer = "</table></body></html>";
