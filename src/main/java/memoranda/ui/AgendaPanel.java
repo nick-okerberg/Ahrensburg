@@ -143,16 +143,27 @@ public class AgendaPanel extends JPanel {
         this.add(toolBar, BorderLayout.NORTH);
         _btnNewButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                MemberAdd.main(null);
-                System.out.println(CurrentProject.get().getTitle());
+            	if(CurrentProject.get().getGitHubRepoName().equals("")) {
+            		JOptionPane.showMessageDialog(null, "No repo has been set in current project.");
+            	}
+            	else {
+                    MemberAdd.main(null);
+                    System.out.println(CurrentProject.get().getTitle());
+            	}
+
             }
         });
 
         toolBar.add(_btnNewButton);
         _btnNewButton_1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                MemberDelete.main(null);
-                System.out.println(CurrentProject.get().getTitle());
+            	if(CurrentProject.get().getGitHubRepoName().equals("")) {
+            		JOptionPane.showMessageDialog(null, "No repo has been set in current project.");
+            	}
+            	else {
+                    MemberDelete.main(null);
+                    System.out.println(CurrentProject.get().getTitle());
+            	}
             }
         });
 
@@ -224,14 +235,20 @@ public class AgendaPanel extends JPanel {
         // function with parameters
         _btnNewButtonUpdate.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                try {
-                    CurrentProject.get().addRepoName(
-                            CurrentProject.get().getGitHubRepoName());
-                } catch (RuntimeException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
-                }
-                App.getFrame().refreshAgenda();
+            	if(CurrentProject.get().getGitHubRepoName().equals("")) {
+            		JOptionPane.showMessageDialog(null, "No repo has been set in current project");
+            	}
+            	else {
+                    try {
+                        CurrentProject.get().addRepoName(
+                                CurrentProject.get().getGitHubRepoName());
+                    } catch (RuntimeException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
+                    App.getFrame().refreshAgenda();
+            	}
+
             }
         });
 

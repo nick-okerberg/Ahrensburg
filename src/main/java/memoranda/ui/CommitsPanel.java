@@ -53,6 +53,7 @@ import javax.swing.JOptionPane;
 
 import nu.xom.Element;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -271,13 +272,24 @@ public class CommitsPanel extends JPanel {
 		//Next, add an action listener for this new button, calling RepoSet function with parameters
 		btnNewButtonUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					CurrentProject.get().addRepoName(CurrentProject.get().getGitHubRepoName());
-				} catch (RuntimeException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+				File authFile = new File((Util.getEnvDir() + "authencoded.txt"));
+				if(CurrentProject.get().getGitHubRepoName().equals("")) {
+					JOptionPane.showMessageDialog(null, "No repo has been set for current project.");
 				}
-		        App.getFrame().refreshAgenda();
+				else if(!authFile.exists()) {
+					JOptionPane.showMessageDialog(null, "You must authenicate.\n"
+							+ "Go to API Settings -> Authenciate Credentials.");
+				}
+				else {
+					try {
+						CurrentProject.get().addRepoName(CurrentProject.get().getGitHubRepoName());
+					} catch (RuntimeException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+			        App.getFrame().refreshAgenda();
+				}
+
 			}
 		});
 		
@@ -285,7 +297,18 @@ public class CommitsPanel extends JPanel {
 		toolBar.add(btnRefreshcommits);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				SelectSprint.main(null);
+				File authFile = new File((Util.getEnvDir() + "authencoded.txt"));
+				if(CurrentProject.get().getGitHubRepoName().equals("")) {
+					JOptionPane.showMessageDialog(null, "No repo has been set for current project.");
+				}
+				else if(!authFile.exists()) {
+					JOptionPane.showMessageDialog(null, "You must authenicate.\n"
+							+ "Go to API Settings -> Authenciate Credentials.");
+				}
+				else {
+					SelectSprint.main(null);
+				}
+				
 
 //				CommitList test = CurrentProject.getCommitList();
 //				List<Commit> test2 = test.getAllCommitsByAuthor("ovidubya");
@@ -302,17 +325,27 @@ public class CommitsPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				// Print the debug statement indicating button pressed. 
 				System.out.println("[DEBUG] RefreshCommits button pressed!");
-				
-				// Try to add the commit data. 
-				try {
-					Loading.display();
-					//JOptionPane.showMessageDialog(null, "Note: GitHub API Calls for commits may take a few minutes");
-					CurrentProject.get().addCommitData(CurrentProject.get().getGitHubRepoName());
-				} 
-				catch (RuntimeException e1) {
-					e1.printStackTrace();
+				File authFile = new File((Util.getEnvDir() + "authencoded.txt"));
+				if(CurrentProject.get().getGitHubRepoName().equals("")) {
+					JOptionPane.showMessageDialog(null, "No repo has been set for current project.");
 				}
-		        App.getFrame().refreshAgenda();
+				else if(!authFile.exists()) {
+					JOptionPane.showMessageDialog(null, "You must authenicate.\n"
+							+ "Go to API Settings -> Authenciate Credentials.");
+				}
+				else {
+					// Try to add the commit data. 
+					try {
+						Loading.display();
+						//JOptionPane.showMessageDialog(null, "Note: GitHub API Calls for commits may take a few minutes");
+						CurrentProject.get().addCommitData(CurrentProject.get().getGitHubRepoName());
+					} 
+					catch (RuntimeException e1) {
+						e1.printStackTrace();
+					}
+			        App.getFrame().refreshAgenda();
+				}
+
 			}
 		});
 		
@@ -320,7 +353,18 @@ public class CommitsPanel extends JPanel {
         toolBar.add(btnTeamMemberCommits);
         btnViewSprint.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
-        		TotalCommitsPrompt.main(null);
+				File authFile = new File((Util.getEnvDir() + "authencoded.txt"));
+				if(CurrentProject.get().getGitHubRepoName().equals("")) {
+					JOptionPane.showMessageDialog(null, "No repo has been set for current project.");
+				}
+				else if(!authFile.exists()) {
+					JOptionPane.showMessageDialog(null, "You must authenicate.\n"
+							+ "Go to API Settings -> Authenciate Credentials.");
+				}
+				else {
+					TotalCommitsPrompt.main(null);
+				}
+        		
         	}
         });
         
@@ -331,9 +375,20 @@ public class CommitsPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 // Print debug statement
                 System.out.println("[DEBUG] TeamMember Commits button pressed!");
-                /*SelectTeamMemberAndSprintDialog select = new SelectTeamMemberAndSprintDialog();
-                select.main(null);*/
-                SelectTeamMemberAndSprintDialog.main(null);
+				File authFile = new File((Util.getEnvDir() + "authencoded.txt"));
+				if(CurrentProject.get().getGitHubRepoName().equals("")) {
+					JOptionPane.showMessageDialog(null, "No repo has been set for current project.");
+				}
+				else if(!authFile.exists()) {
+					JOptionPane.showMessageDialog(null, "You must authenicate.\n"
+							+ "Go to API Settings -> Authenciate Credentials.");
+				}
+				else {
+	                /*SelectTeamMemberAndSprintDialog select = new SelectTeamMemberAndSprintDialog();
+	                select.main(null);*/
+	                SelectTeamMemberAndSprintDialog.main(null);
+				}
+
                 
             }
         });
