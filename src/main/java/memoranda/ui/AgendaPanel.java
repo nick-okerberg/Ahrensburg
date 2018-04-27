@@ -79,6 +79,7 @@ public class AgendaPanel extends JPanel {
 
     // US47 Separate each project into its own tab
     JTabbedPane tabbedPane = new JTabbedPane();
+    private final JButton btnDeleteProject = new JButton("Delete Project");
 
     public AgendaPanel(DailyItemsPanel _parentPanel) {
         try {
@@ -184,6 +185,39 @@ public class AgendaPanel extends JPanel {
         // first, add the new button to the toolbar at the top of the "Agenda"
         // view.
         toolBar.add(_btnNewButtonUpdate);
+        btnDeleteProject.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                String currentProjectTitle = CurrentProject.get().getTitle();
+                String msg = Local.getString("Delete project")
+                            + " '"
+                            + currentProjectTitle
+                            + "'.\n"
+                            + Local.getString("Are you sure?");
+                int n =
+                    JOptionPane.showConfirmDialog(
+                        App.getFrame(),
+                        msg,
+                        Local.getString("Delete project"),
+                        JOptionPane.YES_NO_OPTION);
+                if (n != JOptionPane.YES_OPTION) {
+                    return;
+                }
+                else { //Yes option
+                    if(ProjectManager.getAllProjects().size() == 1) {
+                        JOptionPane.showMessageDialog(null, "SchedStack must have atleast 1 project. That's the rule");
+                    }
+                    else {
+                        ProjectManager.removeProject(CurrentProject.get().getID());
+                        App.getFrame().refreshAgenda();
+                    }
+
+                    
+                }
+                    
+            }
+        });
+        
+        toolBar.add(btnDeleteProject);
 
         // Next, add an action listener for this new button, calling RepoSet
         // function with parameters
