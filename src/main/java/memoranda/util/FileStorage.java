@@ -84,10 +84,7 @@ public class FileStorage implements Storage {
             fw.close();
         }
         catch (IOException ex) {
-            new ExceptionDialog(
-                ex,
-                "Failed to write a document to " + filePath,
-                "");
+            System.out.println("Project already deleted");
         }
     }
 
@@ -191,6 +188,7 @@ public class FileStorage implements Storage {
                 0);
         }
         catch (Exception ex) {
+            System.out.println("Project already deleted");
             //ex.printStackTrace();
             // Do nothing - we've got a new empty document!
         }
@@ -351,15 +349,21 @@ public class FileStorage implements Storage {
      */
     public void storeNoteList(NoteList nl, Project prj) {
         /*DEBUG*/
-        System.out.println(
-            "[DEBUG] Save note list: "
-                + JN_DOCPATH
-                + prj.getID()
-                + File.separator
-                + ".notes");
-        saveDocument(
-            nl.getXMLContent(),
-            JN_DOCPATH + prj.getID() + File.separator + ".notes");
+        try {
+            System.out.println(
+                    "[DEBUG] Save note list: "
+                        + JN_DOCPATH
+                        + prj.getID()
+                        + File.separator
+                        + ".notes");
+                saveDocument(
+                    nl.getXMLContent(),
+                    JN_DOCPATH + prj.getID() + File.separator + ".notes");
+        }
+        catch(Exception e) {
+            
+        }
+
     }
     /**
      * @see main.java.memoranda.util.Storage#openEventsList()
