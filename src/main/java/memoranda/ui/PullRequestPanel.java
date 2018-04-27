@@ -7,15 +7,13 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collection;
-
 import java.util.Map;
-import java.util.Vector;
 
-
+import javax.security.auth.Refreshable;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JEditorPane;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -23,10 +21,6 @@ import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
-import javax.swing.event.PopupMenuListener;
-
-import com.sun.glass.ui.TouchInputSupport;
-
 import main.java.memoranda.CommitList;
 import main.java.memoranda.CurrentProject;
 import main.java.memoranda.EventNotificationListener;
@@ -39,20 +33,16 @@ import main.java.memoranda.ProjectListener;
 import main.java.memoranda.ProjectManager;
 import main.java.memoranda.PullRequestList;
 import main.java.memoranda.ResourcesList;
-
 import main.java.memoranda.TaskList;
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.date.CurrentDate;
 import main.java.memoranda.date.DateListener;
-
 import main.java.memoranda.util.CurrentStorage;
 import main.java.memoranda.util.Local;
 import main.java.memoranda.util.PullRequestGenerator;
 import main.java.memoranda.util.Util;
 import main.java.memoranda.util.PullRequestGenerator.PullRequestsClass;
-
 import javax.swing.JOptionPane;
-
 import nu.xom.Element;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -83,16 +73,17 @@ public class PullRequestPanel extends JPanel {
     //US173
     private static JComboBox<String> JboxButton;
     private final JButton goButton = new JButton("Go");
-  
+    private final JButton refreshButton = new JButton("Refresh");
     
 
     public PullRequestPanel(DailyItemsPanel _parentPanel) {
-     
+        
         JboxButton = new JComboBox();
         JboxButton.setSize(5, 5);
         JboxButton.setEditable(false);
         JboxButton.addItem("Sprint Not Selected");
       
+        
         try {
             parentPanel = _parentPanel;
             jbInit();
@@ -100,20 +91,14 @@ public class PullRequestPanel extends JPanel {
             new ExceptionDialog(ex);
             ex.printStackTrace();
         }
-    }
-    public static void loadJcomoBox(TaskList tl) {
-        Collection coll = tl.getAllSubTasks(null);
-        Object[] obj = coll.toArray();
-        for(int i = 0; i < coll.size(); i++) {
-             JboxButton.addItem( obj[i].toString());
-        }
-       
-                  
+        
     }
     public static void loadJcomoBox(PullRequestsClass prc) {
-        JboxButton.addItem(prc.getTask() + "  " +
-                  "   Start Date: " +  prc.getCdStart() +
-                  "   End Date: " +  prc.getCdEnd() );
+        JboxButton.addItem(prc.getTask().toString());
+        refreshJcomboBox();
+        
+                //  "   Start Date: " +  prc.getCdStart() +
+                //  "   End Date: " +  prc.getCdEnd() );
     }
     void jbInit() throws Exception {
         expandedTasks = new ArrayList();
@@ -314,10 +299,19 @@ public class PullRequestPanel extends JPanel {
             }
         });
         
-        
+        toolBar.add(refreshButton);
+        refreshButton.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                refreshJcomboBox();
+                
+                
+            }
+        });
 
+        //Go button in Pull request pages
         toolBar.add(goButton);
-       
         goButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                
@@ -330,6 +324,7 @@ public class PullRequestPanel extends JPanel {
                 App.getFrame().refreshAgenda();
             }
         });
+        
         
         
         //END of US173
@@ -392,6 +387,16 @@ public class PullRequestPanel extends JPanel {
     }
     public static void JcomboBox(){
         
+    }
+    public static void refreshJcomboBox() {
+        JboxButton.removeAllItems();
+        JboxButton.addItem("Sprint Not Selected");
+        TaskList tl = CurrentProject.getTaskList();
+        Collection coll = tl.getAllSubTasks(null);
+        Object[] obj = coll.toArray();
+         for(int i = 0; i < coll.size(); i++) {
+              JboxButton.addItem( obj[i].toString());
+           }
     }
 
     

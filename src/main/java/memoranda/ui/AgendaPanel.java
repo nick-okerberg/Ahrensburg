@@ -88,6 +88,7 @@ public class AgendaPanel extends JPanel {
             new ExceptionDialog(ex);
             ex.printStackTrace();
         }
+       
     }
 
     void jbInit() throws Exception {
@@ -308,7 +309,7 @@ public class AgendaPanel extends JPanel {
             }
         });
         */
-
+       
         Util.debug("Summary updated.");
     }
 

@@ -21,11 +21,12 @@ public class PullRequestGenerator {
   public PullRequestGenerator(Task newTask, CalendarDate cdStart,CalendarDate cdEnd){
      prc =  new PullRequestsClass( newTask,  cdStart, cdEnd);
      sprints.add(prc);
-     //PullRequestPanel.loadJcomoBox(prc);
-     //PullRequestPanel.loadJcomoBox(CurrentProject.getTaskList());
+     
   }
+  
   //Generate the html for pullReq page
   public static String getAgenda() {
+      
         
         allPulls = CurrentProject.getPullRequestList().getAllPullRequests();
         String header = "<html><body><h2>Pull Requests:</h2><table style=\"width:100%\">";
