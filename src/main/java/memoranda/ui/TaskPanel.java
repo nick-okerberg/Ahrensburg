@@ -759,26 +759,6 @@ public class TaskPanel extends JPanel {
         dlg.setVisible(true);
         if (dlg.CANCELLED)
             return;
-<<<<<<< HEAD
-        CalendarDate sd = new CalendarDate((Date) dlg.startDate.getModel().getValue());
-//        CalendarDate ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());
-          CalendarDate ed;
-          
-          /* Original code before US33 commented out.  
- 		if(dlg.chkEndDate.isSelected())
- 			ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());
- 		else
- 			ed = null;
- 		  */  // End of original code before US33. 
-          ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());;   // Addition for US33. 
-     
-        //long effort = Util.getMillisFromHours(dlg.effortField.getText());
-		ITask newTask = CurrentProject.getTaskList().createTask(sd, ed, dlg.todoField.getText(), dlg.descriptionField.getText(),parentTaskId, dlg.gitMaster);
-//        newTask.setProgress(new Integer(3)); ovadia
-//		CurrentProject.getTaskList().adjustParentTasks(newTask);
-
-		CurrentStorage.get().storeTaskList(CurrentProject.getTaskList(), CurrentProject.get());
-=======
         CalendarDate sd = new CalendarDate(
                 (Date) dlg.startDate.getModel().getValue());
         // CalendarDate ed = new CalendarDate((Date)
@@ -802,7 +782,6 @@ public class TaskPanel extends JPanel {
 
         CurrentStorage.get().storeTaskList(CurrentProject.getTaskList(),
                 CurrentProject.get());
->>>>>>> f15ce9312c3fea764ca13c69698f4fde5e22ea9e
         taskTable.tableChanged();
         parentPanel.updateIndicators();
         // taskTable.updateUI();
