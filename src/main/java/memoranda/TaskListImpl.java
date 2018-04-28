@@ -102,13 +102,14 @@ public class TaskListImpl implements ITaskList {
         return filterActiveTasks(allTasks,date);
     }
 
-    public ITask createTask(CalendarDate startDate, CalendarDate endDate, String text, String description, String parentTaskId) {
+    public ITask createTask(CalendarDate startDate, CalendarDate endDate, String text, String description, String parentTaskId, String newGitMaster) {
         Element el = new Element("task");
         el.addAttribute(new Attribute("startDate", startDate.toString()));
         el.addAttribute(new Attribute("endDate", endDate != null? endDate.toString():""));
 		String id = Util.generateId();
         el.addAttribute(new Attribute("id", id));
         el.addAttribute(new Attribute("progress", "0"));
+        el.addAttribute(new Attribute("gitmaster", newGitMaster));
                 
         Element txt = new Element("text");
         txt.appendChild(text);

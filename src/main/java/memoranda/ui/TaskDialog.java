@@ -39,8 +39,6 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import com.sun.jmx.snmp.internal.SnmpSecuritySubSystem;
-
 import main.java.memoranda.IContributorList;
 import main.java.memoranda.CurrentProject;
 import main.java.memoranda.ITask;
@@ -49,8 +47,6 @@ import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.util.Contributor;
 import main.java.memoranda.util.Local;
 import main.java.memoranda.util.PullRequestGenerator;
-import sun.util.resources.cldr.es.TimeZoneNames_es_419;
-
 import javax.swing.JCheckBox;
 
 /*$Id: TaskDialog.java,v 1.25 2005/12/01 08:12:26 alexeya Exp $*/
@@ -106,7 +102,8 @@ public class TaskDialog extends JDialog {
 	CalendarDate startDateMax = CurrentProject.get().getEndDate();
 	CalendarDate endDateMin = startDateMin;
 	CalendarDate endDateMax = startDateMax;
-    
+	String gitMaster = "";
+	
     public TaskDialog(Frame frame, String title) {
         super(frame, title, true);
         try {
@@ -394,6 +391,13 @@ public class TaskDialog extends JDialog {
             return;
         }
         
+        /*
+         * US48 GitMaster attribute
+         */
+        gitMaster = gitmasterField.getSelectedItem().toString();
+        if (gitMaster.equals("Select GitMaster for this Sprint")) {
+        	gitMaster = "";
+        }
         
     	/* 
     	 * US33 task 72 feature. nick-okerberg.
@@ -404,7 +408,7 @@ public class TaskDialog extends JDialog {
     	ITaskList tl = CurrentProject.getTaskList(); 
     	Vector sprints = (Vector) tl.getAllSubTasks(null); 
     	
-    	
+
     	
     	// Enable for debugging. Prints the current sprint startDate and endDate in the current Sprint being added/modified. 
     	//System.out.println("[DEBUG] Sprint: Currently being modified: begin date = "

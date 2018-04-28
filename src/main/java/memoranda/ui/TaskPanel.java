@@ -639,7 +639,8 @@ public class TaskPanel extends JPanel {
                 CurrentProject.get());
         taskTable.tableChanged();
         parentPanel.updateIndicators();
-        // taskTable.updateUI();
+        //taskTable.updateUI();
+        t.setGitMaster(dlg.gitMaster);
     }
 
     void newTaskB_actionPerformed(ActionEvent e) {
@@ -697,7 +698,7 @@ public class TaskPanel extends JPanel {
             CalendarDate transitionStart = CalendarDate.addDays(lastE, 1);
             CalendarDate transitionEnd = CalendarDate.addDays(sd, -1);
             CurrentProject.getTaskList().createTask(transitionStart, transitionEnd,
-                    "Transition", "Transition", null);
+                    "Transition", "Transition", null, "");
         }
         
         // Now handle if we're adding this sprint before another sprint
@@ -714,12 +715,12 @@ public class TaskPanel extends JPanel {
             CalendarDate transitionStart = CalendarDate.addDays(ed, 1);
             CalendarDate transitionEnd = CalendarDate.addDays(lastS, -1);
             CurrentProject.getTaskList().createTask(transitionStart, transitionEnd,
-                    "Transition", "Transition", null);
+                    "Transition", "Transition", null, "");
         }
         
         
         ITask newTask = CurrentProject.getTaskList().createTask(sd, ed,
-                dlg.todoField.getText(), dlg.descriptionField.getText(), null);
+                dlg.todoField.getText(), dlg.descriptionField.getText(), null, dlg.gitMaster);
         
         CurrentStorage.get().storeTaskList(CurrentProject.getTaskList(),
                 CurrentProject.get());
@@ -775,7 +776,7 @@ public class TaskPanel extends JPanel {
         // long effort = Util.getMillisFromHours(dlg.effortField.getText());
         ITask newTask = CurrentProject.getTaskList().createTask(sd, ed,
                 dlg.todoField.getText(), dlg.descriptionField.getText(),
-                parentTaskId);
+                parentTaskId, dlg.gitMaster);
         // newTask.setProgress(new Integer(3)); ovadia
         // CurrentProject.getTaskList().adjustParentTasks(newTask);
 

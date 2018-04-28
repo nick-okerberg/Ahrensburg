@@ -466,7 +466,13 @@ public class TaskImpl implements ITask, Comparable {
     public void setPriority(int p) {
         setAttr("priority", String.valueOf(p));
     }
-
+    
+    public String getGitMaster() {
+    	return _element.getAttribute("gitmaster").toString();
+    }
+    public void setGitMaster(String newGitMaster) {
+    	setAttr("gitmaster", newGitMaster);
+    }
     private void setAttr(String a, String value) {
         Attribute attr = _element.getAttribute(a);
         if (attr == null)
