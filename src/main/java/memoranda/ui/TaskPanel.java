@@ -698,7 +698,7 @@ public class TaskPanel extends JPanel {
             CalendarDate transitionStart = CalendarDate.addDays(lastE, 1);
             CalendarDate transitionEnd = CalendarDate.addDays(sd, -1);
             CurrentProject.getTaskList().createTask(transitionStart, transitionEnd,
-                    "Transition", "Transition", null);
+                    "Transition", "Transition", null, "");
         }
         
         // Now handle if we're adding this sprint before another sprint
@@ -715,7 +715,7 @@ public class TaskPanel extends JPanel {
             CalendarDate transitionStart = CalendarDate.addDays(ed, 1);
             CalendarDate transitionEnd = CalendarDate.addDays(lastS, -1);
             CurrentProject.getTaskList().createTask(transitionStart, transitionEnd,
-                    "Transition", "Transition", null);
+                    "Transition", "Transition", null, "");
         }
         
         
