@@ -46,7 +46,7 @@ public class ProjectManager {
             _root = _doc.getRootElement();
     }
 
-    public static Project getProject(String id) {
+    public static IProject getProject(String id) {
         Elements prjs = _root.getChildElements("project");
         for (int i = 0; i < prjs.size(); i++) {
             String pid = ((Element) prjs.get(i)).getAttribute("id").getValue();
@@ -80,8 +80,8 @@ public class ProjectManager {
         Elements prjs = _root.getChildElements("project");
         Vector v = new Vector();
         for (int i = 0; i < prjs.size(); i++) {
-            Project prj = new ProjectImpl((Element) prjs.get(i));
-            if (prj.getStatus() == Project.ACTIVE)
+            IProject prj = new ProjectImpl((Element) prjs.get(i));
+            if (prj.getStatus() == IProject.ACTIVE)
                 v.add(prj);
         }
         return v;
@@ -91,14 +91,14 @@ public class ProjectManager {
         Elements prjs = _root.getChildElements("project");
         int count = 0;
         for (int i = 0; i < prjs.size(); i++) {
-            Project prj = new ProjectImpl((Element) prjs.get(i));
-            if (prj.getStatus() == Project.ACTIVE)
+            IProject prj = new ProjectImpl((Element) prjs.get(i));
+            if (prj.getStatus() == IProject.ACTIVE)
                 count++;
         }
         return count;
     }
 
-    public static Project createProject(String id, String title, CalendarDate startDate, CalendarDate endDate) {
+    public static IProject createProject(String id, String title, CalendarDate startDate, CalendarDate endDate) {
         Element el = new Element("project");
         el.addAttribute(new Attribute("id", id));
         
@@ -108,7 +108,7 @@ public class ProjectManager {
         el.addAttribute(new Attribute("names", ""));
         el.addAttribute(new Attribute("gitnames", ""));
         _root.appendChild(el);
-        Project prj = new ProjectImpl(el);
+        IProject prj = new ProjectImpl(el);
         prj.setTitle(title);
         prj.setStartDate(startDate);
         prj.setEndDate(endDate);
@@ -116,12 +116,12 @@ public class ProjectManager {
         return prj;
     }
 
-    public static Project createProject(String title, CalendarDate startDate, CalendarDate endDate) {
+    public static IProject createProject(String title, CalendarDate startDate, CalendarDate endDate) {
         return createProject(Util.generateId(), title, startDate, endDate);
     }
     
     public static void removeProject(String id) {
-        Project prj = getProject(id);
+        IProject prj = getProject(id);
         if (prj == null)
             return;
         History.removeProjectHistory(prj);

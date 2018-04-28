@@ -20,61 +20,70 @@
 
 package main.java.memoranda.ui;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
-
 import java.util.EventObject;
-import java.util.Collection;
-import java.util.Vector;
 import java.util.Iterator;
-import java.util.Hashtable;
-import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.ListSelectionModel;
 import javax.swing.LookAndFeel;
-import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
-import javax.swing.event.*;
-import javax.swing.table.*;
-import javax.swing.tree.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TreeExpansionEvent;
+import javax.swing.event.TreeExpansionListener;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeSelectionModel;
+import javax.swing.tree.TreeCellRenderer;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreePath;
 
-import main.java.memoranda.*;
+import main.java.memoranda.ICommitList;
+import main.java.memoranda.CurrentProject;
+import main.java.memoranda.INoteList;
+import main.java.memoranda.IProject;
+import main.java.memoranda.IProjectListener;
+import main.java.memoranda.IPullRequestList;
+import main.java.memoranda.IResourcesList;
+import main.java.memoranda.ITaskList;
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.date.CurrentDate;
-import main.java.memoranda.date.DateListener;
-import main.java.memoranda.ui.treetable.*;
-import main.java.memoranda.util.*;
+import main.java.memoranda.date.IDateListener;
+import main.java.memoranda.ui.treetable.AbstractCellEditor;
+import main.java.memoranda.ui.treetable.ITreeTableModel;
+import main.java.memoranda.ui.treetable.TreeTableModelAdapter;
 
 /**
  * JAVADOC:
  * <h1>TaskTable</h1>
  * <p>
- * JTable whick uses JTree as a CellRenderer to show
- * Tasks and subtasks logically.</p>
- *
- * <p>
- * Datamodel is TaskTableModel whick is not used directly but
- * via TaskTableSorter whick extends TaskTableModel and
- * adds sorting capability.
+ * JTable whick uses JTree as a CellRenderer to show Tasks and subtasks
+ * logically.
  * </p>
  *
  * <p>
- * To make this class simpler, most cellrendering code
- * has been moved to TaskTreeTableCellRenderer.
+ * Datamodel is TaskTableModel whick is not used directly but via
+ * TaskTableSorter whick extends TaskTableModel and adds sorting capability.
  * </p>
  *
- * <p>Article about <a href="http://java.sun.com/products/jfc/tsc/articles/treetable1/">treetables</a>.</p>
+ * <p>
+ * To make this class simpler, most cellrendering code has been moved to
+ * TaskTreeTableCellRenderer.
+ * </p>
+ *
+ * <p>
+ * Article about <a href=
+ * "http://java.sun.com/products/jfc/tsc/articles/treetable1/">treetables</a>.
+ * </p>
  * 
- * @see	main.java.memoranda.ui.TaskTreeTableCellRenderer
+ * @see main.java.memoranda.ui.TaskTreeTableCellRenderer
  * @version $Id: TaskTable.java,v 1.26 2007/01/05 10:33:26 alexeya Exp $
  * @author $Author: alexeya $
  */
@@ -87,13 +96,13 @@ public class TaskTable extends JTable {
     protected TreeTableCellRenderer tree;
 
     protected TaskTableModel model;
-    
+
     protected TreeTableModelAdapter modelAdapter;
-    
+
     protected TaskTreeTableCellRenderer renderer;
-	
-	protected ExpansionHandler expansion; 
-    
+
+    protected ExpansionHandler expansion;
+
     public TaskTable() {
         super();
         initTable();
@@ -102,116 +111,111 @@ public class TaskTable extends JTable {
         tree.setSelectionModel(selectionWrapper);
         setSelectionModel(selectionWrapper.getListSelectionModel());
 
-        CurrentDate.addDateListener(new DateListener() {
+        CurrentDate.addDateListener(new IDateListener() {
             public void dateChange(CalendarDate d) {
-                //updateUI();
+                // updateUI();
                 tableChanged();
             }
         });
-        CurrentProject.addProjectListener(new ProjectListener() {
-            public void projectChange(Project p, NoteList nl, TaskList tl,
-                    ResourcesList rl) {
+        CurrentProject.addProjectListener(new IProjectListener() {
+            public void projectChange(IProject p, INoteList nl, ITaskList tl,
+                    IResourcesList rl, ICommitList cl, IPullRequestList prl) {
             }
 
             public void projectWasChanged() {
-                //initTable();
-				tableChanged();
+                // initTable();
+                tableChanged();
             }
         });
-	
+
     }
 
     private void initTable() {
-	
-		//model = new TaskTableModel();
-		model = new TaskTableSorter( this );
-	
-		// Create the tree. It will be used as a renderer and editor.
-		tree = new TreeTableCellRenderer(model);
-		
-		// store tree expansion status and
-		// restore after sorting/project change etc.
-		expansion = new ExpansionHandler();
-		tree.addTreeExpansionListener(expansion);
-	
-		// Install a tableModel representing the visible rows in the tree.
-		modelAdapter = new TreeTableModelAdapter(model, tree);
-		super.setModel(modelAdapter);
-			
-		// Install the tree editor renderer and editor.
-		renderer = new TaskTreeTableCellRenderer(this);
-		
-		
-		tree.setCellRenderer(renderer);
-		setDefaultRenderer(TreeTableModel.class, tree);
-		setDefaultRenderer(Integer.class, renderer);
-		setDefaultRenderer(TaskTable.class, renderer);
-		setDefaultRenderer(String.class, renderer);
-		setDefaultRenderer(java.util.Date.class, renderer);
 
-		setDefaultEditor(TreeTableModel.class, new TreeTableCellEditor());
-		
-		// column name is repeated in 2 places, do something about it!
-		//getColumn( "% " + Local.getString("done") ).setCellEditor(new TaskProgressEditor()); ovadia edit
-		
-		// TODO: editor for task progress
-		
-		
-		//  grid.
-		setShowGrid(false);
+        // model = new TaskTableModel();
+        model = new TaskTableSorter(this);
 
-		// No intercell spacing
-		setIntercellSpacing(new Dimension(0, 0));
+        // Create the tree. It will be used as a renderer and editor.
+        tree = new TreeTableCellRenderer(model);
 
-		// And update the height of the trees row to match that of
-		// the table.
-		//if (tree.getRowHeight() < 1) {
-			setRowHeight(18);
-		//}
-		initColumnWidths();
-		
-		// do not allow moving columns
-		getTableHeader().setReorderingAllowed(false);
+        // store tree expansion status and
+        // restore after sorting/project change etc.
+        expansion = new ExpansionHandler();
+        tree.addTreeExpansionListener(expansion);
+
+        // Install a tableModel representing the visible rows in the tree.
+        modelAdapter = new TreeTableModelAdapter(model, tree);
+        super.setModel(modelAdapter);
+
+        // Install the tree editor renderer and editor.
+        renderer = new TaskTreeTableCellRenderer(this);
+
+        tree.setCellRenderer(renderer);
+        setDefaultRenderer(ITreeTableModel.class, tree);
+        setDefaultRenderer(Integer.class, renderer);
+        setDefaultRenderer(TaskTable.class, renderer);
+        setDefaultRenderer(String.class, renderer);
+        setDefaultRenderer(java.util.Date.class, renderer);
+
+        setDefaultEditor(ITreeTableModel.class, new TreeTableCellEditor());
+
+        // column name is repeated in 2 places, do something about it!
+        // getColumn( "% " + Local.getString("done") ).setCellEditor(new
+        // TaskProgressEditor()); ovadia edit
+
+        // TODO: editor for task progress
+
+        // grid.
+        setShowGrid(false);
+
+        // No intercell spacing
+        setIntercellSpacing(new Dimension(0, 0));
+
+        // And update the height of the trees row to match that of
+        // the table.
+        // if (tree.getRowHeight() < 1) {
+        setRowHeight(18);
+        // }
+        initColumnWidths();
+
+        // do not allow moving columns
+        getTableHeader().setReorderingAllowed(false);
     }
 
     void initColumnWidths() {
-        for (int i = 0; i < 4; i++) { //Ovadia Shalom US8
+        for (int i = 0; i < getColumnModel().getColumnCount(); i++) { // Ovadia Shalom US8
             TableColumn column = getColumnModel().getColumn(i);
             if (i == 0) {
                 column.setPreferredWidth(8);
-            } 
-            else if (i == 1) {
-                column.setPreferredWidth(32767);
-            }
-	    else if( i == 6 ){
-		    column.setPreferredWidth(100);
-		    column.setMinWidth(100);
-	    }
-            else {
+            } else if (i == 1) {
+                column.setPreferredWidth(32000);
+            } else if (i == 6) {
+                column.setPreferredWidth(100);
+                column.setMinWidth(100);
+            } else {
                 column.setMinWidth(67); // 65);
-                column.setPreferredWidth(67); //65);
+                column.setPreferredWidth(67); // 65);
             }
         }
     }
-    
+
     public void tableChanged() {
-		model.fireUpdateCache();
-		model.fireTreeStructureChanged();
-		expansion.expand(tree);
-		updateUI();
+        model.fireUpdateCache();
+        model.fireTreeStructureChanged();
+        expansion.expand(tree);
+        updateUI();
     }
-    
+
     /**
      * Overridden to message super and forward the method to the tree. Since the
      * tree is not actually in the component hieachy it will never receive this
      * unless we forward it in this manner.
      */
     public void updateUI() {
-		super.updateUI();
-			if (tree != null) { 
-			tree.updateUI();
-			}
-
+        super.updateUI();
+        if (tree != null) {
+            tree.updateUI();
+        }
 
         // Use the tree's default foreground and background colors in the
         // table.
@@ -227,7 +231,7 @@ public class TaskTable extends JTable {
      * ensures the editor is never painted.
      */
     public int getEditingRow() {
-        return (getColumnClass(editingColumn) == TreeTableModel.class) ? -1
+        return (getColumnClass(editingColumn) == ITreeTableModel.class) ? -1
                 : editingRow;
     }
 
@@ -251,17 +255,17 @@ public class TaskTable extends JTable {
     /**
      * A TreeCellRenderer that displays a JTree.
      */
-	 public class TreeTableCellRenderer extends JTree implements // {{{
+    public class TreeTableCellRenderer extends JTree implements // {{{
             TableCellRenderer {
         /** Last table/tree row asked to renderer. */
         protected int visibleRow;
 
         public TreeTableCellRenderer(TreeModel model) {
             super(model);
-            //ToolTipManager.sharedInstance().registerComponent(this);//XXX
+            // ToolTipManager.sharedInstance().registerComponent(this);//XXX
             this.setRootVisible(false);
             this.setShowsRootHandles(true);
-			this.setCellRenderer(renderer);                       
+            this.setCellRenderer(renderer);
         }
 
         /**
@@ -270,18 +274,18 @@ public class TaskTable extends JTable {
          */
         public void updateUI() {
             super.updateUI();
-	    
+
             // Make the tree's cell renderer use the table's cell selection
             // colors.
             TreeCellRenderer tcr = getCellRenderer();
             if (tcr instanceof DefaultTreeCellRenderer) {
                 DefaultTreeCellRenderer dtcr = ((DefaultTreeCellRenderer) tcr);
- 
-				dtcr.setBorderSelectionColor(null);
-                dtcr.setTextSelectionColor(UIManager
-                        .getColor("Table.selectionForeground"));
-                dtcr.setBackgroundSelectionColor(UIManager
-                        .getColor("Table.selectionBackground"));
+
+                dtcr.setBorderSelectionColor(null);
+                dtcr.setTextSelectionColor(
+                        UIManager.getColor("Table.selectionForeground"));
+                dtcr.setBackgroundSelectionColor(
+                        UIManager.getColor("Table.selectionBackground"));
             }
         }
 
@@ -328,15 +332,15 @@ public class TaskTable extends JTable {
             visibleRow = row;
             return this;
         }
-	} // }}}
+    } // }}}
 
     /**
      * TreeTableCellEditor implementation. Component returned is the JTree.
      */
-	 public class TreeTableCellEditor extends AbstractCellEditor implements //{{{
+    public class TreeTableCellEditor extends AbstractCellEditor implements // {{{
             TableCellEditor {
-        public Component getTableCellEditorComponent(JTable table,
-                Object value, boolean isSelected, int r, int c) {
+        public Component getTableCellEditorComponent(JTable table, Object value,
+                boolean isSelected, int r, int c) {
             return tree;
         }
 
@@ -361,13 +365,15 @@ public class TaskTable extends JTable {
          */
         public boolean isCellEditable(EventObject e) {
             if (e instanceof MouseEvent) {
-                for (int counter = getColumnCount() - 1; counter >= 0; counter--) {
-                    if (getColumnClass(counter) == TreeTableModel.class) {
+                for (int counter = getColumnCount()
+                        - 1; counter >= 0; counter--) {
+                    if (getColumnClass(counter) == ITreeTableModel.class) {
                         MouseEvent me = (MouseEvent) e;
-                        MouseEvent newME = new MouseEvent(tree, me.getID(), me
-                                .getWhen(), me.getModifiers(), me.getX()
-                                - getCellRect(0, counter, true).x, me.getY(),
-                                me.getClickCount(), me.isPopupTrigger());
+                        MouseEvent newME = new MouseEvent(tree, me.getID(),
+                                me.getWhen(), me.getModifiers(),
+                                me.getX() - getCellRect(0, counter, true).x,
+                                me.getY(), me.getClickCount(),
+                                me.isPopupTrigger());
                         tree.dispatchEvent(newME);
                         break;
                     }
@@ -375,7 +381,7 @@ public class TaskTable extends JTable {
             }
             return false;
         }
-	} // }}}
+    } // }}}
 
     /**
      * ListToTreeSelectionModelWrapper extends DefaultTreeSelectionModel to
@@ -383,15 +389,15 @@ public class TaskTable extends JTable {
      * in the ListSelectionModel happens, the paths are updated in the
      * DefaultTreeSelectionModel.
      */
-	 public class ListToTreeSelectionModelWrapper extends // {{{
+    public class ListToTreeSelectionModelWrapper extends // {{{
             DefaultTreeSelectionModel {
         /** Set to true when we are updating the ListSelectionModel. */
         protected boolean updatingListSelectionModel;
 
         public ListToTreeSelectionModelWrapper() {
             super();
-            getListSelectionModel().addListSelectionListener(
-                    createListSelectionListener());
+            getListSelectionModel()
+                    .addListSelectionListener(createListSelectionListener());
         }
 
         /**
@@ -404,8 +410,8 @@ public class TaskTable extends JTable {
         }
 
         /**
-         * This is overridden to set <code>updatingListSelectionModel</code>
-         * and message super. This is the only place DefaultTreeSelectionModel
+         * This is overridden to set <code>updatingListSelectionModel</code> and
+         * message super. This is the only place DefaultTreeSelectionModel
          * alters the ListSelectionModel.
          */
         public void resetRowSelection() {
@@ -432,8 +438,8 @@ public class TaskTable extends JTable {
         }
 
         /**
-         * If <code>updatingListSelectionModel</code> is false, this will
-         * reset the selected paths from the selected rows in the list selection
+         * If <code>updatingListSelectionModel</code> is false, this will reset
+         * the selected paths from the selected rows in the list selection
          * model.
          */
         protected void updateSelectedPathsFromSelectedRows() {
@@ -463,69 +469,66 @@ public class TaskTable extends JTable {
             }
         }
 
-	/**
-	 * Class responsible for calling updateSelectedPathsFromSelectedRows
-	 * when the selection of the list changse.
-	 */
-	class ListSelectionHandler implements ListSelectionListener {
+        /**
+         * Class responsible for calling updateSelectedPathsFromSelectedRows
+         * when the selection of the list changse.
+         */
+        class ListSelectionHandler implements ListSelectionListener {
             public void valueChanged(ListSelectionEvent e) {
                 updateSelectedPathsFromSelectedRows();
             }
         }
-	} // }}}
-	
-	
-	/**
-	 * Stores expanded treepaths so that they
-	 * can be restored after treeStructureChanged-method call
-	 * which collapses everything
-	 */
-	 class ExpansionHandler implements TreeExpansionListener { // {{{
-	
-		private java.util.Set expanded = new java.util.HashSet();
-		
-		public void treeExpanded(TreeExpansionEvent e) {
-			expanded.add(e.getPath());
-		}
-		
-		public void treeCollapsed(TreeExpansionEvent e) {
-			TreePath p = e.getPath();
-			int index = p.getPathCount() - 1;
-			Object collapsed = p.getLastPathComponent();
+    } // }}}
 
-			Object[] components = expanded.toArray();
-			for(int i=0; i<components.length; i++){
-				TreePath epath = (TreePath) components[i];
-				if( (epath.getPathCount() > index) && (epath.getPathComponent(index).equals(collapsed))){
-					expanded.remove(epath);
-				}
-			}
-		}
-		
-		/**
-		 * Expands stored treepaths in JTree
-		 * <p>
-		 * If model has been changed (eg. project change) we
-		 * still try to expand paths whick do not exist.
-		 * We just assume that this is not causing problems,
-		 * and as a side effect it preserved tree expansion status
-		 * even after project has been changed to some other project 
-		 * and then back.
-		 * </p>
-		 * <p>
-		 * It is possible that there will be memory leak
-		 * if expanded paths have been removed from model, but
-		 * effect of this is quite insignificant.
-		 * </p>
-		 */
-		public void expand(JTree tree){
-			Iterator iter = expanded.iterator();
-			while(iter.hasNext()){
-				tree.expandPath( (TreePath) iter.next() );
-			}
-			System.out.println(expanded.size());
-		}
-		
-	} // }}}	
-	
+    /**
+     * Stores expanded treepaths so that they can be restored after
+     * treeStructureChanged-method call which collapses everything
+     */
+    class ExpansionHandler implements TreeExpansionListener { // {{{
+
+        private java.util.Set expanded = new java.util.HashSet();
+
+        public void treeExpanded(TreeExpansionEvent e) {
+            expanded.add(e.getPath());
+        }
+
+        public void treeCollapsed(TreeExpansionEvent e) {
+            TreePath p = e.getPath();
+            int index = p.getPathCount() - 1;
+            Object collapsed = p.getLastPathComponent();
+
+            Object[] components = expanded.toArray();
+            for (int i = 0; i < components.length; i++) {
+                TreePath epath = (TreePath) components[i];
+                if ((epath.getPathCount() > index)
+                        && (epath.getPathComponent(index).equals(collapsed))) {
+                    expanded.remove(epath);
+                }
+            }
+        }
+
+        /**
+         * Expands stored treepaths in JTree
+         * <p>
+         * If model has been changed (eg. project change) we still try to expand
+         * paths whick do not exist. We just assume that this is not causing
+         * problems, and as a side effect it preserved tree expansion status
+         * even after project has been changed to some other project and then
+         * back.
+         * </p>
+         * <p>
+         * It is possible that there will be memory leak if expanded paths have
+         * been removed from model, but effect of this is quite insignificant.
+         * </p>
+         */
+        public void expand(JTree tree) {
+            Iterator iter = expanded.iterator();
+            while (iter.hasNext()) {
+                tree.expandPath((TreePath) iter.next());
+            }
+            System.out.println(expanded.size());
+        }
+
+    } // }}}
+
 }

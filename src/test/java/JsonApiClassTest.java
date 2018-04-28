@@ -1,68 +1,72 @@
 package test.java;
 
-import static org.junit.Assert.*;
-
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.util.Deque;
-
-import org.json.JSONException;
-import org.junit.Test;
+import java.net.URL;
 
 import main.java.memoranda.util.JsonApiClass;
-import main.java.memoranda.util.Commit;
-import main.java.memoranda.util.Contributor;
+import main.java.memoranda.util.Util;
+
+import org.json.JSONException;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+
+import static org.junit.Assert.*;
+
+
 
 public class JsonApiClassTest {
-  
-  // TODO add real tests
-
-  /**
-   * This is just to play around with the methods.
- * @throws JSONException 
-   */
-  @Test
-  public void test() throws JSONException {
-    JsonApiClass jac = null;
-    try {
-      jac = new JsonApiClass("https://api.github.com/repos/ser316asu-2018/Ahrensburg");
-    } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+    URL url = null;
+    static JsonApiClass jac = null;
+    
+    /**
+     * Builds a JsonApiClass based on Jordan Wine's SER316 repo to use to test.
+     */
+    @BeforeClass
+    public static void setup() {
+        URL url;
+        try {
+            new File(Util.getEnvDir()).mkdirs();
+            File file = new File(Util.getEnvDir()+"authencoded.txt");
+            FileWriter writer = new FileWriter(file);
+            String userCredentials = "api-test-user-123:test123";
+            String basicAuth = "Basic " + java.util.Base64.getEncoder().encodeToString(userCredentials.getBytes());
+            writer.write(basicAuth);
+            writer.close();
+            url = new URL("https://api.github.com/repos/DrChunks/jwine2_review");
+            jac = new JsonApiClass(url,true);
+        } catch (JSONException | IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
     
-    Deque<Commit> commits = null;
-    try {
-      jac.refreshContributors();
-    } catch (JSONException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+    /**
+     * Simple happy case test for getting pull requests.
+     */
+    @Test
+    public void testGetPullRequests() {
+        assertFalse(jac.getPullRequests().isEmpty());
     }
-    //commits = jac.getCommits();
-    Deque<Contributor> contributors = jac.getContributors();
-    try {
-      //System.out.println("Found " + commits.size() + " commits.");
-      //System.out.println("JAC ignored " +jac.getIgnoredCount() + " commits");
-      //System.out.println("Found " + contributors.size() + " contributors.");
-      //while (commits.peek() != null) {
-      //  Commit commit = commits.pop();
-      //  System.out.println("Commit sha: "+commit.getSha());
-      //  System.out.println("\tTotal LOC: " + commit.getTotalLoc());
-        //System.out.println("Message: " +commit.getMessage());
-      //}
-      while (contributors.peek() != null) {
-        Contributor cb = contributors.pop();
-        System.out.println("Contributor - Name: "+cb.getName() +" Login: " + cb.getLogin());
-        //System.out.println("Message: " +commit.getMessage());
-      }
-      System.out.println("Made " + jac.getApiCallCount() + " API calls.");
-    } catch (NullPointerException ex) {
-      System.out.println("I don't have anything to work with");
-      System.out.println(ex.getMessage());
+    
+    /**
+     * Simple happy case test for getting branches.
+     */
+    @Test
+    public void testGetPullBranches() {
+        assertFalse(jac.getBranches().isEmpty());
     }
-  }
-
+    
+    /**
+     * Tests the number of commits returned based on a known repo.
+     */
+    @Test
+    public void testPrCount() {
+        // Since we know that this particular repo only ever had 3 pull requests
+        // We will test against 3 pull requests.
+        assertEquals(jac.getPullRequests().size(),3);
+    }
 }

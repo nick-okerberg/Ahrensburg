@@ -39,12 +39,14 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import main.java.memoranda.IContributorList;
 import main.java.memoranda.CurrentProject;
-import main.java.memoranda.Task;
-import main.java.memoranda.TaskList;
+import main.java.memoranda.ITask;
+import main.java.memoranda.ITaskList;
 import main.java.memoranda.date.CalendarDate;
+import main.java.memoranda.util.Contributor;
 import main.java.memoranda.util.Local;
-
+import main.java.memoranda.util.PullRequestGenerator;
 import javax.swing.JCheckBox;
 
 /*$Id: TaskDialog.java,v 1.25 2005/12/01 08:12:26 alexeya Exp $*/
@@ -65,7 +67,11 @@ public class TaskDialog extends JDialog {
 //    Border border5;
 //    Border border6;
     JPanel jPanel2 = new JPanel(new GridLayout(3, 2));
-    JTextField todoField = new JTextField();
+    
+    JTextField todoField = new JTextField();    // For the "Name" of the sprint. 
+    //US48 - Add gitmaster to sprint dialog. 
+    JComboBox gitmasterField = new JComboBox();
+    
     JTextArea descriptionField = new JTextArea();
     JScrollPane descriptionScrollPane = new JScrollPane(descriptionField);
     
@@ -89,12 +95,15 @@ public class TaskDialog extends JDialog {
     JButton setEndDateB = new JButton();
     JLabel jLabelDescription = new JLabel();
 	
+    String todoFieldText = "Enter Sprint Name!";
+    
 	//Forbid to set dates outside the bounds
 	CalendarDate startDateMin = CurrentProject.get().getStartDate();
 	CalendarDate startDateMax = CurrentProject.get().getEndDate();
 	CalendarDate endDateMin = startDateMin;
 	CalendarDate endDateMax = startDateMax;
-    
+	String gitMaster = "";
+	
     public TaskDialog(Frame frame, String title) {
         super(frame, title, true);
         try {
@@ -163,10 +172,30 @@ public class TaskDialog extends JDialog {
 				
         todoField.setBorder(border8);
         todoField.setPreferredSize(new Dimension(375, 24));
+        todoField.setText(todoFieldText);
         GridBagConstraints gbCon = new GridBagConstraints();
         gbCon.gridwidth = GridBagConstraints.REMAINDER;
         gbCon.weighty = 1;
         gbLayout.setConstraints(todoField,gbCon);
+        
+        //US48 JComboBox.
+        String jcomboboxString = "Select GitMaster for this Sprint";
+        gitmasterField.addItem(jcomboboxString);
+        gitmasterField.setSelectedItem(jcomboboxString);
+        gitmasterField.setBorder(border8);
+        gitmasterField.setPreferredSize(new Dimension(375, 24));
+        gitmasterField.setBackground(Color.WHITE);
+        gbCon = new GridBagConstraints();
+        gbCon.gridwidth = GridBagConstraints.REMAINDER;
+        gbCon.weighty = 1;
+        gbLayout.setConstraints(gitmasterField,gbCon);
+        // Populate the JComboBox with all of the contributors on the current project. 
+        IContributorList teamMembers = CurrentProject.getContributorList();
+        Vector<Contributor> teamMember = teamMembers.getAllContributors();
+        for (int i = 0; i < teamMember.size(); i++) {
+            gitmasterField.addItem(teamMember.get(i).getLogin());
+        }
+        // End of US48 updates
         
         jLabelDescription.setMaximumSize(new Dimension(100, 16));
         jLabelDescription.setMinimumSize(new Dimension(60, 16));
@@ -292,6 +321,7 @@ public class TaskDialog extends JDialog {
         dialogTitlePanel.add(header, null);
         areaPanel.add(jPanel8, BorderLayout.NORTH);
         jPanel8.add(todoField, null);
+        jPanel8.add(gitmasterField, null);  // US48
         jPanel8.add(jLabelDescription);
         jPanel8.add(descriptionScrollPane, null);
         areaPanel.add(jPanel2, BorderLayout.CENTER);
@@ -349,14 +379,36 @@ public class TaskDialog extends JDialog {
 	 */
     void okB_actionPerformed(ActionEvent e) {
     	
+        /*
+         * Sprint name validation.
+         * Ensure the user enters a name for the sprint. 
+         * It cannot be the default name, or "null". 
+         */
+        if ( todoField.getText().equals(todoFieldText) 
+                || todoField.getText().equals(null) 
+                || todoField.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Enter a valid Sprint Name!");
+            return;
+        }
+        
+        /*
+         * US48 GitMaster attribute
+         */
+        gitMaster = gitmasterField.getSelectedItem().toString();
+        if (gitMaster.equals("Select GitMaster for this Sprint")) {
+        	gitMaster = "";
+        }
+        
     	/* 
     	 * US33 task 72 feature. nick-okerberg.
     	 * Prevent sprint start/end date overlapping between multiple sprints within a project. 
     	 */
 
     	// Get all tasks (Sprints) within the current project. 
-    	TaskList tl = CurrentProject.getTaskList(); 
+    	ITaskList tl = CurrentProject.getTaskList(); 
     	Vector sprints = (Vector) tl.getAllSubTasks(null); 
+    	
+
     	
     	// Enable for debugging. Prints the current sprint startDate and endDate in the current Sprint being added/modified. 
     	//System.out.println("[DEBUG] Sprint: Currently being modified: begin date = "
@@ -382,7 +434,7 @@ public class TaskDialog extends JDialog {
     		for (Iterator i = sprints.iterator(); i.hasNext();) {
     			
     			// A single task at a time. 
-    			Task t = (Task) i.next();
+    			ITask t = (ITask) i.next();
     			
     			// The name of the local task being added/modified, from the "Name" field of the JTextField. 
     			String localTaskName = todoField.getText();
@@ -456,10 +508,14 @@ public class TaskDialog extends JDialog {
     				return;
     			}
     			
+    			//Sending each sprint , start, and end date to PullrRequestGenerator to display the data
+    			PullRequestGenerator prg = new PullRequestGenerator(t, cdStart, cdEnd);
+    			
     			// Increment the loop iteration counter. 
     			x++;
     			
     		} // End of for loop. 
+    		
     	} // End outer if. 
     	
     	System.out.println("[DEBUT] OK Button pressed for Sprint task");

@@ -16,21 +16,25 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import main.java.memoranda.ICommitList;
 import main.java.memoranda.CurrentProject;
-import main.java.memoranda.NoteList;
-import main.java.memoranda.Project;
-import main.java.memoranda.ProjectListener;
-import main.java.memoranda.ResourcesList;
-import main.java.memoranda.TaskList;
+import main.java.memoranda.INoteList;
+import main.java.memoranda.IProject;
+import main.java.memoranda.IProjectListener;
+import main.java.memoranda.IPullRequestList;
+import main.java.memoranda.IResourcesList;
+import main.java.memoranda.ITaskList;
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.date.CurrentDate;
 import main.java.memoranda.util.Local;
@@ -212,8 +216,9 @@ public class JNCalendarPanel extends JPanel {
         yearSpin_actionPerformed();
       }
     });
-    CurrentProject.addProjectListener(new ProjectListener() {
-            public void projectChange(Project p, NoteList nl, TaskList tl, ResourcesList rl) {}
+    CurrentProject.addProjectListener(new IProjectListener() {
+            public void projectChange(IProject p, INoteList nl, ITaskList tl, 
+                    IResourcesList rl, ICommitList cl, IPullRequestList prl) {}
             public void projectWasChanged() {
                 jnCalendar.updateUI();
             }
@@ -248,6 +253,8 @@ public class JNCalendarPanel extends JPanel {
     if (_date.equals(dt)) return;
     _date = new CalendarDate(d, _date.getMonth(), _date.getYear());
     notifyListeners();
+    JInternalFrame frame = (JInternalFrame)SwingUtilities.getAncestorOfClass(JInternalFrame.class, this); //super hacky but it works
+    frame.dispose();
   }
 
   private void refreshView() {

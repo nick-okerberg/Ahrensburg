@@ -7,6 +7,8 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
@@ -23,21 +25,25 @@ import javax.swing.event.HyperlinkListener;
 
 import org.json.JSONException;
 
+import main.java.memoranda.ICommitList;
 import main.java.memoranda.CurrentProject;
-import main.java.memoranda.EventNotificationListener;
+import main.java.memoranda.IEventNotificationListener;
 import main.java.memoranda.EventsManager;
 import main.java.memoranda.EventsScheduler;
 import main.java.memoranda.History;
-import main.java.memoranda.NoteList;
-import main.java.memoranda.Project;
-import main.java.memoranda.ProjectListener;
+import main.java.memoranda.INoteList;
+import main.java.memoranda.IProject;
+import main.java.memoranda.IProjectListener;
 import main.java.memoranda.ProjectManager;
-import main.java.memoranda.ResourcesList;
-import main.java.memoranda.TaskList;
+import main.java.memoranda.IPullRequestList;
+import main.java.memoranda.IResourcesList;
+import main.java.memoranda.ITask;
+import main.java.memoranda.ITaskList;
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.date.CurrentDate;
-import main.java.memoranda.date.DateListener;
+import main.java.memoranda.date.IDateListener;
 import main.java.memoranda.util.AgendaGenerator;
+import main.java.memoranda.util.Commit;
 import main.java.memoranda.util.CommitsGenerator;
 import main.java.memoranda.util.CurrentStorage;
 import main.java.memoranda.util.Local;
@@ -47,6 +53,7 @@ import javax.swing.JOptionPane;
 
 import nu.xom.Element;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -55,9 +62,7 @@ import java.awt.event.ActionEvent;
 /*$Id: AgendaPanel.java,v 1.11 2005/02/15 16:58:02 rawsushi Exp $*/
 public class CommitsPanel extends JPanel {
 	BorderLayout borderLayout1 = new BorderLayout();
-	JButton historyBackB = new JButton();
 	JToolBar toolBar = new JToolBar();
-	JButton historyForwardB = new JButton();
 	JButton export = new JButton();
 	JEditorPane viewer = new JEditorPane("text/html", "");
 	String[] priorities = {"Muy Alta","Alta","Media","Baja","Muy Baja"};
@@ -72,13 +77,13 @@ public class CommitsPanel extends JPanel {
 	String gotoTask = null;
 
 	boolean isActive = true;
-	private final JButton btnNewButton = new JButton("+Add Member");
-	private final JButton btnNewButton_1 = new JButton("- Delete Member");
-	// US35 - New JButton for setting a GitHub Repo. 
-	private final JButton btnNewButtonRepo = new JButton("Set GitHub Repo");
-	private final JButton btnNewButtonUpdate = new JButton("Update");
+	private final JButton btnNewButtonUpdate = new JButton("RefreshView");
 	// US37 - New JButton for refreshing commit data by calling GitHub API. 
-	private final JButton btnRefreshcommits = new JButton("RefreshCommits");
+	private final JButton btnRefreshcommits = new JButton("Download Data");
+	private final JButton btnNewButton = new JButton("Compare TeamMembers");
+	private final JButton btnTeamMemberCommits = new JButton("TeamMember Commits");
+	private final JButton btnViewSprint = new JButton("Total Sprint Commits");
+	
 
 	public CommitsPanel(DailyItemsPanel _parentPanel) {
 		try {
@@ -243,69 +248,15 @@ public class CommitsPanel extends JPanel {
 				}
 			}
 		});
-		historyBackB.setAction(History.historyBackAction);
-		historyBackB.setFocusable(false);
-		historyBackB.setBorderPainted(false);
-		historyBackB.setToolTipText(Local.getString("History back"));
-		historyBackB.setRequestFocusEnabled(false);
-		historyBackB.setPreferredSize(new Dimension(24, 24));
-		historyBackB.setMinimumSize(new Dimension(24, 24));
-		historyBackB.setMaximumSize(new Dimension(24, 24));
-		historyBackB.setText("");
-
-		historyForwardB.setAction(History.historyForwardAction);
-		historyForwardB.setBorderPainted(false);
-		historyForwardB.setFocusable(false);
-		historyForwardB.setPreferredSize(new Dimension(24, 24));
-		historyForwardB.setRequestFocusEnabled(false);
-		historyForwardB.setToolTipText(Local.getString("History forward"));
-		historyForwardB.setMinimumSize(new Dimension(24, 24));
-		historyForwardB.setMaximumSize(new Dimension(24, 24));
-		historyForwardB.setText("");
 		
 		this.setLayout(borderLayout1);
 		
 		scrollPane.getViewport().setBackground(Color.white);
 		scrollPane.setViewportView(viewer);
 		this.add(scrollPane, BorderLayout.CENTER);
-		toolBar.add(historyBackB, null);
-		toolBar.add(historyForwardB, null);
 		toolBar.addSeparator(new Dimension(8, 24));
 
 		this.add(toolBar, BorderLayout.NORTH);
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				MemberAdd.main(null);
-				System.out.println(CurrentProject.get().getTitle());
-			}
-		});
-		
-		toolBar.add(btnNewButton);
-		btnNewButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				MemberDelete.main(null);
-				System.out.println(CurrentProject.get().getTitle());
-			}
-		});
-		
-		toolBar.add(btnNewButton_1);
-		
-		/*
-		 * US35 - Begin code modification
-		 * Action Listener for pressing the new "Set GitHub Repo" button. 
-		 */
-		
-		// First, add the new button to the toolBar at the top of the "Agenda" view. 
-		toolBar.add(btnNewButtonRepo);
-		
-		// Next, add an action listener for this new button, calling RepoSet function. 
-		btnNewButtonRepo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				RepoSet.main(null);
-				// Get the project name that is currently selected.    
-				System.out.println(CurrentProject.get().getTitle());
-			}
-		});
 		// End of US35 modification for action listener. 
 		
 		
@@ -321,59 +272,150 @@ public class CommitsPanel extends JPanel {
 		//Next, add an action listener for this new button, calling RepoSet function with parameters
 		btnNewButtonUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					CurrentProject.get().addRepoName(CurrentProject.get().getGitHubRepoName());
-				} catch (RuntimeException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+				File authFile = new File((Util.getEnvDir() + "authencoded.txt"));
+				if(CurrentProject.get().getGitHubRepoName().equals("")) {
+					JOptionPane.showMessageDialog(null, "No repo has been set for current project.");
 				}
-		        App.getFrame().refreshAgenda();
+				else if(!authFile.exists()) {
+					JOptionPane.showMessageDialog(null, "You must authenicate.\n"
+							+ "Go to API Settings -> Authenciate Credentials.");
+				}
+				else {
+					try {
+						CurrentProject.get().addRepoName(CurrentProject.get().getGitHubRepoName());
+					} catch (RuntimeException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+			        App.getFrame().refreshAgenda();
+				}
+
 			}
 		});
 		
 		// US37 - Add a button to the toolbar for refreshing commit data from GitHub API. 
 		toolBar.add(btnRefreshcommits);
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				File authFile = new File((Util.getEnvDir() + "authencoded.txt"));
+				if(CurrentProject.get().getGitHubRepoName().equals("")) {
+					JOptionPane.showMessageDialog(null, "No repo has been set for current project.");
+				}
+				else if(!authFile.exists()) {
+					JOptionPane.showMessageDialog(null, "You must authenicate.\n"
+							+ "Go to API Settings -> Authenciate Credentials.");
+				}
+				else {
+					SelectSprint.main(null);
+				}
+				
+
+//				CommitList test = CurrentProject.getCommitList();
+//				List<Commit> test2 = test.getAllCommitsByAuthor("ovidubya");
+//				for(Commit a : test2) {
+//					System.out.println(a.getMessage());
+//				}
+			}
+		});
+		
+		toolBar.add(btnNewButton);
 		
 		// US37 - Add an action listener for this new button, calling GitHub API to update commit data. 
 		btnRefreshcommits.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Print the debug statement indicating button pressed. 
 				System.out.println("[DEBUG] RefreshCommits button pressed!");
-				
-				// Try to add the commit data. 
-				try {
-					//JOptionPane.showMessageDialog(null, "Note: GitHub API Calls for commits may take a few minutes");
-					CurrentProject.get().addCommitData(CurrentProject.get().getGitHubRepoName());
-				} 
-				catch (RuntimeException e1) {
-					e1.printStackTrace();
+				File authFile = new File((Util.getEnvDir() + "authencoded.txt"));
+				if(CurrentProject.get().getGitHubRepoName().equals("")) {
+					JOptionPane.showMessageDialog(null, "No repo has been set for current project.");
 				}
-		        App.getFrame().refreshAgenda();
+				else if(!authFile.exists()) {
+					JOptionPane.showMessageDialog(null, "You must authenicate.\n"
+							+ "Go to API Settings -> Authenciate Credentials.");
+				}
+				else {
+					// Try to add the commit data. 
+					try {
+						Loading.display();
+						//JOptionPane.showMessageDialog(null, "Note: GitHub API Calls for commits may take a few minutes");
+						CurrentProject.get().addCommitData(CurrentProject.get().getGitHubRepoName());
+					} 
+					catch (RuntimeException e1) {
+						e1.printStackTrace();
+					}
+			        App.getFrame().refreshAgenda();
+			        
+				}
+
 			}
 		});
 		
+	      // US40 - Add a button to the toolbar to select team member and sprint
+        toolBar.add(btnTeamMemberCommits);
+        btnViewSprint.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent arg0) {
+				File authFile = new File((Util.getEnvDir() + "authencoded.txt"));
+				if(CurrentProject.get().getGitHubRepoName().equals("")) {
+					JOptionPane.showMessageDialog(null, "No repo has been set for current project.");
+				}
+				else if(!authFile.exists()) {
+					JOptionPane.showMessageDialog(null, "You must authenicate.\n"
+							+ "Go to API Settings -> Authenciate Credentials.");
+				}
+				else {
+					TotalCommitsPrompt.main(null);
+				}
+        		
+        	}
+        });
+        
+        toolBar.add(btnViewSprint);
+        
+        // US40 - Add an action listener for this button
+        btnTeamMemberCommits.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Print debug statement
+                System.out.println("[DEBUG] TeamMember Commits button pressed!");
+				File authFile = new File((Util.getEnvDir() + "authencoded.txt"));
+				if(CurrentProject.get().getGitHubRepoName().equals("")) {
+					JOptionPane.showMessageDialog(null, "No repo has been set for current project.");
+				}
+				else if(!authFile.exists()) {
+					JOptionPane.showMessageDialog(null, "You must authenicate.\n"
+							+ "Go to API Settings -> Authenciate Credentials.");
+				}
+				else {
+	                /*SelectTeamMemberAndSprintDialog select = new SelectTeamMemberAndSprintDialog();
+	                select.main(null);*/
+	                SelectTeamMemberAndSprintDialog.main(null);
+				}
 
-		CurrentDate.addDateListener(new DateListener() {
+                
+            }
+        });
+
+		CurrentDate.addDateListener(new IDateListener() {
 			public void dateChange(CalendarDate d) {
 				if (isActive)
 					refresh(d);
 			}
 		});
-		CurrentProject.addProjectListener(new ProjectListener() {
+		CurrentProject.addProjectListener(new IProjectListener() {
 
 			public void projectChange(
-					Project prj,
-					NoteList nl,
-					TaskList tl,
-					ResourcesList rl) {
+					IProject prj,
+					INoteList nl,
+					ITaskList tl,
+					IResourcesList rl,
+					ICommitList cl, IPullRequestList prl) {
 			}
 
 			public void projectWasChanged() {
 				if (isActive)
 					refresh(CurrentDate.get());
 			}});
-		EventsScheduler.addListener(new EventNotificationListener() {
-			public void eventIsOccured(main.java.memoranda.Event ev) {
+		EventsScheduler.addListener(new IEventNotificationListener() {
+			public void eventIsOccured(main.java.memoranda.IEvent ev) {
 				if (isActive)
 					refresh(CurrentDate.get());
 			}
