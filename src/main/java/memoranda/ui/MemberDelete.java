@@ -10,7 +10,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import main.java.memoranda.CurrentProject;
-import main.java.memoranda.TeamMember;
 
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;

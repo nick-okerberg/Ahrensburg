@@ -11,14 +11,15 @@ package main.java.memoranda;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Deque;
+import java.util.Vector;
 
 import org.json.JSONException;
 
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.date.CurrentDate;
-import main.java.memoranda.util.Commit;
 import main.java.memoranda.util.Contributor;
+import main.java.memoranda.util.CurrentStorage;
+import main.java.memoranda.util.GitHubRunnable;
 import main.java.memoranda.util.JsonApiClass;
 import main.java.memoranda.util.Util;
 import nu.xom.Attribute;
@@ -28,7 +29,7 @@ import nu.xom.Element;
  * Default implementation of Project interface
  */
 /*$Id: ProjectImpl.java,v 1.7 2004/11/22 10:02:37 alexeya Exp $*/
-public class ProjectImpl implements Project {
+public class ProjectImpl implements IProject {
 
     private Element _root = null;
     private JsonApiClass JAC;
@@ -79,14 +80,14 @@ public class ProjectImpl implements Project {
 	}
 
 	/**
-     * @see main.java.memoranda.Project#getID()
+     * @see main.java.memoranda.IProject#getID()
      */
     public String getID() {
         return _root.getAttribute("id").getValue();
     }
 
     /**
-     * @see main.java.memoranda.Project#getStartDate()
+     * @see main.java.memoranda.IProject#getStartDate()
      */
     public CalendarDate getStartDate() {
         Attribute d = _root.getAttribute("startDate");
@@ -95,7 +96,7 @@ public class ProjectImpl implements Project {
     }
 
     /**
-     * @see main.java.memoranda.Project#setStartDate(net.sf.memoranda.util.CalendarDate)
+     * @see main.java.memoranda.IProject#setStartDate(net.sf.memoranda.util.CalendarDate)
      */
     public void setStartDate(CalendarDate date) {
         if (date != null)
@@ -103,7 +104,7 @@ public class ProjectImpl implements Project {
     }
 
     /**
-     * @see main.java.memoranda.Project#getEndDate()
+     * @see main.java.memoranda.IProject#getEndDate()
      */
     public CalendarDate getEndDate() {
         Attribute d = _root.getAttribute("endDate");
@@ -112,7 +113,7 @@ public class ProjectImpl implements Project {
     }
 
     /**
-     * @see main.java.memoranda.Project#setEndDate(net.sf.memoranda.util.CalendarDate)
+     * @see main.java.memoranda.IProject#setEndDate(net.sf.memoranda.util.CalendarDate)
      */
     public void setEndDate(CalendarDate date) {
         if (date != null)
@@ -122,30 +123,30 @@ public class ProjectImpl implements Project {
     }
 
     /**
-     * @see main.java.memoranda.Project#getStatus()
+     * @see main.java.memoranda.IProject#getStatus()
      */
     public int getStatus() {
         if (isFrozen())
-            return Project.FROZEN;
+            return IProject.FROZEN;
         CalendarDate today = CurrentDate.get();
         CalendarDate prStart = getStartDate();
         CalendarDate prEnd = getEndDate();
         if (prEnd == null) {
             if (today.before(prStart))
-                return Project.SCHEDULED;
+                return IProject.SCHEDULED;
             else
-                return Project.ACTIVE;                
+                return IProject.ACTIVE;                
         }    
         if (today.inPeriod(prStart, prEnd))
-            return Project.ACTIVE;
+            return IProject.ACTIVE;
         else if (today.after(prEnd)) {
             //if (getProgress() == 100)
-                return Project.COMPLETED;
+                return IProject.COMPLETED;
             /*else
                 return Project.FAILED;*/
         }
         else
-            return Project.SCHEDULED;
+            return IProject.SCHEDULED;
     }
 
     private boolean isFrozen() {
@@ -166,14 +167,14 @@ public class ProjectImpl implements Project {
   
     
     /**
-     * @see main.java.memoranda.Project#freeze()
+     * @see main.java.memoranda.IProject#freeze()
      */
     public void freeze() {
         _root.addAttribute(new Attribute("frozen", "yes"));
     }
 
     /**
-     * @see main.java.memoranda.Project#unfreeze()
+     * @see main.java.memoranda.IProject#unfreeze()
      */
     public void unfreeze() {
         if (this.isFrozen())
@@ -181,7 +182,7 @@ public class ProjectImpl implements Project {
     }
     
     /**
-     * @see main.java.memoranda.Project#getTitle()
+     * @see main.java.memoranda.IProject#getTitle()
      */
     public String getTitle() {
         Attribute ta = _root.getAttribute("title");
@@ -190,7 +191,7 @@ public class ProjectImpl implements Project {
         return "";
     }
     /**
-     * @see main.java.memoranda.Project#setTitle(java.lang.String)
+     * @see main.java.memoranda.IProject#setTitle(java.lang.String)
      */
     public void setTitle(String title) {
         setAttr("title", title);
@@ -278,13 +279,8 @@ public class ProjectImpl implements Project {
      */
     public void addCommitData(String repo) {
         try {
-            int code = 0;
-        	URL url = new URL("https://github.com/"+ repo);
-            HttpURLConnection huc = (HttpURLConnection) url.openConnection();
-            huc.setRequestMethod("GET");
-            huc.connect();
-            code = huc.getResponseCode();
-            JAC = new JsonApiClass(new URL("https://api.github.com/repos/" + repo), true);
+            (new Thread(new GitHubRunnable(
+                    repo, CurrentStorage.get(), CurrentProject.get()))).start();
         }
         catch (Exception ex) {
             Util.debug(ex.getMessage());
@@ -355,11 +351,11 @@ public class ProjectImpl implements Project {
           // TODO Auto-generated catch block
           e.printStackTrace();
         }
-        Deque<Contributor> contributors = jac.getContributors();
-        while (contributors.peek() != null) {
-          Contributor cb = contributors.pop();
-          this.addMember(cb.getName(), cb.getLogin());
-        }        
+        Vector<Contributor> contributors = jac.getContributors();
+        for (int i = 0; i < contributors.size(); i++) {
+            Contributor cb = contributors.get(i);
+            this.addMember(cb.getName(), cb.getLogin());
+        }
         /* End US41 changes */
 	} 
 	// End of US35 implementation for GitHub Repo Name. 

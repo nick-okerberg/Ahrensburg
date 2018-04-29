@@ -21,15 +21,15 @@ public class CurrentStorage {
     /**
      * @todo: implement storage congiguration
      */
-    private static Storage _storage = new FileStorage();
+    private static IStorage _storage = new FileStorage();
     
     private static Vector actionListeners = new Vector();
     
-    public static Storage get() {
+    public static IStorage get() {
         return _storage;
     }
     
-    public static void set(Storage storage) {
+    public static void set(IStorage storage) {
         _storage = storage;
         storageChanged();
     }

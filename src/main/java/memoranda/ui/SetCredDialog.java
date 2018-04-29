@@ -10,29 +10,19 @@
 
 package main.java.memoranda.ui;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
 import javax.swing.JPasswordField;
-import java.awt.Insets;
 import java.awt.Point;
 
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.JSONTokener;
 
 import main.java.memoranda.util.Util;
 
@@ -42,7 +32,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -70,6 +59,7 @@ public class SetCredDialog extends JDialog {
 		try {
 			SetCredDialog dialog = new SetCredDialog();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			dialog.setTitle("Set Credentials");
 			dialog.setVisible(true);
 	        Point loc = App.getFrame().getLocation();
 	        Dimension frmSize = App.getFrame().getSize();
@@ -112,7 +102,7 @@ public class SetCredDialog extends JDialog {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,}));
 		{
-			JLabel lblUsername = new JLabel("Username:");
+			JLabel lblUsername = new JLabel("GitHub Username:");
 			getContentPane().add(lblUsername, "2, 2, 5, 1, left, default");
 		}
 		{
@@ -121,7 +111,7 @@ public class SetCredDialog extends JDialog {
 			_textField.setColumns(10);
 		}
 		{
-			JLabel lblPassword = new JLabel("Password");
+			JLabel lblPassword = new JLabel("GitHub Password:");
 			getContentPane().add(lblPassword, "2, 6, 5, 1, left, default");
 		}
 		{
