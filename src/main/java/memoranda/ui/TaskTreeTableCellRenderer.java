@@ -109,9 +109,12 @@ public class TaskTreeTableCellRenderer extends DefaultTreeCellRenderer implement
             return label;
         }
         // if( column_name.equals("% " + Local.getString("done")) ){
-        if (column == 6) {
-            return getProgressCellRenderer(t, selected, hasFocus, column);
-        }
+        
+        // US48 - comment this out to allow column 6 of sprints page (gitmaster) to display gitmaster without progress bar. 
+        //if (column == 6) {
+        //    return getProgressCellRenderer(t, selected, hasFocus, column);
+        //}
+        
         // if( column_name.equals("") ){
         if (column == 0) {
             return getPriorityIconCellRenderer(t, selected, hasFocus);
@@ -125,7 +128,7 @@ public class TaskTreeTableCellRenderer extends DefaultTreeCellRenderer implement
         // if( column_name.equals( Local.getString("Status") ) ){
         if (column == 5) {
             label.setText(value.toString());
-            label.setForeground(getColorForTaskStatus(t, false));
+            //label.setForeground(getColorForTaskStatus(t, false)); // Don't color commit count on sprints page. 
             return label;
         }
         label.setText(value.toString());
