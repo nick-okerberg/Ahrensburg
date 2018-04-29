@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Vector;
 
+import main.java.memoranda.util.Commit;
 import main.java.memoranda.util.JsonApiClass;
 import main.java.memoranda.util.Util;
 
@@ -69,4 +71,16 @@ public class JsonApiClassTest {
         // We will test against 3 pull requests.
         assertEquals(jac.getPullRequests().size(),3);
     }
+    /**
+     * Tests Wheter merge commits are ignored
+     */
+    @Test
+    public void testMergeCommits() {
+    	Vector<Commit> listOfCommits = jac.getCommitsArrLst();
+    	for(Commit singleCommit : listOfCommits) {
+    		System.out.println("Commit message contains:" + singleCommit.getMessage());
+    		assertFalse(singleCommit.getMessage().matches("Merge") || singleCommit.getMessage().matches("merge"));
+    	}
+    }
+    
 }
