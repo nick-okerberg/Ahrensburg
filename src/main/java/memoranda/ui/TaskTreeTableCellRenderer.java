@@ -128,7 +128,7 @@ public class TaskTreeTableCellRenderer extends DefaultTreeCellRenderer implement
         // if( column_name.equals( Local.getString("Status") ) ){
         if (column == 5) {
             label.setText(value.toString());
-            label.setForeground(getColorForTaskStatus(t, false));
+            //label.setForeground(getColorForTaskStatus(t, false)); // Don't color commit count on sprints page. 
             return label;
         }
         label.setText(value.toString());
