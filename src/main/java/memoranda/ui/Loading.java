@@ -38,7 +38,7 @@ public class Loading {
       main.java.memoranda.ui.ImagePanel imagePanel = new ImagePanel();
       thisFrame.getContentPane().add(imagePanel);
       
-      JLabel lblConnectingToGithub = new JLabel("Connecting to GitHub");
+      JLabel lblConnectingToGithub = new JLabel("Downloading from GitHub");
       lblConnectingToGithub.setFont(new Font("Tahoma", Font.PLAIN, 16));
       imagePanel.add(lblConnectingToGithub);
 
