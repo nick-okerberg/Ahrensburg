@@ -32,6 +32,8 @@ import main.java.memoranda.util.Local;
 
 import java.util.Hashtable;
 
+import nu.xom.Attribute;
+
 /**
  * JAVADOC:
  * <h1>TaskTableModel</h1>
@@ -49,7 +51,8 @@ public class TaskTableModel extends AAbstractTreeTableModel implements ITreeTabl
             Local.getString("Start date"), 
             Local.getString("End date"),
     		Local.getString("Tests"),  // Nick Okerberg US37, number of JUnit tests per Sprint. 
-    		Local.getString("Commits")}; 
+    		Local.getString("Commits"),
+    		Local.getString("GitMaster")};  // Nick Okerberg US48, Display GitMaster per Sprint. 
     protected EventListenerList listenerList = new EventListenerList();
 
     private boolean activeOnly = check_activeOnly();
@@ -110,9 +113,14 @@ public class TaskTableModel extends AAbstractTreeTableModel implements ITreeTabl
         	 */
         	//System.out.println("TaskTableModel: Triggered Getting Number Sprint Tests");
         	return t.getNumberSprintTests();
+        // Column for total number of Commits. 
         case 5:
             return t.getNumberCommits();
-        case 6:            
+        // Column for gitMaster for specific Sprint. 
+        case 6:
+            //System.out.println("TEST: GitMaster is: " + t.getGitMaster());
+            return t.getGitMaster();    // US48 Nick Okerberg - Display GitMaster per sprint.
+        case 7:             
             //return new Integer(t.getProgress());
 			return t;
         case TaskTable.TASK_ID:

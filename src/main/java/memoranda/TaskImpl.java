@@ -25,6 +25,8 @@ import nu.xom.Element;
 import nu.xom.Elements;
 import nu.xom.Node;
 
+import nu.xom.Attribute;
+
 /**
  *
  */
@@ -468,11 +470,20 @@ public class TaskImpl implements ITask, Comparable {
     }
     
     public String getGitMaster() {
-    	return _element.getAttribute("gitmaster").toString();
+        try {
+            //System.out.println("TEST: Returning TaskImpl getGitMaster() is = " + _element.getAttribute("gitmaster").getValue());
+            return _element.getAttribute("gitmaster").getValue();
+            //return _element.getAttribute("gitmaster").toString();
+        }
+    	catch (NullPointerException e) {
+    	}
+        return "";
     }
+    
     public void setGitMaster(String newGitMaster) {
     	setAttr("gitmaster", newGitMaster);
     }
+    
     private void setAttr(String a, String value) {
         Attribute attr = _element.getAttribute(a);
         if (attr == null)
