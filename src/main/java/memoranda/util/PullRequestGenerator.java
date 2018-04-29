@@ -4,12 +4,10 @@ package main.java.memoranda.util;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Vector;
-import java.util.concurrent.TimeUnit;
 
 import main.java.memoranda.CurrentProject;
 import main.java.memoranda.ITask;
 import main.java.memoranda.date.CalendarDate;
-import main.java.memoranda.ui.PullRequestPanel;
 
 /**
  * Display pull requests and update JcomboBox in PullReq page.

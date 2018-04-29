@@ -10,7 +10,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import nu.xom.Attribute;
-import nu.xom.Document;
 import nu.xom.Element;
 
 /**

@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Dimension;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -12,18 +11,14 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
-import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.HyperlinkEvent;
@@ -31,9 +26,6 @@ import javax.swing.event.HyperlinkListener;
 
 import main.java.memoranda.ICommitList;
 import main.java.memoranda.CurrentProject;
-import main.java.memoranda.IEventNotificationListener;
-import main.java.memoranda.EventsManager;
-import main.java.memoranda.EventsScheduler;
 import main.java.memoranda.History;
 import main.java.memoranda.INoteList;
 import main.java.memoranda.IProject;
@@ -44,12 +36,9 @@ import main.java.memoranda.IResourcesList;
 import main.java.memoranda.ITaskList;
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.date.CurrentDate;
-import main.java.memoranda.date.IDateListener;
 import main.java.memoranda.util.AgendaGenerator;
-import main.java.memoranda.util.CurrentStorage;
 import main.java.memoranda.util.Local;
 import main.java.memoranda.util.Util;
-import nu.xom.Element;
 
 /*$Id: AgendaPanel.java,v 1.11 2005/02/15 16:58:02 rawsushi Exp $*/
 public class AgendaPanel extends JPanel {

@@ -9,10 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
-import javax.security.auth.Refreshable;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JPanel;

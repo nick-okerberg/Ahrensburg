@@ -11,17 +11,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.TimeUnit;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 
 import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
@@ -35,11 +30,7 @@ import main.java.memoranda.util.Commit;
 import main.java.memoranda.util.Contributor;
 
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-import java.awt.GridBagLayout;
 import java.awt.Image;
-import java.awt.GridBagConstraints;
 /**
  *
  * @author Sean Rogers

@@ -18,7 +18,6 @@ import javax.swing.border.Border;
 
 import main.java.memoranda.util.Context;
 import main.java.memoranda.util.Local;
-import java.awt.Font;
 
 /**
  * 

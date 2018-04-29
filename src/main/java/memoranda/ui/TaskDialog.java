@@ -31,7 +31,6 @@ import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 //import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
@@ -47,7 +46,6 @@ import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.util.Contributor;
 import main.java.memoranda.util.Local;
 import main.java.memoranda.util.PullRequestGenerator;
-import javax.swing.JCheckBox;
 
 /*$Id: TaskDialog.java,v 1.25 2005/12/01 08:12:26 alexeya Exp $*/
 public class TaskDialog extends JDialog {

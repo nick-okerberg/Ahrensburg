@@ -1,19 +1,11 @@
 package main.java.memoranda.util;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.TimeZone;
 
-import org.json.JSONArray;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import nu.xom.Attribute;
-import nu.xom.Document;
 import nu.xom.Element;
 
 /**

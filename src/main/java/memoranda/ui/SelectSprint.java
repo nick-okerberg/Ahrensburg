@@ -1,44 +1,30 @@
 package main.java.memoranda.ui;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 
 import main.java.memoranda.CurrentProject;
 import main.java.memoranda.ITask;
-import main.java.memoranda.ITaskList;
 import main.java.memoranda.date.CalendarDate;
 import main.java.memoranda.util.Commit;
 import main.java.memoranda.util.Contributor;
-import main.java.memoranda.util.Util;
 
-import javax.swing.JList;
 import javax.swing.JLabel;
-import java.awt.GridBagLayout;
 import java.awt.Image;
 
-import javax.swing.JTextField;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import java.awt.Font;
-import javax.swing.JRadioButton;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 import java.util.Vector;
 import java.util.concurrent.TimeUnit;
 import java.awt.event.ActionEvent;

@@ -10,29 +10,19 @@
 
 package main.java.memoranda.ui;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
 import javax.swing.JPasswordField;
-import java.awt.Insets;
 import java.awt.Point;
 
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.JSONTokener;
 
 import main.java.memoranda.util.Util;
 
@@ -42,7 +32,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
