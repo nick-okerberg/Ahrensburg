@@ -67,7 +67,7 @@ public class PullRequestGenerator {
             s += "<td><center>" + pr.is_merged() + "</center></td>";
             s += "<td><center>" + pr.get_mergedBy() + "</center></td>";
             s += "<td><center>" + pr.get_createdAt() + "</center></td>";
-            String withinSprint = "" ;
+            String withinSprint = "Not within sprint" ;
             Date currentPullDate = pr.get_createdAt();
             Collection<ITask> allSprints = CurrentProject.getTaskList()
                     .getTopLevelTasks();
