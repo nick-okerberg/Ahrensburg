@@ -71,18 +71,18 @@ public class PullRequestPanel extends JPanel {
 
     boolean isActive = true;
     //US173
-    private static JComboBox<String> JboxButton;
-    private final JButton goButton = new JButton("Go");
+    //private static JComboBox<String> JboxButton;
+    //private final JButton goButton = new JButton("Go");
     private final JButton refreshButton = new JButton("Refresh");
     
 
     public PullRequestPanel(DailyItemsPanel _parentPanel) {
         
-        JboxButton = new JComboBox();
+       /* JboxButton = new JComboBox();
         JboxButton.setSize(5, 5);
         JboxButton.setEditable(false);
         JboxButton.addItem("Sprint Not Selected");
-      
+      */
         
         try {
             parentPanel = _parentPanel;
@@ -94,8 +94,8 @@ public class PullRequestPanel extends JPanel {
         
     }
     public static void loadJcomoBox(PullRequestsClass prc) {
-        JboxButton.addItem(prc.getTask().toString());
-        refreshJcomboBox();
+       // JboxButton.addItem(prc.getTask().toString());
+      // refreshJcomboBox();
         
                 //  "   Start Date: " +  prc.getCdStart() +
                 //  "   End Date: " +  prc.getCdEnd() );
@@ -287,7 +287,7 @@ public class PullRequestPanel extends JPanel {
        
         
         //US173
-        toolBar.add(JboxButton);
+        /*toolBar.add(JboxButton);
         JboxButton.setSize(10,10);
         
         JboxButton.addActionListener(new ActionListener() {
@@ -297,21 +297,21 @@ public class PullRequestPanel extends JPanel {
             
            
             }
-        });
+        })*/;
         
         toolBar.add(refreshButton);
         refreshButton.addActionListener(new ActionListener() {
             
             @Override
             public void actionPerformed(ActionEvent e) {
-                refreshJcomboBox();
+                //refreshJcomboBox();
                 
                 
             }
         });
 
         //Go button in Pull request pages
-        toolBar.add(goButton);
+       /* toolBar.add(goButton);
         goButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                
@@ -323,7 +323,7 @@ public class PullRequestPanel extends JPanel {
                 }
                 App.getFrame().refreshAgenda();
             }
-        });
+        });*/
         
         
         
@@ -388,7 +388,7 @@ public class PullRequestPanel extends JPanel {
     public static void JcomboBox(){
         
     }
-    public static void refreshJcomboBox() {
+/*    public static void refreshJcomboBox() {
         JboxButton.removeAllItems();
         JboxButton.addItem("Sprint Not Selected");
         ITaskList tl = CurrentProject.getTaskList();
@@ -397,7 +397,7 @@ public class PullRequestPanel extends JPanel {
          for(int i = 0; i < coll.size(); i++) {
               JboxButton.addItem( obj[i].toString());
            }
-    }
+    }*/
 
     
 }
