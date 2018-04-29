@@ -47,7 +47,7 @@ public class TaskTableModel extends AAbstractTreeTableModel implements ITreeTabl
 //            Local.getString("Start date"), Local.getString("End date"),
 //            Local.getString("Priority"), Local.getString("Status"),
 //            "% " + Local.getString("done") };
-    String[] columnNames = {"", Local.getString("To-do"), //Ovadia Shalom US8
+    String[] columnNames = {"", Local.getString("Name"), //Ovadia Shalom US8
             Local.getString("Start date"), 
             Local.getString("End date"),
     		Local.getString("Tests"),  // Nick Okerberg US37, number of JUnit tests per Sprint. 

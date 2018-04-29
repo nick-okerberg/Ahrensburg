@@ -46,6 +46,7 @@ public class PullRequestGenerator {
                 + "<th>GitHub UserName</th>"
                 + "<th>Branch</th>"
                 + "<th>Base</th>"
+                +"<th>isMerged</th>"
                 + "<th>Merged By</th>"
                 + "<th>Date</th>"
                 + "<th>Sprint</th>";
@@ -63,9 +64,10 @@ public class PullRequestGenerator {
             } else {
                 s += "<td><center>" + pr.get_base() + "</center></td>";
             }
+            s += "<td><center>" + pr.is_merged() + "</center></td>";
             s += "<td><center>" + pr.get_mergedBy() + "</center></td>";
             s += "<td><center>" + pr.get_createdAt() + "</center></td>";
-            String withinSprint = "Not within sprint";
+            String withinSprint = "Not within sprint" ;
             Date currentPullDate = pr.get_createdAt();
             Collection<ITask> allSprints = CurrentProject.getTaskList()
                     .getTopLevelTasks();
