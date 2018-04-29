@@ -21,7 +21,6 @@
 package main.java.memoranda.ui;
 
 import javax.swing.event.*;
-import javax.swing.tree.TreePath;
 
 import main.java.memoranda.*;
 import main.java.memoranda.date.CurrentDate;
@@ -30,9 +29,7 @@ import main.java.memoranda.ui.treetable.ITreeTableModel;
 import main.java.memoranda.util.Context;
 import main.java.memoranda.util.Local;
 
-import java.util.Hashtable;
 
-import nu.xom.Attribute;
 
 /**
  * JAVADOC:

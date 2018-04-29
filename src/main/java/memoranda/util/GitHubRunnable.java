@@ -8,12 +8,10 @@ import javax.swing.JOptionPane;
 import main.java.memoranda.IBranchList;
 import main.java.memoranda.ICommitList;
 import main.java.memoranda.IContributorList;
-import main.java.memoranda.CurrentProject;
 import main.java.memoranda.IProject;
 import main.java.memoranda.IPullRequestList;
 import main.java.memoranda.ui.App;
 import main.java.memoranda.ui.Loading;
-import main.java.memoranda.ui.WorkPanel;
 
 import org.json.JSONException;
 

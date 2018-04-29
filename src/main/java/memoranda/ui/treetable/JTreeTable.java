@@ -22,11 +22,9 @@ import main.java.memoranda.ITask;
 
 import javax.swing.table.*;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Component;
 import java.awt.Graphics;
-import java.awt.Rectangle;
 
 import java.awt.event.MouseEvent;
 
