@@ -1,6 +1,39 @@
+// Include the plugin for Spotbugs. 
+plugins {
+  id  'com.github.spotbugs' version '1.6.1'
+}
+
 apply plugin: 'application'
 apply plugin: "java"
 apply plugin: 'jacoco'
+
+// Configure Checkstyle
+apply plugin: 'checkstyle'
+checkstyle {
+  ignoreFailures = true
+  showViolations = false
+}
+tasks.withType(Checkstyle) {
+  reports {
+    html.enabled = true		// Build HTML report. 
+    xml.enabled = false
+  }
+}
+checkstyle {
+    toolVersion = "8.8"
+}
+
+// Spotbugs configuration. 
+spotbugs {
+  toolVersion = '3.1.2'
+  ignoreFailures = true		// Complete even if there are failures, since it's pre-existing code. 
+}
+tasks.withType(com.github.spotbugs.SpotBugsTask) {
+  reports {
+    xml.enabled = false
+    html.enabled = true		// Build HTML report
+  }
+}
 
 // Variables
 // For now, lets just use the same one ant has in build.xml

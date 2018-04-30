@@ -8,7 +8,6 @@
  */
 package main.java.memoranda;
 
-import java.net.URL;
 
 import org.json.JSONException;
 
@@ -20,7 +19,7 @@ import main.java.memoranda.util.JsonApiClass;
  */
 
 /*$Id: Project.java,v 1.5 2004/11/22 10:02:37 alexeya Exp $*/
-public interface Project {
+public interface IProject {
     
     public static final int SCHEDULED = 0;
    

@@ -15,7 +15,7 @@ import nu.xom.Document;
  * 
  */
 /*$Id: ResourcesList.java,v 1.4 2007/03/20 06:21:46 alexeya Exp $*/
-public interface ResourcesList {
+public interface IResourcesList {
     
     Vector getAllResources();
     

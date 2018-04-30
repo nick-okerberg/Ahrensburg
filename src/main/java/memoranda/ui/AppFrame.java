@@ -1,6 +1,6 @@
 package main.java.memoranda.ui;
 
-import java.awt.AWTEvent;
+import java.awt.AWTEvent; 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -34,14 +34,16 @@ import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.text.html.HTMLDocument;
 
+import main.java.memoranda.ICommitList;
 import main.java.memoranda.CurrentProject;
 import main.java.memoranda.History;
-import main.java.memoranda.Note;
-import main.java.memoranda.NoteList;
-import main.java.memoranda.Project;
-import main.java.memoranda.ProjectListener;
-import main.java.memoranda.ResourcesList;
-import main.java.memoranda.TaskList;
+import main.java.memoranda.INote;
+import main.java.memoranda.INoteList;
+import main.java.memoranda.IProject;
+import main.java.memoranda.IProjectListener;
+import main.java.memoranda.IPullRequestList;
+import main.java.memoranda.IResourcesList;
+import main.java.memoranda.ITaskList;
 import main.java.memoranda.date.CurrentDate;
 import main.java.memoranda.ui.htmleditor.HTMLEditor;
 import main.java.memoranda.util.Configuration;
@@ -116,6 +118,9 @@ public class AppFrame extends JFrame {
         }
     };
     
+    /*
+     * US101 - removing Notes from "File" menu. 
+     *
     public Action exportNotesAction =
                 new AbstractAction(Local.getString("Export notes") + "...") {
 
@@ -138,16 +143,20 @@ public class AppFrame extends JFrame {
                         p1Import_actionPerformed(e);
                 }
         };
+    */
     
     JMenuItem jMenuFileNewPrj = new JMenuItem();
-        JMenuItem jMenuFileNewNote = new JMenuItem(workPanel.dailyItemsPanel.editorPanel.newAction);
+    // US101 - removing Notes from "File" menu. 
+    //JMenuItem jMenuFileNewNote = new JMenuItem(workPanel.dailyItemsPanel.editorPanel.newAction);
     JMenuItem jMenuFilePackPrj = new JMenuItem(prjPackAction);
     JMenuItem jMenuFileUnpackPrj = new JMenuItem(prjUnpackAction);
-    JMenuItem jMenuFileExportPrj = new JMenuItem(exportNotesAction);
-    JMenuItem jMenuFileImportPrj = new JMenuItem(importNotesAction);
-    JMenuItem jMenuFileImportNote = new JMenuItem(importOneNoteAction);
-    JMenuItem jMenuFileExportNote = new JMenuItem(
-            workPanel.dailyItemsPanel.editorPanel.exportAction);
+    
+    // US101 - removing Notes from "File" menu. 
+    //JMenuItem jMenuFileExportPrj = new JMenuItem(exportNotesAction);
+    //JMenuItem jMenuFileImportPrj = new JMenuItem(importNotesAction);
+    //JMenuItem jMenuFileImportNote = new JMenuItem(importOneNoteAction);
+    //JMenuItem jMenuFileExportNote = new JMenuItem(
+    //        workPanel.dailyItemsPanel.editorPanel.exportAction);
     JMenuItem jMenuFileMin = new JMenuItem(minimizeAction);
 
     JMenuItem jMenuItem1 = new JMenuItem();
@@ -260,7 +269,7 @@ public class AppFrame extends JFrame {
     //Component initialization
     private void jbInit() throws Exception {
         this.setIconImage(new ImageIcon(AppFrame.class.getResource(
-                "/ui/icons/jnotes16.png"))
+                "/ui/icons/icon.png"))
                 .getImage());
         contentPane = (JPanel) this.getContentPane();
         contentPane.setLayout(borderLayout1);
@@ -336,10 +345,12 @@ public class AppFrame extends JFrame {
         jMenuFileNewPrj.setAction(projectsPanel.newProjectAction);
 
         jMenuFileUnpackPrj.setText(Local.getString("Unpack project") + "...");
-        jMenuFileExportNote.setText(Local.getString("Export current note")
-                + "...");
-        jMenuFileImportNote.setText(Local.getString("Import one note")
-                + "...");
+        
+        // US101 - removing Notes from "File" menu. 
+        //jMenuFileExportNote.setText(Local.getString("Export current note")
+        //        + "...");
+        //jMenuFileImportNote.setText(Local.getString("Import one note")
+        //        + "...");
         jMenuFilePackPrj.setText(Local.getString("Pack project") + "...");
         jMenuFileMin.setText(Local.getString("Close the window"));
         jMenuFileMin.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F10,
@@ -451,15 +462,17 @@ public class AppFrame extends JFrame {
  
         toolBar.add(jButton3);
         jMenuFile.add(jMenuFileNewPrj);
-                jMenuFile.add(jMenuFileNewNote);
+        // US101 - removing Notes from "File" menu. 
+        //jMenuFile.add(jMenuFileNewNote);
         jMenuFile.addSeparator();
         jMenuFile.add(jMenuFilePackPrj);
         jMenuFile.add(jMenuFileUnpackPrj);
         jMenuFile.addSeparator();
-        jMenuFile.add(jMenuFileExportPrj);
-        jMenuFile.add(jMenuFileExportNote);
-        jMenuFile.add(jMenuFileImportNote);
-        jMenuFile.add(jMenuFileImportPrj);
+        // US101 - removing Notes from "File" menu. 
+        //jMenuFile.add(jMenuFileExportPrj);
+        //jMenuFile.add(jMenuFileExportNote);
+        //jMenuFile.add(jMenuFileImportNote);
+        //jMenuFile.add(jMenuFileImportPrj);
         jMenuFile.addSeparator();
         jMenuFile.add(jMenuEditPref);
         jMenuFile.addSeparator();
@@ -599,17 +612,23 @@ public class AppFrame extends JFrame {
                 setMenusDisabled);
 
         this.workPanel.tasksB.addActionListener(setMenusDisabled);
-        this.workPanel.eventsB.addActionListener(setMenusDisabled);
-        this.workPanel.filesB.addActionListener(setMenusDisabled);
+        // US101 - Remove Events button on main page. 
+        //this.workPanel.eventsB.addActionListener(setMenusDisabled);
+        // US101 - Remove Resources button on main page.
+        //this.workPanel.filesB.addActionListener(setMenusDisabled);
         this.workPanel.agendaB.addActionListener(setMenusDisabled);
 
+        /*
+         * US101 - Remove Notes button.
+         *
         this.workPanel.notesB.addActionListener(
                 new java.awt.event.ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         setEnabledEditorMenus(true);
                     }
                 });
-
+        */
+        
         Object fwo = Context.get("FRAME_WIDTH");
         Object fho = Context.get("FRAME_HEIGHT");
         if ((fwo != null) && (fho != null)) {
@@ -634,10 +653,10 @@ public class AppFrame extends JFrame {
             setEnabledEditorMenus(pan.equalsIgnoreCase("NOTES"));
         }
 
-        CurrentProject.addProjectListener(new ProjectListener() {
+        CurrentProject.addProjectListener(new IProjectListener() {
 
-            public void projectChange(Project prj, NoteList nl, TaskList tl,
-                    ResourcesList rl) {
+            public void projectChange(IProject prj, INoteList nl, ITaskList tl,
+                    IResourcesList rl, ICommitList cl, IPullRequestList prl) {
             }
 
             public void projectWasChanged() {
@@ -734,8 +753,9 @@ public class AppFrame extends JFrame {
         this.jMenuEdit.setEnabled(enabled);
         this.jMenuFormat.setEnabled(enabled);
         this.jMenuInsert.setEnabled(enabled);
-        this.jMenuFileNewNote.setEnabled(enabled);
-        this.jMenuFileExportNote.setEnabled(enabled);
+        // US101 - removing Notes from "File" menu. 
+        //this.jMenuFileNewNote.setEnabled(enabled);
+        //this.jMenuFileExportNote.setEnabled(enabled);
     }
 
     public void doPrjPack() {
@@ -856,6 +876,9 @@ public class AppFrame extends JFrame {
      */
     public void refreshAgenda() {
       workPanel.dailyItemsPanel.agendaPanel.refresh(CurrentDate.get());
+    }
+    public void refreshCommits() {
+        workPanel.dailyItemsPanel.commitsPanel.refresh(CurrentDate.get());
     }
 
     public void showPreferences() {
@@ -1040,7 +1063,7 @@ public class AppFrame extends JFrame {
                             content = notesContent.get(id);
                             p.setText(content);
                             HTMLDocument doc = (HTMLDocument)p.getDocument();
-                            Note note = CurrentProject.getNoteList().createNoteForDate(CurrentDate.get());
+                            INote note = CurrentProject.getNoteList().createNoteForDate(CurrentDate.get());
                     note.setTitle(name);
                             note.setId(Util.generateId());
                     CurrentStorage.get().storeNote(note, doc);
@@ -1122,7 +1145,7 @@ public class AppFrame extends JFrame {
                             System.out.println(id+" "+name+" "+content);
                             p.setText(content);
                             HTMLDocument doc = (HTMLDocument)p.getDocument();
-                            Note note = CurrentProject.getNoteList().createNoteForDate(CurrentDate.get());
+                            INote note = CurrentProject.getNoteList().createNoteForDate(CurrentDate.get());
                     note.setTitle(name);
                             note.setId(Util.generateId());
                     CurrentStorage.get().storeNote(note, doc);
